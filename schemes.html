@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Government Schemes | BhoomiBandhu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container header-flex">
+
+    <div class="logo">
+      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+      <span>BhoomiBandhu</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="storage.html">Storage</a>
+      <a href="insurance.html">Insurance</a>
+      <a href="schemes.html">Schemes</a>
+      <a href="financial.html">Financial</a>
+      <a href="ai-crop-predictor.html">AI Crop</a>
+      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
+      <a href="gemini-advisor.html">💬 AI Chat</a>
+      <a href="mental-health.html">Mental Health</a>
+      <a href="#" onclick="toggleTheme()">🌙</a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">🏛 Government Support</span>
+    <h1>Government Schemes for Farmers</h1>
+    <p>
+      Discover, verify eligibility, and apply for farmer welfare schemes
+      with step-by-step guidance.
+    </p>
+
+    <div class="hero-stats">
+      <div>
+        <strong>10+</strong>
+        <span>Major Schemes</span>
+      </div>
+      <div>
+        <strong>Easy</strong>
+        <span>Eligibility</span>
+      </div>
+      <div>
+        <strong>Secure</strong>
+        <span>Process</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INTRO ===== -->
+<section class="section container">
+  <h2>Why Government Schemes Matter</h2>
+
+  <p style="max-width:900px;margin:auto;color:#4f6f57;line-height:1.8;text-align:center">
+    Government schemes provide financial security, risk protection,
+    and development opportunities to farmers. BhoomiBandhu simplifies
+    complex scheme information and helps farmers avoid missed benefits
+    due to lack of awareness or incorrect applications.
+  </p>
+</section>
+
+<!-- ===== INTERACTIVE SUPPORT ===== -->
+<section class="section container">
+  <h2>How BhoomiBandhu Helps</h2>
+
+  <div class="interactive-grid">
+
+    <div class="info-card" onclick="toggleCard(this)">
+      <h3>Scheme Discovery</h3>
+      <p class="short-text">Find schemes relevant to your needs</p>
+
+      <div class="card-details">
+        <ul>
+          <li>Central & state government farmer schemes</li>
+          <li>Crop-specific subsidies and support programs</li>
+          <li>Equipment, irrigation & storage schemes</li>
+          <li>Income support & disaster relief initiatives</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card" onclick="toggleCard(this)">
+      <h3>Eligibility Check</h3>
+      <p class="short-text">Avoid rejection before applying</p>
+
+      <div class="card-details">
+        <ul>
+          <li>Farmer category (small / marginal)</li>
+          <li>Landholding size & land record requirements</li>
+          <li>Crop season & regional conditions</li>
+          <li>Aadhaar & bank account linkage verification</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card" onclick="toggleCard(this)">
+      <h3>Application Guidance</h3>
+      <p class="short-text">Apply correctly & confidently</p>
+
+      <div class="card-details">
+        <ul>
+          <li>Required document checklist</li>
+          <li>Online & offline application steps</li>
+          <li>CSC, bank & agriculture office support</li>
+          <li>Common mistakes & delay prevention tips</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+<section class="section container">
+  <h2>Check Your Scheme Eligibility</h2>
+
+  <div class="eligibility-card">
+    <form id="eligibilityForm">
+
+      <div class="form-grid">
+        <select id="scheme" required>
+          <option value="">Select Scheme</option>
+          <option value="pmkisan">PM-KISAN</option>
+          <option value="pmfby">PM Fasal Bima Yojana</option>
+          <option value="kcc">Kisan Credit Card</option>
+        </select>
+
+        <select id="category" required>
+          <option value="">Farmer Category</option>
+          <option value="small">Small / Marginal</option>
+          <option value="large">Large Farmer</option>
+        </select>
+
+        <input type="number" id="land" placeholder="Landholding (in hectares)" required>
+
+        <select id="season" required>
+          <option value="">Crop Season</option>
+          <option>Kharif</option>
+          <option>Rabi</option>
+          <option>Zaid</option>
+        </select>
+
+        <select id="aadhaar" required>
+          <option value="">Aadhaar Linked?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+
+        <select id="bank" required>
+          <option value="">Bank Account Linked?</option>
+          <option value="yes">Yes</option>
+          <option value="no">No</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Check Eligibility</button>
+    </form>
+
+    <div id="eligibilityResult" class="result-box hidden"></div>
+  </div>
+</section>
+
+<!-- ===== POPULAR SCHEMES ===== -->
+<section class="section container">
+  <h2>Popular Farmer Welfare Schemes</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>PM-KISAN Samman Nidhi</h3>
+      <p>
+        ₹6000 annual income support for eligible farmer families,
+        credited directly to bank accounts.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Pradhan Mantri Fasal Bima Yojana</h3>
+      <p>
+        Crop insurance coverage against losses due to natural
+        calamities, pests, and diseases.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Kisan Credit Card (KCC)</h3>
+      <p>
+        Easy access to short-term agricultural loans at
+        subsidized interest rates.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Gramin Bhandaran Yojana</h3>
+      <p>
+        Subsidy support for rural storage infrastructure
+        and warehouse development.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section container">
+  <h2>Don’t Miss the Benefits Meant for You</h2>
+
+  <p style="max-width:850px;margin:auto;text-align:center;color:#4f6f57;line-height:1.8">
+    Many farmers miss government benefits due to lack of awareness
+    or incorrect applications. BhoomiBandhu ensures you stay informed,
+    eligible, and supported throughout the process.
+  </p>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  © 2025 BhoomiBandhu. All rights reserved.
+</footer>
+
+<!-- ===== JS ===== -->
+<script src="script.js"></script>
+
+<script>
+  function toggleCard(card) {
+    card.classList.toggle("active");
+  }
+document.getElementById("eligibilityForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const scheme = document.getElementById("scheme").value;
+  const category = document.getElementById("category").value;
+  const land = parseFloat(document.getElementById("land").value);
+  const aadhaar = document.getElementById("aadhaar").value;
+  const bank = document.getElementById("bank").value;
+
+  const resultBox = document.getElementById("eligibilityResult");
+  resultBox.classList.remove("hidden", "success", "error");
+
+  // Common checks
+  if (aadhaar !== "yes" || bank !== "yes") {
+    resultBox.classList.add("error");
+    resultBox.innerHTML =
+      "❌ <b>Not Eligible</b><br>Aadhaar-linked bank account is mandatory.";
+    return;
+  }
+
+  // PM-KISAN
+  if (scheme === "pmkisan") {
+    if (category === "small" && land <= 2) {
+      resultBox.classList.add("success");
+      resultBox.innerHTML =
+        "✅ <b>Eligible for PM-KISAN</b><br>You may receive ₹6000 annual income support.";
+    } else {
+      resultBox.classList.add("error");
+      resultBox.innerHTML =
+        "❌ <b>Not Eligible</b><br>PM-KISAN is for small & marginal farmers only.";
+    }
+  }
+
+  // PMFBY
+  else if (scheme === "pmfby") {
+    resultBox.classList.add("success");
+    resultBox.innerHTML =
+      "✅ <b>Eligible for PMFBY</b><br>You can apply for crop insurance this season.";
+  }
+
+  // KCC
+  else if (scheme === "kcc") {
+    if (land > 0) {
+      resultBox.classList.add("success");
+      resultBox.innerHTML =
+        "✅ <b>Eligible for Kisan Credit Card</b><br>You can apply for agricultural credit.";
+    } else {
+      resultBox.classList.add("error");
+      resultBox.innerHTML =
+        "❌ <b>Not Eligible</b><br>Valid landholding is required for KCC.";
+    }
+  }
+});
+
+</script>
+
+</body>
+</html>
+
+

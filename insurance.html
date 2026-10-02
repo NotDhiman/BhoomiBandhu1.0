@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Insurance | BhoomiBandhu</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container header-flex">
+
+    <div class="logo">
+      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+      <span>BhoomiBandhu</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="storage.html">Storage</a>
+      <a href="insurance.html">Insurance</a>
+      <a href="schemes.html">Schemes</a>
+      <a href="financial.html">Financial</a>
+      <a href="ai-crop-predictor.html">AI Crop</a>
+      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
+      <a href="gemini-advisor.html">💬 AI Chat</a>
+      <a href="mental-health.html">Mental Health</a>
+      <a href="#" onclick="toggleTheme()">🌙</a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero-secondary animate-hero insurance-hero">
+  <h1>Crop Insurance<br>Support</h1>
+
+  <p class="hero-tagline">
+    Protect your crops against natural risks with government-backed insurance and guided claim support.
+  </p>
+</section>
+
+
+<!-- ===== INTRO ===== -->
+<section class="section container">
+  <h2>Why Crop Insurance Matters</h2>
+  <p style="max-width:900px;margin:auto;color:#4f6f57;line-height:1.8">
+    Crop losses due to droughts, floods, pests, and unpredictable weather
+    can severely impact farmers’ income. Crop insurance provides financial
+    protection and stability by covering losses and ensuring farmers can
+    recover and continue farming without falling into debt.
+  </p>
+</section>
+
+<!-- ===== INSURANCE SERVICES ===== -->
+<section class="section container">
+  <h2>Our Insurance Support Services</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <a href="pmfby-enrollment.html" class="card"><h3>PMFBY Enrollment</h3></a>
+      <p>
+        Assistance in enrolling under Pradhan Mantri Fasal Bima Yojana (PMFBY)
+        with correct crop and land details.
+      </p>
+    </div>
+
+    <div class="card">
+      <a href="risk-awareness.html" class="card"><h3>Risk Awareness</h3></a>
+      <p>
+        Information on weather-related risks and how insurance coverage
+        protects against them.
+      </p>
+    </div>
+
+    <div class="card">
+      <a href="claim-filing.html" class="card"><h3>Claim Filing Support</h3></a>
+      <p>
+        Step-by-step guidance to file insurance claims accurately and on time.
+      </p>
+    </div>
+
+    <div class="card">
+      <a href="status-tracking.html" class="card"><h3>Status Tracking</h3></a>
+      <p>
+        Help in tracking claim status and resolving delays or issues.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== APPLY / CLAIM FORM ===== -->
+<section class="section container">
+  <h2>Apply for Crop Insurance / Claim Support</h2>
+
+  <div class="card">
+    <form id="insuranceForm">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <input type="text" id="farmerName" placeholder="Farmer Name" required>
+        <input type="text" id="district" placeholder="District / Location" required>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+        <input type="text" id="crop" placeholder="Crop Name" required>
+        <select id="requestType" required>
+          <option value="">Select Request Type</option>
+          <option>New Insurance Enrollment</option>
+          <option>Crop Loss Claim</option>
+        </select>
+      </div>
+
+      <textarea
+        id="issue"
+        placeholder="Describe crop loss or insurance requirement"
+        style="margin-top:16px"
+        required></textarea>
+
+      <button type="submit" class="btn">Submit Request</button>
+
+      <p id="insuranceMessage" style="margin-top:16px;font-weight:500"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  © 2025 BhoomiBandhu. All rights reserved.
+</footer>
+
+<!-- ===== JS ===== -->
+<script src="script.js"></script>
+
+<script>
+  const insuranceForm = document.getElementById("insuranceForm");
+  const insuranceMessage = document.getElementById("insuranceMessage");
+
+  insuranceForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("farmerName").value;
+    const type = document.getElementById("requestType").value;
+
+    insuranceMessage.style.color = "#1b5e20";
+    insuranceMessage.innerText =
+      "Thank you " + name +
+      ". Your request for '" + type +
+      "' has been submitted successfully. Our team will contact you soon.";
+
+    insuranceForm.reset();
+  });
+</script>
+
+</body>
+</html>
+

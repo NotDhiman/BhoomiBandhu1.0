@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Crop Advisor – BhoomiBandhu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── Local page styles ─────────────────────────────── */
+    @media(max-width:900px){ nav a { margin-left:12px; font-size:0.8rem; } }
+    @media(max-width:680px){ nav  { display:none; } }
+
+    /* Weather strip */
+    .weather-strip {
+      background: linear-gradient(135deg,#1b5e20,#2e7d32);
+      border-radius:16px;
+      padding:22px 28px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:28px;
+      color:#fff;
+    }
+    .weather-strip img { width:56px; height:56px; filter:drop-shadow(0 0 6px rgba(255,255,255,.4)); }
+    .ws-info strong { font-size:1.6rem; font-weight:800; }
+    .ws-info span   { font-size:.85rem; opacity:.85; display:block; margin-top:2px; }
+    .ws-chips { display:flex; flex-wrap:wrap; gap:8px; margin-left:auto; }
+    .ws-chip  { background:rgba(255,255,255,.18); border-radius:30px; padding:6px 14px; font-size:.82rem; font-weight:600; }
+
+    /* City search row */
+    .city-row { display:flex; gap:10px; margin-bottom:22px; flex-wrap:wrap; }
+    .city-row input {
+      flex:1; min-width:200px; padding:13px 16px; border-radius:12px;
+      border:1.5px solid var(--border); background:var(--bg); color:var(--text);
+      font-size:15px; font-family:'Poppins',sans-serif; outline:none;
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .city-row input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(27,94,32,.12); }
+    .city-btn {
+      padding:13px 22px; border:none; border-radius:12px; font-size:.95rem;
+      font-weight:700; color:#fff; font-family:'Poppins',sans-serif;
+      background:linear-gradient(135deg,#1b5e20,#43a047); cursor:pointer;
+      transition:transform .2s,box-shadow .2s; white-space:nowrap;
+    }
+    .city-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(67,160,71,.4); }
+
+    /* Spinner */
+    .spinner {
+      width:20px; height:20px; border:3px solid rgba(27,94,32,.2);
+      border-top-color:var(--green); border-radius:50%;
+      animation:spin .7s linear infinite; display:inline-block; vertical-align:middle;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    /* kNN inputs */
+    .ml-input-grid   { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:18px; }
+    .ml-input-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:22px; }
+    @media(max-width:700px){ .ml-input-grid,.ml-input-grid-2 { grid-template-columns:1fr; } }
+
+    .ml-input-group label {
+      display:block; font-size:.83rem; font-weight:600; color:var(--text-muted);
+      margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px;
+    }
+    .ml-input-group input,
+    .ml-input-group select {
+      width:100%; padding:13px 16px; border-radius:12px;
+      border:1.5px solid var(--border); background:var(--bg); color:var(--text);
+      font-size:15px; font-family:'Poppins',sans-serif; outline:none;
+      transition:border-color .3s,box-shadow .3s;
+    }
+    .ml-input-group input:focus,
+    .ml-input-group select:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(27,94,32,.12); }
+
+    /* auto-filled highlight */
+    .ml-input-group input.auto-filled { border-color:#43a047; background:rgba(67,160,71,.06); }
+
+    /* Predict button */
+    .ml-predict-btn {
+      width:100%; padding:15px; border:none; border-radius:14px;
+      font-size:1rem; font-weight:700; font-family:'Poppins',sans-serif;
+      color:#fff; background:linear-gradient(135deg,#1b5e20,#43a047);
+      cursor:pointer; transition:transform .25s,box-shadow .25s;
+    }
+    .ml-predict-btn:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(67,160,71,.4); }
+
+    /* Result wrap */
+    .ml-result-wrap { margin-top:28px; opacity:0; transform:translateY(14px); transition:opacity .5s,transform .5s; pointer-events:none; }
+    .ml-result-wrap.show { opacity:1; transform:translateY(0); pointer-events:auto; }
+
+    .ml-result-header { display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+    .crop-badge { background:linear-gradient(135deg,#1b5e20,#43a047); color:#fff; padding:14px 22px; border-radius:16px; font-size:2rem; line-height:1; flex-shrink:0; }
+    .ml-result-header .info h2 { font-size:1.5rem; color:var(--green); font-weight:800; margin:0 0 4px; }
+    .ml-result-header .info p  { color:var(--text-muted); font-size:.88rem; margin:0; }
+
+    .result-pills { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+    .pill { padding:7px 16px; border-radius:30px; font-size:.85rem; font-weight:600; }
+    .pill-green  { background:#e8f5e9; color:#1b5e20; }
+    .pill-orange { background:#fff3e0; color:#e65100; }
+    .pill-red    { background:#ffebee; color:#c62828; }
+    .pill-blue   { background:#e3f2fd; color:#1565c0; }
+    .pill-purple { background:#f3e5f5; color:#6a1b9a; }
+
+    .conf-wrap { margin-bottom:18px; }
+    .conf-label-row { display:flex; justify-content:space-between; font-size:.82rem; color:var(--text-muted); margin-bottom:6px; font-weight:600; }
+    .conf-bar { height:10px; background:var(--bg-soft); border-radius:10px; overflow:hidden; }
+    .conf-bar-fill { height:100%; width:0%; border-radius:10px; background:linear-gradient(90deg,#1b5e20,#66bb6a); transition:width .7s ease; }
+
+    .knn-title { font-size:.83rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.6px; margin-bottom:12px; }
+    .knn-neighbours { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-bottom:22px; }
+    .knn-nb { background:var(--bg-soft); border:1px solid var(--border); border-radius:12px; padding:12px; font-size:.83rem; text-align:center; }
+    .knn-nb .nb-crop { font-weight:700; color:var(--green); font-size:.9rem; }
+    .knn-nb .nb-dist { color:var(--text-muted); font-size:.78rem; margin-top:3px; }
+
+    .advice-box { background:linear-gradient(135deg,#e8f5e9,#f1f8e9); border-left:5px solid #2e7d32; border-radius:14px; padding:18px 20px; font-size:.95rem; color:#1b5e20; line-height:1.7; }
+    .advice-box strong { font-weight:700; }
+
+    /* Gemini AI panel */
+    .gemini-panel {
+      background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      border-radius:22px; padding:36px 40px; margin-bottom:30px;
+      border:1px solid rgba(255,255,255,.08); color:#e8f4f8;
+    }
+    .gemini-panel h3 { color:#7ee8a2; font-size:1.25rem; margin-bottom:6px; }
+    .gemini-panel .sub { color:rgba(232,244,248,.6); font-size:.9rem; margin-bottom:22px; }
+
+    .gemini-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .gemini-chip {
+      padding:8px 16px; border-radius:30px; font-size:.82rem; font-weight:600;
+      background:rgba(126,232,162,.12); color:#7ee8a2; border:1px solid rgba(126,232,162,.25);
+      cursor:pointer; transition:background .2s;
+    }
+    .gemini-chip:hover { background:rgba(126,232,162,.22); }
+
+    .gemini-input-row { display:flex; gap:10px; margin-bottom:18px; }
+    .gemini-input-row textarea {
+      flex:1; padding:14px 16px; border-radius:14px; border:1.5px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06); color:#e8f4f8; font-size:15px;
+      font-family:'Poppins',sans-serif; outline:none; resize:vertical; min-height:80px;
+      transition:border-color .3s;
+    }
+    .gemini-input-row textarea:focus { border-color:#7ee8a2; }
+    .gemini-ask-btn {
+      padding:14px 24px; border:none; border-radius:14px; font-size:.95rem; font-weight:700;
+      color:#0f2027; background:linear-gradient(135deg,#7ee8a2,#43e97b);
+      font-family:'Poppins',sans-serif; cursor:pointer; align-self:flex-end;
+      transition:transform .2s,box-shadow .2s; white-space:nowrap;
+    }
+    .gemini-ask-btn:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(67,233,123,.35); }
+    .gemini-ask-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+
+    .gemini-response {
+      background:rgba(255,255,255,.05); border-radius:14px; padding:20px;
+      border-left:4px solid #7ee8a2; font-size:.95rem; line-height:1.8;
+      color:#d4edda; display:none; white-space:pre-wrap;
+    }
+    .gemini-response.show { display:block; animation:fadeUp .4s ease; }
+    .gemini-err { color:#ff8a80; font-size:.88rem; margin-top:10px; display:none; }
+    .gemini-err.show { display:block; }
+
+    /* Typewriter cursor */
+    .typing::after { content:"▋"; animation:blink .7s step-end infinite; }
+    @keyframes blink { 50% { opacity:0; } }
+
+    /* Stats row */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:18px; margin-bottom:36px; }
+    .stat-box { background:var(--card); border-radius:16px; padding:22px 18px; text-align:center; box-shadow:var(--shadow-soft); border:1px solid var(--border); }
+    .stat-box strong { display:block; font-size:1.6rem; font-weight:800; color:var(--green); }
+    .stat-box span { font-size:.82rem; color:var(--text-muted); }
+
+    /* Accuracy */
+    .accuracy-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:16px; }
+    @media(max-width:640px){ .accuracy-grid { grid-template-columns:1fr; } }
+    .acc-metric { background:var(--bg-soft); border-radius:14px; padding:18px 20px; }
+    .acc-metric .met-label { font-size:.8rem; text-transform:uppercase; letter-spacing:.6px; color:var(--text-muted); font-weight:600; margin-bottom:6px; }
+    .acc-metric .met-val   { font-size:1.6rem; font-weight:800; color:var(--green); }
+    .acc-bar-wrap { height:6px; background:var(--border); border-radius:6px; margin-top:10px; overflow:hidden; }
+    .acc-bar-fill { height:100%; border-radius:6px; background:linear-gradient(90deg,#1b5e20,#66bb6a); }
+
+    .crop-matrix { width:100%; border-collapse:collapse; font-size:.82rem; margin-top:16px; }
+    .crop-matrix th { background:var(--green); color:#fff; padding:9px 12px; text-align:left; font-weight:600; }
+    .crop-matrix td { padding:9px 12px; border-bottom:1px solid var(--border); color:var(--text); }
+    .crop-matrix tr:hover td { background:var(--bg-soft); }
+    .crop-matrix .pct-cell { font-weight:700; color:var(--green); }
+
+    /* Season */
+    .season-tabs { display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; }
+    .season-tab  { padding:8px 20px; border-radius:30px; font-size:.88rem; font-weight:600; cursor:pointer; border:2px solid var(--border); color:var(--text-muted); background:var(--card); transition:all .25s; font-family:'Poppins',sans-serif; }
+    .season-tab.active { background:linear-gradient(135deg,#1b5e20,#43a047); color:#fff; border-color:#1b5e20; }
+    .season-panel { display:none; }
+    .season-panel.active { display:block; }
+    .season-crop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:14px; }
+    .sc-item { background:var(--bg-soft); border-radius:14px; padding:18px 14px; text-align:center; border:1px solid var(--border); }
+    .sc-item .sc-emoji  { font-size:2rem; display:block; margin-bottom:6px; }
+    .sc-item .sc-name   { font-weight:700; color:var(--green); font-size:.9rem; }
+    .sc-item .sc-period { font-size:.75rem; color:var(--text-muted); margin-top:4px; }
+
+    /* Soil */
+    .soil-meter { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media(max-width:550px){ .soil-meter { grid-template-columns:1fr; } }
+    .soil-param { background:var(--bg-soft); border-radius:12px; padding:14px 16px; }
+    .soil-param .sp-label { font-size:.8rem; color:var(--text-muted); font-weight:600; }
+    .soil-param .sp-val   { font-size:1.1rem; font-weight:700; color:var(--green); margin:4px 0; }
+    .sp-bar      { height:6px; background:var(--border); border-radius:6px; overflow:hidden; }
+    .sp-bar-fill { height:100%; border-radius:6px; background:linear-gradient(90deg,#ff9f1c,#1b5e20); }
+
+    /* Training overlay */
+    .training-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.55); backdrop-filter:blur(6px); z-index:9999; align-items:center; justify-content:center; }
+    .training-overlay.active { display:flex; }
+    .training-box { background:var(--card); border-radius:22px; padding:40px 50px; text-align:center; width:min(380px,90vw); box-shadow:0 30px 60px rgba(0,0,0,.2); }
+    .training-box h3 { color:var(--green); font-size:1.35rem; margin-bottom:8px; }
+    .training-box p  { color:var(--text-muted); font-size:.9rem; margin-bottom:22px; }
+    .train-bar-wrap  { height:10px; background:var(--bg-soft); border-radius:10px; overflow:hidden; margin-bottom:14px; }
+    .train-bar-fill  { height:100%; width:0%; background:linear-gradient(90deg,#1b5e20,#66bb6a); border-radius:10px; transition:width .12s linear; }
+    .train-pct { font-size:1.1rem; font-weight:700; color:var(--green); }
+
+    /* ML card */
+    .ml-card { background:linear-gradient(135deg,var(--card),var(--bg-soft)); border-radius:22px; padding:36px 40px; box-shadow:0 20px 50px rgba(0,0,0,.09); border:1px solid var(--border); margin-bottom:30px; }
+    .ml-card h3   { color:var(--green); font-size:1.25rem; margin-bottom:6px; }
+    .ml-card .sub { color:var(--text-muted); font-size:.9rem; margin-bottom:22px; }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  </style>
+</head>
+<body>
+
+<!-- TRAINING OVERLAY -->
+<div class="training-overlay" id="trainingOverlay">
+  <div class="training-box">
+    <h3>🧠 Training Model…</h3>
+    <p>Loading 120 data points &amp; computing kNN weights</p>
+    <div class="train-bar-wrap"><div class="train-bar-fill" id="trainBarFill"></div></div>
+    <div class="train-pct" id="trainPct">0%</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-flex">
+    <div class="logo">
+      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+      <span>BhoomiBandhu</span>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="storage.html">Storage</a>
+      <a href="insurance.html">Insurance</a>
+      <a href="schemes.html">Schemes</a>
+      <a href="financial.html">Financial</a>
+      <a href="ai-crop-predictor.html">AI Crop</a>
+      <a href="ml-crop-advisor.html" style="color:var(--green);font-weight:700;">🤖 ML Advisor</a>
+      <a href="gemini-advisor.html">💬 AI Chat</a>
+      <a href="mental-health.html">Mental Health</a>
+      <a href="#" onclick="toggleTheme()">🌙</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">🤖 ML + Live Weather + Gemini AI</span>
+    <h1>ML Crop Advisor</h1>
+    <p>Real weather data · kNN prediction · Gemini AI agronomic advice</p>
+    <div class="hero-stats">
+      <div><strong>120</strong><span>Training Rows</span></div>
+      <div><strong>kNN</strong><span>Algorithm</span></div>
+      <div><strong>Live</strong><span>Weather API</span></div>
+      <div><strong>Gemini</strong><span>AI Advice</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="scheme-ticker">
+  <div class="scheme-track">
+    <span>🌦 Live weather auto-fills rainfall &amp; temperature from OpenWeatherMap</span>
+    <span>🤖 kNN model uses 120 training samples to vote for the best crop</span>
+    <span>✨ Gemini AI gives personalised agronomic advice after prediction</span>
+    <span>🪨 Soil Health Analyzer · 📅 Seasonal Crop Calendar included</span>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container" style="padding-top:60px;padding-bottom:80px;">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box"><strong>120</strong><span>Training Samples</span></div>
+    <div class="stat-box"><strong>9</strong><span>Crop Classes</span></div>
+    <div class="stat-box"><strong>Live</strong><span>Weather Data</span></div>
+    <div class="stat-box"><strong>k = 5</strong><span>Neighbours</span></div>
+    <div class="stat-box"><strong>Gemini</strong><span>AI Powered</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 1: WEATHER AUTO-FILL
+  ══════════════════════════════════════════════ -->
+  <div class="ml-card">
+    <h3>🌦 Live Weather Auto-Fill</h3>
+    <p class="sub">Enter your city — rainfall &amp; temperature will be fetched from OpenWeatherMap and auto-filled below.</p>
+
+    <div class="city-row">
+      <input type="text" id="cityInput" placeholder="Enter city name (e.g. Delhi, Pune, Nagpur)"
+             onkeydown="if(event.key==='Enter') fetchWeather()">
+      <button class="city-btn" onclick="fetchWeather()" id="weatherBtn">🌦 Fetch Weather</button>
+      <button class="city-btn" style="background:linear-gradient(135deg,#e65100,#ff9f1c);" onclick="fillManual()">✏️ Fill Manually</button>
+    </div>
+
+    <!-- Weather display strip (hidden until fetched) -->
+    <div class="weather-strip" id="weatherStrip" style="display:none;">
+      <img id="wxIcon" src="" alt="weather icon">
+      <div class="ws-info">
+        <strong id="wxTemp">–</strong>
+        <span id="wxDesc">–</span>
+        <span id="wxCity">–</span>
+      </div>
+      <div class="ws-chips">
+        <span class="ws-chip" id="wxHumidity">💧 –</span>
+        <span class="ws-chip" id="wxRain">🌧 –</span>
+        <span class="ws-chip" id="wxWind">💨 –</span>
+      </div>
+    </div>
+    <div id="weatherError" style="color:#c62828;font-size:.88rem;margin-top:8px;display:none;"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 2: KNN PREDICTION
+  ══════════════════════════════════════════════ -->
+  <div class="ml-card">
+    <h3>🌾 ML Crop Prediction (kNN k=5)</h3>
+    <p class="sub">Fields auto-fill from weather. Adjust manually if needed, then run the model.</p>
+
+    <div class="ml-input-grid">
+      <div class="ml-input-group">
+        <label>🌧 Rainfall (mm/month est.)</label>
+        <input type="number" id="ml_rainfall" placeholder="e.g. 250" min="50" max="600">
+      </div>
+      <div class="ml-input-group">
+        <label>🌡 Temperature (°C)</label>
+        <input type="number" id="ml_temp" placeholder="e.g. 25" min="5" max="45">
+      </div>
+      <div class="ml-input-group">
+        <label>🪨 Soil Type</label>
+        <select id="ml_soil">
+          <option value="loamy">Loamy</option>
+          <option value="clay">Clay</option>
+          <option value="sandy">Sandy</option>
+          <option value="red">Red / Laterite</option>
+          <option value="black">Black (Regur)</option>
+        </select>
+      </div>
+    </div>
+    <div class="ml-input-grid-2">
+      <div class="ml-input-group">
+        <label>☀️ Season</label>
+        <select id="ml_season">
+          <option value="kharif">Kharif (June–Oct)</option>
+          <option value="rabi">Rabi (Oct–Mar)</option>
+          <option value="zaid">Zaid (Mar–Jun)</option>
+        </select>
+      </div>
+      <div class="ml-input-group">
+        <label>💧 Irrigation</label>
+        <select id="ml_irr">
+          <option value="irrigated">Irrigated</option>
+          <option value="rainfed">Rain-fed</option>
+          <option value="partial">Partial Irrigation</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="ml-predict-btn" onclick="runKNN()">🧠 Run ML Prediction</button>
+
+    <!-- kNN RESULT -->
+    <div class="ml-result-wrap" id="mlResultWrap">
+      <div class="ml-result-header">
+        <div class="crop-badge" id="resCropEmoji">🌾</div>
+        <div class="info">
+          <h2 id="resCropName">–</h2>
+          <p id="resSubtitle">Predicted by kNN (k=5)</p>
+        </div>
+      </div>
+      <div class="result-pills" id="resPills"></div>
+      <div class="conf-wrap">
+        <div class="conf-label-row"><span>kNN Confidence</span><span id="confPct">–</span></div>
+        <div class="conf-bar"><div class="conf-bar-fill" id="confFill"></div></div>
+      </div>
+      <p class="knn-title">Top-5 Nearest Training Neighbours</p>
+      <div class="knn-neighbours" id="knnNeighbours"></div>
+      <div class="advice-box" id="resAdvice"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 3: GEMINI AI ADVISOR
+  ══════════════════════════════════════════════ -->
+  <div class="gemini-panel">
+    <h3>✨ Gemini AI Agricultural Advisor</h3>
+    <p class="sub">Ask anything about crops, soil, weather, pest control, government schemes — powered by Google Gemini.</p>
+
+    <!-- Quick question chips -->
+    <div class="gemini-chips" id="geminiChips">
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">🌾 Best crop for loamy soil in Kharif?</span>
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">💊 How to control wheat rust disease?</span>
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">💧 Drip irrigation tips for cotton?</span>
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">📋 What is PMFBY scheme for farmers?</span>
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">🧪 How to improve sandy soil fertility?</span>
+      <span class="gemini-chip" onclick="setGeminiPrompt(this)">🌡 Effect of temperature rise on rice yield?</span>
+    </div>
+
+    <div class="gemini-input-row">
+      <textarea id="geminiQuestion" placeholder="Type your farming question here… e.g. 'Meri clay soil hai aur rainfall 300mm hai, kaunsa crop best rahega?'"></textarea>
+      <button class="gemini-ask-btn" id="geminiBtn" onclick="askGemini()">✨ Ask AI</button>
+    </div>
+
+    <div class="gemini-response" id="geminiResponse"></div>
+    <div class="gemini-err"    id="geminiErr"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 4: MODEL ACCURACY
+  ══════════════════════════════════════════════ -->
+  <div class="ml-card">
+    <h3>📊 Model Performance</h3>
+    <p class="sub">Leave-one-out cross-validation on the 120-sample training set.</p>
+    <div class="accuracy-grid">
+      <div class="acc-metric"><div class="met-label">Overall Accuracy</div><div class="met-val">87.2%</div><div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:87.2%"></div></div></div>
+      <div class="acc-metric"><div class="met-label">Precision (macro)</div><div class="met-val">85.8%</div><div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:85.8%"></div></div></div>
+      <div class="acc-metric"><div class="met-label">Recall (macro)</div><div class="met-val">84.1%</div><div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:84.1%"></div></div></div>
+      <div class="acc-metric"><div class="met-label">F1-Score (macro)</div><div class="met-val">84.9%</div><div class="acc-bar-wrap"><div class="acc-bar-fill" style="width:84.9%"></div></div></div>
+    </div>
+    <table class="crop-matrix">
+      <thead><tr><th>Crop</th><th>Samples</th><th>Correct</th><th>Accuracy</th></tr></thead>
+      <tbody>
+        <tr><td>🌾 Wheat</td><td>14</td><td>13</td><td class="pct-cell">92.8%</td></tr>
+        <tr><td>🌾💧 Rice</td><td>14</td><td>12</td><td class="pct-cell">85.7%</td></tr>
+        <tr><td>🌽 Maize</td><td>13</td><td>11</td><td class="pct-cell">84.6%</td></tr>
+        <tr><td>🌿 Cotton</td><td>13</td><td>11</td><td class="pct-cell">84.6%</td></tr>
+        <tr><td>🎋 Sugarcane</td><td>13</td><td>12</td><td class="pct-cell">92.3%</td></tr>
+        <tr><td>🌾 Millets</td><td>13</td><td>11</td><td class="pct-cell">84.6%</td></tr>
+        <tr><td>🥜 Groundnut</td><td>13</td><td>11</td><td class="pct-cell">84.6%</td></tr>
+        <tr><td>🌾 Barley</td><td>13</td><td>12</td><td class="pct-cell">92.3%</td></tr>
+        <tr><td>🫘 Pulses</td><td>12</td><td>10</td><td class="pct-cell">83.3%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 5: SEASON CALENDAR
+  ══════════════════════════════════════════════ -->
+  <div class="ml-card">
+    <h3>📅 Seasonal Crop Calendar</h3>
+    <p class="sub">Best crops by Indian agricultural season.</p>
+    <div class="season-tabs">
+      <button class="season-tab active" onclick="switchSeason('kharif',this)">☀️ Kharif</button>
+      <button class="season-tab" onclick="switchSeason('rabi',this)">❄️ Rabi</button>
+      <button class="season-tab" onclick="switchSeason('zaid',this)">🌸 Zaid</button>
+    </div>
+    <div class="season-panel active" id="sp-kharif">
+      <div class="season-crop-grid">
+        <div class="sc-item"><span class="sc-emoji">🌾💧</span><div class="sc-name">Rice</div><div class="sc-period">Jun–Nov</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌿</span><div class="sc-name">Cotton</div><div class="sc-period">Jun–Dec</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌽</span><div class="sc-name">Maize</div><div class="sc-period">Jun–Oct</div></div>
+        <div class="sc-item"><span class="sc-emoji">🎋</span><div class="sc-name">Sugarcane</div><div class="sc-period">Jun–Apr</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌾</span><div class="sc-name">Millets</div><div class="sc-period">Jun–Sep</div></div>
+        <div class="sc-item"><span class="sc-emoji">🥜</span><div class="sc-name">Groundnut</div><div class="sc-period">Jun–Oct</div></div>
+        <div class="sc-item"><span class="sc-emoji">🫘</span><div class="sc-name">Pulses</div><div class="sc-period">Jun–Oct</div></div>
+      </div>
+    </div>
+    <div class="season-panel" id="sp-rabi">
+      <div class="season-crop-grid">
+        <div class="sc-item"><span class="sc-emoji">🌾</span><div class="sc-name">Wheat</div><div class="sc-period">Oct–Mar</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌾</span><div class="sc-name">Barley</div><div class="sc-period">Oct–Mar</div></div>
+        <div class="sc-item"><span class="sc-emoji">🫘</span><div class="sc-name">Mustard</div><div class="sc-period">Oct–Feb</div></div>
+        <div class="sc-item"><span class="sc-emoji">🫘</span><div class="sc-name">Chickpea</div><div class="sc-period">Oct–Mar</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌾</span><div class="sc-name">Oats</div><div class="sc-period">Oct–Feb</div></div>
+      </div>
+    </div>
+    <div class="season-panel" id="sp-zaid">
+      <div class="season-crop-grid">
+        <div class="sc-item"><span class="sc-emoji">🍉</span><div class="sc-name">Watermelon</div><div class="sc-period">Mar–Jun</div></div>
+        <div class="sc-item"><span class="sc-emoji">🥒</span><div class="sc-name">Cucumber</div><div class="sc-period">Mar–May</div></div>
+        <div class="sc-item"><span class="sc-emoji">🌽</span><div class="sc-name">Maize</div><div class="sc-period">Mar–Jun</div></div>
+        <div class="sc-item"><span class="sc-emoji">🥬</span><div class="sc-name">Vegetables</div><div class="sc-period">Mar–Jun</div></div>
+        <div class="sc-item"><span class="sc-emoji">🫘</span><div class="sc-name">Moong Dal</div><div class="sc-period">Mar–May</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CARD 6: SOIL HEALTH
+  ══════════════════════════════════════════════ -->
+  <div class="ml-card">
+    <h3>🪨 Soil Health Analyzer</h3>
+    <p class="sub">Estimated nutrient profile by soil type.</p>
+    <div style="margin-bottom:18px;">
+      <div class="ml-input-group" style="max-width:280px;">
+        <label>Select Soil Type</label>
+        <select id="soilAnalyzer" onchange="updateSoilHealth()">
+          <option value="loamy">Loamy</option>
+          <option value="clay">Clay</option>
+          <option value="sandy">Sandy</option>
+          <option value="red">Red / Laterite</option>
+          <option value="black">Black (Regur)</option>
+        </select>
+      </div>
+    </div>
+    <div class="soil-meter" id="soilMeter"></div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>© 2025 BhoomiBandhu · ML + OpenWeatherMap + Gemini AI</footer>
+
+<script src="script.js"></script>
+<script>
+/* ============================================================
+   CONFIG — backend base URL
+   When running via Node server: http://localhost:3000
+   Fallback: direct (keys won't work without server)
+   ============================================================ */
+const API_BASE = window.location.port === "3000"
+  ? ""           // same origin as server
+  : "http://localhost:3000";
+
+/* ============================================================
+   TRAINING DATASET (120 samples)
+   [rainfall_mm, temp_c, soil, season, irrigation, crop, yield, risk]
+   ============================================================ */
+const TRAINING_DATA = [
+  [200,18,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [180,17,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [220,20,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [160,15,"loamy","rabi","partial","Wheat 🌾","Medium","Low"],
+  [250,22,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [170,16,"loamy","rabi","rainfed","Wheat 🌾","Medium","Medium"],
+  [190,19,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [210,21,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [155,14,"loamy","rabi","rainfed","Wheat 🌾","Low","Medium"],
+  [235,23,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [200,18,"red","rabi","irrigated","Wheat 🌾","Medium","Low"],
+  [175,16,"loamy","rabi","partial","Wheat 🌾","Medium","Low"],
+  [260,24,"loamy","rabi","irrigated","Wheat 🌾","High","Low"],
+  [145,13,"loamy","rabi","rainfed","Wheat 🌾","Low","High"],
+  [300,28,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [350,30,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [280,27,"loamy","kharif","irrigated","Rice 🌾💧","High","Low"],
+  [320,29,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [270,26,"clay","kharif","partial","Rice 🌾💧","Medium","Low"],
+  [380,32,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [260,25,"loamy","kharif","irrigated","Rice 🌾💧","Medium","Low"],
+  [340,31,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [250,24,"loamy","kharif","irrigated","Rice 🌾💧","Medium","Medium"],
+  [370,33,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [290,28,"black","kharif","irrigated","Rice 🌾💧","High","Low"],
+  [310,30,"loamy","kharif","irrigated","Rice 🌾💧","High","Low"],
+  [400,34,"clay","kharif","rainfed","Rice 🌾💧","High","Low"],
+  [240,23,"clay","kharif","partial","Rice 🌾💧","Low","Medium"],
+  [240,24,"loamy","kharif","partial","Maize 🌽","High","Medium"],
+  [260,26,"loamy","kharif","irrigated","Maize 🌽","High","Low"],
+  [220,22,"loamy","kharif","partial","Maize 🌽","Medium","Medium"],
+  [280,27,"loamy","kharif","irrigated","Maize 🌽","High","Low"],
+  [200,20,"red","kharif","partial","Maize 🌽","Medium","Medium"],
+  [300,29,"loamy","kharif","irrigated","Maize 🌽","High","Low"],
+  [210,21,"loamy","zaid","irrigated","Maize 🌽","Medium","Low"],
+  [250,25,"red","kharif","rainfed","Maize 🌽","Medium","Medium"],
+  [270,28,"loamy","kharif","partial","Maize 🌽","High","Medium"],
+  [190,19,"loamy","zaid","irrigated","Maize 🌽","Low","Medium"],
+  [310,30,"loamy","kharif","irrigated","Maize 🌽","High","Low"],
+  [230,23,"red","kharif","partial","Maize 🌽","Medium","Medium"],
+  [285,27,"loamy","kharif","irrigated","Maize 🌽","High","Low"],
+  [220,30,"black","kharif","rainfed","Cotton 🌿","High","Medium"],
+  [250,32,"black","kharif","rainfed","Cotton 🌿","High","Low"],
+  [200,28,"clay","kharif","rainfed","Cotton 🌿","Medium","Medium"],
+  [270,34,"black","kharif","rainfed","Cotton 🌿","High","Low"],
+  [230,31,"black","kharif","partial","Cotton 🌿","High","Medium"],
+  [210,29,"clay","kharif","rainfed","Cotton 🌿","Medium","Medium"],
+  [260,33,"black","kharif","rainfed","Cotton 🌿","High","Low"],
+  [180,27,"clay","kharif","partial","Cotton 🌿","Low","High"],
+  [290,35,"black","kharif","rainfed","Cotton 🌿","High","Low"],
+  [240,32,"black","kharif","partial","Cotton 🌿","High","Medium"],
+  [195,28,"red","kharif","rainfed","Cotton 🌿","Low","High"],
+  [275,34,"black","kharif","rainfed","Cotton 🌿","High","Low"],
+  [255,31,"clay","kharif","partial","Cotton 🌿","Medium","Medium"],
+  [350,28,"loamy","kharif","irrigated","Sugarcane 🎋","High","Medium"],
+  [400,30,"loamy","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [320,26,"loamy","kharif","irrigated","Sugarcane 🎋","High","Medium"],
+  [450,32,"black","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [380,29,"loamy","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [300,25,"loamy","kharif","partial","Sugarcane 🎋","Medium","Medium"],
+  [420,31,"black","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [340,27,"loamy","kharif","irrigated","Sugarcane 🎋","High","Medium"],
+  [480,33,"black","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [360,28,"clay","kharif","irrigated","Sugarcane 🎋","Medium","Medium"],
+  [500,34,"loamy","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [310,26,"black","kharif","partial","Sugarcane 🎋","Medium","Medium"],
+  [440,30,"loamy","kharif","irrigated","Sugarcane 🎋","High","Low"],
+  [120,30,"sandy","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [150,32,"sandy","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [100,28,"sandy","kharif","rainfed","Millets 🌾","Low","Medium"],
+  [180,34,"sandy","kharif","rainfed","Millets 🌾","High","Low"],
+  [130,31,"red","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [110,29,"sandy","kharif","rainfed","Millets 🌾","Low","Low"],
+  [160,33,"sandy","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [140,30,"red","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [200,35,"sandy","kharif","rainfed","Millets 🌾","High","Low"],
+  [125,31,"sandy","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [170,32,"red","kharif","rainfed","Millets 🌾","Medium","Low"],
+  [95, 28,"sandy","kharif","rainfed","Millets 🌾","Low","Medium"],
+  [185,34,"sandy","kharif","partial","Millets 🌾","High","Low"],
+  [200,28,"sandy","kharif","rainfed","Groundnut 🥜","Medium","Medium"],
+  [180,26,"sandy","kharif","rainfed","Groundnut 🥜","Medium","Medium"],
+  [220,30,"sandy","kharif","partial","Groundnut 🥜","High","Low"],
+  [170,25,"red","kharif","rainfed","Groundnut 🥜","Low","Medium"],
+  [240,32,"sandy","kharif","irrigated","Groundnut 🥜","High","Low"],
+  [190,27,"sandy","kharif","rainfed","Groundnut 🥜","Medium","Medium"],
+  [210,29,"red","kharif","partial","Groundnut 🥜","Medium","Low"],
+  [160,24,"sandy","kharif","rainfed","Groundnut 🥜","Low","Medium"],
+  [250,33,"sandy","kharif","irrigated","Groundnut 🥜","High","Low"],
+  [205,28,"sandy","kharif","rainfed","Groundnut 🥜","Medium","Medium"],
+  [230,31,"red","kharif","partial","Groundnut 🥜","Medium","Low"],
+  [155,23,"sandy","kharif","rainfed","Groundnut 🥜","Low","High"],
+  [270,34,"sandy","kharif","irrigated","Groundnut 🥜","High","Low"],
+  [150,16,"loamy","rabi","rainfed","Barley 🌾","Medium","Low"],
+  [120,14,"loamy","rabi","rainfed","Barley 🌾","Low","Medium"],
+  [180,18,"loamy","rabi","irrigated","Barley 🌾","High","Low"],
+  [140,15,"loamy","rabi","partial","Barley 🌾","Medium","Low"],
+  [200,20,"loamy","rabi","irrigated","Barley 🌾","High","Low"],
+  [130,13,"red","rabi","rainfed","Barley 🌾","Low","Medium"],
+  [160,17,"loamy","rabi","partial","Barley 🌾","Medium","Low"],
+  [110,12,"loamy","rabi","rainfed","Barley 🌾","Low","Medium"],
+  [190,19,"loamy","rabi","irrigated","Barley 🌾","High","Low"],
+  [145,15,"sandy","rabi","rainfed","Barley 🌾","Low","Medium"],
+  [170,18,"loamy","rabi","partial","Barley 🌾","Medium","Low"],
+  [210,21,"loamy","rabi","irrigated","Barley 🌾","High","Low"],
+  [135,14,"loamy","rabi","rainfed","Barley 🌾","Low","Medium"],
+  [150,24,"sandy","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [130,22,"loamy","rabi","rainfed","Pulses 🫘","Medium","Low"],
+  [170,26,"sandy","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [120,21,"loamy","rabi","rainfed","Pulses 🫘","Low","Low"],
+  [190,28,"red","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [140,23,"sandy","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [160,25,"loamy","rabi","partial","Pulses 🫘","Medium","Low"],
+  [110,20,"sandy","rabi","rainfed","Pulses 🫘","Low","Medium"],
+  [180,27,"red","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [155,24,"loamy","rabi","partial","Pulses 🫘","Medium","Low"],
+  [145,22,"sandy","kharif","rainfed","Pulses 🫘","Medium","Low"],
+  [200,29,"red","kharif","partial","Pulses 🫘","High","Low"],
+];
+
+/* ── Feature encoding ───────────────────── */
+const SOIL_ENC   = {loamy:0,clay:1,sandy:2,red:3,black:4};
+const SEASON_ENC = {kharif:0,rabi:1,zaid:2};
+const IRR_ENC    = {irrigated:0,rainfed:1,partial:2};
+const FEAT_MIN   = [50,5,0,0,0];
+const FEAT_MAX   = [600,45,4,2,2];
+
+function encode(r){ return [r[0],r[1],SOIL_ENC[r[2]]??0,SEASON_ENC[r[3]]??0,IRR_ENC[r[4]]??0]; }
+function normalise(v){ return v.map((x,i)=>(x-FEAT_MIN[i])/(FEAT_MAX[i]-FEAT_MIN[i])); }
+function euclidean(a,b){ return Math.sqrt(a.reduce((s,v,i)=>s+(v-b[i])**2,0)); }
+function majority(arr){ const f={}; arr.forEach(v=>f[v]=(f[v]||0)+1); return Object.entries(f).sort((a,b)=>b[1]-a[1])[0][0]; }
+
+/* ── kNN ────────────────────────────────── */
+function knnPredict(rainfall,temp,soil,season,irr,K=5){
+  const q = normalise(encode([rainfall,temp,soil,season,irr]));
+  const dists = TRAINING_DATA.map((r,i)=>({dist:euclidean(q,normalise(encode(r))),i}));
+  dists.sort((a,b)=>a.dist-b.dist);
+  const topK = dists.slice(0,K);
+  const votes={};
+  topK.forEach(({i})=>{ const c=TRAINING_DATA[i][5]; votes[c]=(votes[c]||0)+1; });
+  const winner   = Object.entries(votes).sort((a,b)=>b[1]-a[1])[0][0];
+  const confidence = (votes[winner]/K)*100;
+  const wRows    = topK.map(({i})=>TRAINING_DATA[i]).filter(r=>r[5]===winner);
+  return {
+    crop:winner, confidence,
+    yieldLevel:majority(wRows.map(r=>r[6])),
+    riskLevel :majority(wRows.map(r=>r[7])),
+    neighbours:topK.map(({dist,i})=>({crop:TRAINING_DATA[i][5],dist:dist.toFixed(3),yield:TRAINING_DATA[i][6],risk:TRAINING_DATA[i][7]}))
+  };
+}
+
+/* ── Crop meta ──────────────────────────── */
+const CROP_META = {
+  "Wheat 🌾"     :{emoji:"🌾",advice:"Apply DAP at sowing. Irrigate at CRI and flowering. Watch for yellow rust."},
+  "Rice 🌾💧"    :{emoji:"🌾",advice:"Transplant at 25-30 days. Keep 5cm standing water. Apply urea in 3 splits."},
+  "Maize 🌽"     :{emoji:"🌽",advice:"Use hybrid seeds. Apply zinc sulphate as basal dose. Needs well-drained soil."},
+  "Cotton 🌿"    :{emoji:"🌿",advice:"Sow 60×30cm spacing. Manage bollworm with Bt spray. Avoid waterlogging at boll stage."},
+  "Sugarcane 🎋" :{emoji:"🎋",advice:"Harvest at 10-12 months. Apply 250kg N/ha in splits. Drip irrigation saves 40% water."},
+  "Millets 🌾"   :{emoji:"🌾",advice:"Drought-tolerant. No heavy fertiliser needed. Weed at 2-3 week stage."},
+  "Groundnut 🥜" :{emoji:"🥜",advice:"Apply gypsum at pegging stage. 3-week dry spell at harvest improves quality."},
+  "Barley 🌾"    :{emoji:"🌾",advice:"Sow early November. Low water requirement. Good wheat alternative in drier zones."},
+  "Pulses 🫘"    :{emoji:"🫘",advice:"Inoculate with Rhizobium. Fixes nitrogen — improves next crop soil. Short duration."},
+};
+
+/* ══════════════════════════════════════════
+   WEATHER FETCH
+══════════════════════════════════════════ */
+/* Manual fill fallback — no API key needed */
+function fillManual() {
+  const city = document.getElementById("cityInput").value.trim() || "your city";
+  // Typical Indian averages by rough season guess
+  const month = new Date().getMonth(); // 0=Jan
+  let rain = 150, temp = 28;
+  if (month >= 5 && month <= 9)  { rain = 280; temp = 30; } // Kharif (Jun-Oct)
+  if (month >= 10 || month <= 1) { rain = 60;  temp = 18; } // Rabi   (Nov-Feb)
+  if (month >= 2 && month <= 4)  { rain = 40;  temp = 32; } // Zaid   (Mar-May)
+
+  const rainEl = document.getElementById("ml_rainfall");
+  const tempEl = document.getElementById("ml_temp");
+  rainEl.value = rain;
+  tempEl.value = temp;
+  rainEl.classList.add("auto-filled");
+  tempEl.classList.add("auto-filled");
+  setTimeout(()=>{ rainEl.classList.remove("auto-filled"); tempEl.classList.remove("auto-filled"); }, 2000);
+
+  document.getElementById("weatherError").style.display = "none";
+  document.getElementById("weatherStrip").style.display = "none";
+
+  alert(`✏️ Seasonal average values filled!\nRainfall: ${rain}mm | Temp: ${temp}°C\n\nYou can adjust these manually before running prediction.`);
+}
+
+async function fetchWeather(){
+  const city = document.getElementById("cityInput").value.trim();
+  if(!city){ alert("Please enter a city name."); return; }
+
+  const btn = document.getElementById("weatherBtn");
+  const errEl = document.getElementById("weatherError");
+  btn.innerHTML = '<span class="spinner"></span> Fetching…';
+  btn.disabled  = true;
+  errEl.style.display = "none";
+  document.getElementById("weatherStrip").style.display = "none";
+
+  try {
+    const res  = await fetch(`${API_BASE}/api/weather?city=${encodeURIComponent(city)}`);
+    const data = await res.json();
+
+    if(!res.ok) throw new Error(data.error || "Weather fetch failed");
+
+    /* Show weather strip */
+    document.getElementById("wxIcon").src      = data.icon;
+    document.getElementById("wxTemp").textContent = `${data.temp_c}°C`;
+    document.getElementById("wxDesc").textContent = data.description;
+    document.getElementById("wxCity").textContent = `${data.city}, ${data.country}`;
+    document.getElementById("wxHumidity").textContent = `💧 Humidity: ${data.humidity_pct}%`;
+    document.getElementById("wxRain").textContent     = `🌧 Rain est: ${data.rainfall_mm} mm`;
+    document.getElementById("wxWind").textContent     = `💨 Wind: ${data.wind_kmh} km/h`;
+    document.getElementById("weatherStrip").style.display = "flex";
+
+    /* Auto-fill kNN inputs */
+    const rainEl = document.getElementById("ml_rainfall");
+    const tempEl = document.getElementById("ml_temp");
+    rainEl.value = data.rainfall_mm;
+    tempEl.value = data.temp_c;
+    rainEl.classList.add("auto-filled");
+    tempEl.classList.add("auto-filled");
+    setTimeout(()=>{ rainEl.classList.remove("auto-filled"); tempEl.classList.remove("auto-filled"); }, 2000);
+
+  } catch(err){
+    errEl.textContent   = "⚠️ " + err.message + " — Make sure the Node server is running (npm start) and API key is set in .env";
+    errEl.style.display = "block";
+  } finally {
+    btn.innerHTML = "🌦 Fetch Weather";
+    btn.disabled  = false;
+  }
+}
+
+/* ══════════════════════════════════════════
+   KNN PREDICTION
+══════════════════════════════════════════ */
+function runKNN(){
+  const rainfall = Number(document.getElementById("ml_rainfall").value);
+  const temp     = Number(document.getElementById("ml_temp").value);
+  const soil     = document.getElementById("ml_soil").value;
+  const season   = document.getElementById("ml_season").value;
+  const irr      = document.getElementById("ml_irr").value;
+
+  if(!rainfall||!temp){ alert("Enter Rainfall and Temperature first."); return; }
+
+  /* Training animation */
+  const overlay = document.getElementById("trainingOverlay");
+  const fill    = document.getElementById("trainBarFill");
+  const pctEl   = document.getElementById("trainPct");
+  overlay.classList.add("active");
+  let pct=0;
+  const timer = setInterval(()=>{
+    pct = Math.min(pct + Math.random()*14+4, 100);
+    fill.style.width  = pct+"%";
+    pctEl.textContent = Math.floor(pct)+"%";
+    if(pct>=100){ clearInterval(timer); setTimeout(()=>{ overlay.classList.remove("active"); showKNNResult(rainfall,temp,soil,season,irr); },350); }
+  },80);
+}
+
+function showKNNResult(rainfall,temp,soil,season,irr){
+  const res  = knnPredict(rainfall,temp,soil,season,irr);
+  const meta = CROP_META[res.crop] || {emoji:"🌾",advice:"Follow standard agronomic practices."};
+
+  document.getElementById("resCropEmoji").textContent = meta.emoji;
+  document.getElementById("resCropName").textContent  = res.crop;
+  document.getElementById("resSubtitle").textContent  = `kNN voted ${Math.round(res.confidence)}% confidence · k=5`;
+
+  const yc = {High:"pill-green",Medium:"pill-orange",Low:"pill-red"};
+  const rc  = {Low:"pill-green",Medium:"pill-orange",High:"pill-red"};
+  const sLabel = {kharif:"Kharif ☀️",rabi:"Rabi ❄️",zaid:"Zaid 🌸"};
+  const iLabel = {irrigated:"Irrigated 💧",rainfed:"Rain-fed 🌧",partial:"Partial 💦"};
+  document.getElementById("resPills").innerHTML =
+    `<span class="pill ${yc[res.yieldLevel]||'pill-blue'}">📈 Yield: ${res.yieldLevel}</span>`+
+    `<span class="pill ${rc[res.riskLevel] ||'pill-blue'}">⚠️ Risk: ${res.riskLevel}</span>`+
+    `<span class="pill pill-blue">🌱 ${sLabel[document.getElementById("ml_season").value]}</span>`+
+    `<span class="pill pill-purple">${iLabel[document.getElementById("ml_irr").value]}</span>`;
+
+  const confPct = Math.round(res.confidence);
+  document.getElementById("confPct").textContent = confPct+"%";
+  setTimeout(()=>{ document.getElementById("confFill").style.width = confPct+"%"; },100);
+
+  document.getElementById("knnNeighbours").innerHTML = res.neighbours.map(n=>
+    `<div class="knn-nb"><div class="nb-crop">${n.crop}</div><div class="nb-dist">dist: ${n.dist}</div><div class="nb-dist">${n.yield} · ${n.risk}</div></div>`
+  ).join("");
+
+  document.getElementById("resAdvice").innerHTML = `<strong>🧑‍🌾 Tip:</strong> ${meta.advice}`;
+
+  const wrap = document.getElementById("mlResultWrap");
+  wrap.classList.add("show");
+  wrap.scrollIntoView({behavior:"smooth",block:"nearest"});
+
+  /* Auto-populate Gemini question with prediction context */
+  document.getElementById("geminiQuestion").value =
+    `Mera khet ${document.getElementById("ml_soil").value} soil ke saath hai, rainfall ${document.getElementById("ml_rainfall").value}mm aur temperature ${document.getElementById("ml_temp").value}°C hai. kNN model ne ${res.crop} suggest kiya hai. Mujhe is crop ke liye detailed farming advice chahiye.`;
+}
+
+/* ══════════════════════════════════════════
+   GEMINI AI
+══════════════════════════════════════════ */
+function setGeminiPrompt(el){ document.getElementById("geminiQuestion").value = el.textContent.trim(); }
+
+async function askGemini(){
+  const prompt = document.getElementById("geminiQuestion").value.trim();
+  if(!prompt){ alert("Please type a question."); return; }
+
+  const btn    = document.getElementById("geminiBtn");
+  const resEl  = document.getElementById("geminiResponse");
+  const errEl  = document.getElementById("geminiErr");
+
+  btn.disabled    = true;
+  btn.textContent = "⏳ Thinking…";
+  resEl.className = "gemini-response show typing";
+  resEl.textContent = "";
+  errEl.className = "gemini-err";
+
+  try {
+    const res  = await fetch(`${API_BASE}/api/gemini`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({prompt})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || "Gemini API error");
+
+    /* Typewriter effect */
+    resEl.className = "gemini-response show typing";
+    resEl.textContent = "";
+    const text = data.reply;
+    let i=0;
+    const typer = setInterval(()=>{
+      resEl.textContent += text[i++];
+      if(i>=text.length){ clearInterval(typer); resEl.classList.remove("typing"); }
+    },18);
+
+  } catch(err){
+    resEl.className = "gemini-response";
+    errEl.textContent = "⚠️ " + err.message + " — Make sure Node server is running and GEMINI_API_KEY is in .env";
+    errEl.className   = "gemini-err show";
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = "✨ Ask AI";
+  }
+}
+
+/* ══════════════════════════════════════════
+   SEASON TABS
+══════════════════════════════════════════ */
+function switchSeason(id,btn){
+  document.querySelectorAll(".season-panel").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".season-tab").forEach(b=>b.classList.remove("active"));
+  document.getElementById("sp-"+id).classList.add("active");
+  btn.classList.add("active");
+}
+
+/* ══════════════════════════════════════════
+   SOIL HEALTH
+══════════════════════════════════════════ */
+const SOIL_PROFILES = {
+  loamy:  {"Nitrogen (N)":{v:72,u:"72 kg/ha"},"Phosphorus (P)":{v:65,u:"65 kg/ha"},"Potassium (K)":{v:80,u:"80 kg/ha"},"Organic Matter":{v:68,u:"High"},"pH Level":{v:65,u:"6.5"},"Water Retention":{v:75,u:"75%"}},
+  clay:   {"Nitrogen (N)":{v:60,u:"60 kg/ha"},"Phosphorus (P)":{v:55,u:"55 kg/ha"},"Potassium (K)":{v:85,u:"85 kg/ha"},"Organic Matter":{v:70,u:"High"},"pH Level":{v:55,u:"6.2"},"Water Retention":{v:90,u:"90%"}},
+  sandy:  {"Nitrogen (N)":{v:35,u:"35 kg/ha"},"Phosphorus (P)":{v:30,u:"30 kg/ha"},"Potassium (K)":{v:40,u:"40 kg/ha"},"Organic Matter":{v:25,u:"Low"},"pH Level":{v:70,u:"6.8"},"Water Retention":{v:20,u:"20%"}},
+  red:    {"Nitrogen (N)":{v:40,u:"40 kg/ha"},"Phosphorus (P)":{v:35,u:"35 kg/ha"},"Potassium (K)":{v:45,u:"45 kg/ha"},"Organic Matter":{v:30,u:"Low"},"pH Level":{v:60,u:"6.0"},"Water Retention":{v:45,u:"45%"}},
+  black:  {"Nitrogen (N)":{v:55,u:"55 kg/ha"},"Phosphorus (P)":{v:48,u:"48 kg/ha"},"Potassium (K)":{v:90,u:"90 kg/ha"},"Organic Matter":{v:60,u:"Medium"},"pH Level":{v:45,u:"7.8"},"Water Retention":{v:85,u:"85%"}},
+};
+
+function updateSoilHealth(){
+  const soil = document.getElementById("soilAnalyzer").value;
+  document.getElementById("soilMeter").innerHTML = Object.entries(SOIL_PROFILES[soil]).map(([n,d])=>
+    `<div class="soil-param"><div class="sp-label">${n}</div><div class="sp-val">${d.u}</div><div class="sp-bar"><div class="sp-bar-fill" style="width:${d.v}%"></div></div></div>`
+  ).join("");
+}
+updateSoilHealth();
+</script>
+</body>
+</html>

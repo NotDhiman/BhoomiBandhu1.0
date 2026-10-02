@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Financial Support | BhoomiBandhu</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container header-flex">
+
+    <div class="logo">
+      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+      <span>BhoomiBandhu</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="storage.html">Storage</a>
+      <a href="insurance.html">Insurance</a>
+      <a href="schemes.html">Schemes</a>
+      <a href="financial.html">Financial</a>
+      <a href="ai-crop-predictor.html">AI Crop</a>
+      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
+      <a href="gemini-advisor.html">💬 AI Chat</a>
+      <a href="mental-health.html">Mental Health</a>
+      <a href="#" onclick="toggleTheme()">🌙</a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-badge">💰 Smart Finance</span>
+    <h1>Financial Support for Farmers</h1>
+    <p>Loans, subsidies & financial stability guidance</p>
+
+    <div class="hero-stats">
+      <div><strong>Low</strong><span>Interest</span></div>
+      <div><strong>Safe</strong><span>Planning</span></div>
+      <div><strong>Trusted</strong><span>Advice</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SERVICES ===== -->
+<section class="section container">
+  <h2>Our Financial Services</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>Loan Guidance</h3>
+      <p>
+        We help farmers choose suitable agricultural loans from banks
+        and cooperatives with low interest rates and flexible repayment
+        options.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Debt Management</h3>
+      <p>
+        Structured planning to manage existing loans, avoid
+        high-interest lenders, and reduce financial stress.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Subsidy & Grant Support</h3>
+      <p>
+        Assistance in identifying eligible government subsidies and
+        preparing accurate applications.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Financial Literacy</h3>
+      <p>
+        Simple explanations of savings, insurance, interest rates and
+        repayment planning for informed decisions.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== LOAN APPLICATION FORM ===== -->
+<section class="section container">
+  <h2>Apply for Agricultural Loan</h2>
+
+  <div class="card">
+    <form id="loanForm">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <input type="text" id="name" placeholder="Farmer Name" required>
+        <input type="text" id="village" placeholder="Village / Location" required>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+        <input type="number" id="amount" placeholder="Loan Amount (₹)" required>
+        <select id="loanType" required>
+          <option value="">Select Loan Type</option>
+          <option>Crop Loan</option>
+          <option>Equipment Loan</option>
+          <option>Irrigation Loan</option>
+          <option>Dairy / Livestock Loan</option>
+        </select>
+      </div>
+
+      <textarea
+        id="purpose"
+        placeholder="Purpose of Loan (e.g. seeds, tractor, irrigation)"
+        style="margin-top:16px"
+        required></textarea>
+
+      <button type="submit" class="btn">Submit Application</button>
+
+      <p id="formMessage" style="margin-top:16px;font-weight:500"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  © 2025 BhoomiBandhu. All rights reserved.
+</footer>
+
+<!-- ===== JS ===== -->
+<script src="script.js"></script>
+
+<script>
+  const form = document.getElementById("loanForm");
+  const message = document.getElementById("formMessage");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const amount = document.getElementById("amount").value;
+
+    if (amount <= 0) {
+      message.style.color = "red";
+      message.innerText = "Please enter a valid loan amount.";
+      return;
+    }
+
+    message.style.color = "#1b5e20";
+    message.innerText =
+      "Thank you " + name + 
+      ". Your loan request has been submitted successfully. Our team will contact you shortly.";
+
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
+
+
