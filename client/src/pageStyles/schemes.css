@@ -1,0 +1,27 @@
+.schemes-page{min-height:100vh;background:#f6f8f3;color:#1d3528;font-family:inherit}
+.schemes-header{background:#fff;border-bottom:1px solid #e3e9df;position:sticky;top:0;z-index:5}
+.schemes-header-inner{max-width:1200px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.schemes-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#174b2c;font-weight:800;font-size:1.1rem}
+.schemes-brand img{width:42px;height:42px;object-fit:contain}
+.schemes-nav{display:flex;gap:18px;flex-wrap:wrap}
+.schemes-nav a{color:#355441;text-decoration:none;font-size:.92rem}.schemes-nav a:hover,.schemes-nav a[aria-current=page]{color:#17733a;font-weight:700}
+.schemes-hero{padding:62px 24px 54px;text-align:center;color:#fff;background:linear-gradient(130deg,#123e29,#21764a)}
+.schemes-kicker{display:inline-block;text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;font-weight:800;color:#c5f0cf}
+.schemes-hero h1{font-size:clamp(2rem,5vw,3.2rem);margin:14px 0 12px}.schemes-hero>p{max-width:700px;margin:0 auto;color:#e2f1e5;line-height:1.7}
+.schemes-stats{display:flex;justify-content:center;gap:clamp(24px,6vw,72px);margin-top:32px;flex-wrap:wrap}.schemes-stats div{display:grid;gap:5px}.schemes-stats strong{font-size:1.25rem}.schemes-stats span{font-size:.84rem;color:#d5e9d9}
+.schemes-main{max-width:1200px;margin:auto;padding:32px 24px 56px}
+.schemes-toolbar{display:grid;grid-template-columns:minmax(240px,1fr) 190px 190px;gap:14px;padding:18px;background:#fff;border:1px solid #e2e9df;border-radius:16px;margin-bottom:24px}
+.schemes-toolbar label{display:grid;gap:7px;font-size:.82rem;font-weight:700;color:#355441}.schemes-toolbar input,.schemes-toolbar select{width:100%;min-height:44px;border:1px solid #d3dfd1;border-radius:9px;padding:10px 12px;background:#fff;color:#24392b;font:inherit;font-weight:400}
+.schemes-notice{background:#fff7df;border:1px solid #f0dfab;padding:12px 16px;border-radius:10px;color:#6d5417}
+.schemes-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.scheme-card{background:#fff;border:1px solid #e1e9df;border-radius:16px;padding:22px;display:flex;flex-direction:column;min-height:255px;box-shadow:0 5px 18px #173b1a08}
+.scheme-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.scheme-type,.scheme-source{border-radius:999px;padding:5px 9px;font-size:.72rem;font-weight:800;background:#e5f4e8;color:#216139}.scheme-type.state{background:#e7edff;color:#344f9a}.scheme-source.external{background:#fff0d9;color:#85520b}
+.scheme-card h2{font-size:1.13rem;line-height:1.4;margin:17px 0 9px;color:#1d432c}.scheme-card>p{line-height:1.65;color:#5b6f60;margin:0 0 18px;font-size:.93rem}
+.scheme-eligibility{border-top:1px solid #e9eee7;padding-top:12px;margin-bottom:14px;font-size:.85rem}.scheme-eligibility p{margin:5px 0;color:#5b6f60;line-height:1.5}
+.scheme-card-actions{margin-top:auto;padding-top:12px}.scheme-card-actions a{color:#18723a;text-decoration:none;font-weight:800}.scheme-card-actions a:hover{text-decoration:underline}.scheme-no-link{font-size:.8rem;color:#8b968d}
+.schemes-empty{padding:44px 20px;text-align:center;background:#fff;border:1px dashed #ccd9c9;border-radius:14px;color:#5c7060}
+.schemes-api-help{margin-top:32px;padding:26px;border-radius:16px;background:#e9f3e7;display:flex;align-items:center;justify-content:space-between;gap:24px}.schemes-api-help h2{margin:8px 0;font-size:1.35rem}.schemes-api-help p{max-width:760px;line-height:1.65;color:#506957;margin:0}.schemes-api-help .schemes-kicker{color:#267144}.schemes-api-help a{white-space:nowrap;background:#1b6d39;color:#fff;text-decoration:none;padding:11px 16px;border-radius:9px;font-weight:700}
+.schemes-footer{text-align:center;padding:22px;color:#708174;font-size:.85rem;border-top:1px solid #e1e9df;background:#fff}
+@media(max-width:900px){.schemes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.schemes-toolbar{grid-template-columns:1fr 1fr}.schemes-search{grid-column:1/-1}}
+@media(max-width:600px){.schemes-header-inner{align-items:flex-start;flex-direction:column}.schemes-nav{gap:12px}.schemes-hero{padding:44px 18px}.schemes-main{padding:22px 14px 40px}.schemes-toolbar,.schemes-grid{grid-template-columns:1fr}.schemes-search{grid-column:auto}.schemes-api-help{align-items:flex-start;flex-direction:column}}

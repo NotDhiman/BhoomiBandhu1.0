@@ -1,0 +1,32 @@
+
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+backend/.env
+
+# Node.js dependencies
+node_modules/
+client/node_modules/
+
+# Python virtual environments
+.venv/
+venv/
+backend/.venv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# Frontend build output & cache
+client/dist/
+.vite-cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
