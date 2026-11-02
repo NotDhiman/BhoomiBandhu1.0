@@ -11,8 +11,17 @@ from .models import (
     SchemeEligibilityCheck,
     StorageBooking,
 )
+from .auth_models import (
+    User,
+    FarmerProfile,
+    PsychiatristProfile,
+    WarehouseOwnerProfile,
+    RefreshToken,
+    OtpChallenge,
+)
 
 __all__ = [
+    # Legacy Domain Models
     "Crop",
     "Farmer",
     "GovernmentScheme",
@@ -24,4 +33,11 @@ __all__ = [
     "MentalHealthRequest",
     "SchemeEligibilityCheck",
     "StorageBooking",
+    # Authentication Models
+    "User",
+    "FarmerProfile",
+    "PsychiatristProfile",
+    "WarehouseOwnerProfile",
+    "RefreshToken",
+    "OtpChallenge",
 ]

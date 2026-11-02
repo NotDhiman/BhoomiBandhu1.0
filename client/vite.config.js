@@ -7,6 +7,6 @@ export default defineConfig({
   root: __dirname,
   cacheDir: path.resolve(__dirname, '../.vite-cache'),
   plugins: [react()],
-  server: { port: 5173, proxy: { '/api': 'http://localhost:3000' } },
+  server: { port: 5173, proxy: { '/api': 'http://localhost:8000' } },
   build: { outDir: path.resolve(__dirname, 'dist'), emptyOutDir: true }
 });

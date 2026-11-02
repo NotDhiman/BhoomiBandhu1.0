@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar.jsx';
 import { initCommon } from '../legacy/common.js';
 import { initInsurance } from '../legacy/insurance.js';
 
@@ -13,26 +14,7 @@ export default function InsurancePage() {
   }, []);
   return (
     <>
-      {/*  ===== HEADER =====  */}
-<header>
-<div className={"container header-flex"}>
-<div className={"logo"}>
-<img src={"/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png"} alt={"BhoomiBandhu"} />
-<span>BhoomiBandhu</span>
-</div>
-<nav>
-<Link to={"/"}>Home</Link>
-<Link to={"/storage"}>Storage</Link>
-<Link to={"/insurance"}>Insurance</Link>
-<Link to={"/schemes"}>Schemes</Link>
-<Link to={"/financial"}>Financial</Link>
-<Link to={"/ml-crop-advisor"}>🤖 ML Advisor</Link>
-<Link to={"/gemini-advisor"}>💬 AI Chat</Link>
-<Link to={"/mental-health"}>Mental Health</Link>
-<a href={"#"} onClick={(event) => window.toggleTheme?.()}>🌙</a>
-</nav>
-</div>
-</header>
+      <Navbar />
 {/*  ===== HERO =====  */}
 <section className={"hero-secondary animate-hero insurance-hero"}>
 <h1>Crop Insurance<br />Support</h1>

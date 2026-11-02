@@ -9,6 +9,8 @@
     "dev:server": "nodemon server.js",
     "dev:client": "vite --config client/vite.config.js",
     "build": "vite build --config client/vite.config.js",
+    "test:frontend": "node --test client/tests/frontend_auth.test.mjs",
+    "test:portal": "node --test client/tests/frontend_portal.test.mjs",
     "start": "node server.js",
     "preview": "vite preview --config client/vite.config.js"
   },
