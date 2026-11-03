@@ -11,6 +11,7 @@
     "build": "vite build --config client/vite.config.js",
     "test:frontend": "node --test client/tests/frontend_auth.test.mjs",
     "test:portal": "node --test client/tests/frontend_portal.test.mjs",
+    "test:financial": "node --test client/tests/frontend_insurance_loan_admin.test.mjs",
     "start": "node server.js",
     "preview": "vite preview --config client/vite.config.js"
   },

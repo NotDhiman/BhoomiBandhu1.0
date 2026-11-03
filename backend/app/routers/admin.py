@@ -18,7 +18,7 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 from ..core.database import get_db
 from ..core.dependencies import require_roles
@@ -29,7 +29,9 @@ from ..models.auth_models import (
     WarehouseOwnerProfile,
 )
 from ..models.models import (
+    Farmer,
     InsuranceRequest,
+    PmfbyEnrollment,
     LoanApplication,
     MentalHealthRequest,
     StorageBooking,
@@ -50,8 +52,13 @@ from ..schemas.admin_schemas import (
     LoanStatusUpdateResponse,
     AdminInsuranceItem,
     AdminInsuranceListResponse,
+    AdminInsuranceDetailResponse,
+    AdminPmfbyDetail,
+    AdminInsuranceStatsResponse,
     AdminLoanItem,
     AdminLoanListResponse,
+    AdminLoanDetailResponse,
+    AdminLoanStatsResponse,
     AdminMentalHealthItem,
     AdminMentalHealthListResponse,
     MentalHealthAssignRequest,
@@ -604,18 +611,46 @@ def get_dashboard_stats(
 
 
 # ═══════════════════════════════════════════════════════════════════
-# TASK 6 — Insurance Request Status Management
+# TASK 6 — Insurance Request Status Management & Administration
 # ═══════════════════════════════════════════════════════════════════
 
+@router.get("/insurance-stats", response_model=AdminInsuranceStatsResponse)
+@router.get("/insurance/stats", response_model=AdminInsuranceStatsResponse)
+def get_insurance_stats(
+    current_user: User = Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    """Returns granular statistics for insurance requests and PMFBY enrollments."""
+    total = db.query(func.count(InsuranceRequest.id)).scalar() or 0
+    pending = db.query(func.count(InsuranceRequest.id)).filter(InsuranceRequest.req_status == "pending").scalar() or 0
+    processing = db.query(func.count(InsuranceRequest.id)).filter(InsuranceRequest.req_status == "processing").scalar() or 0
+    approved = db.query(func.count(InsuranceRequest.id)).filter(InsuranceRequest.req_status == "approved").scalar() or 0
+    rejected = db.query(func.count(InsuranceRequest.id)).filter(InsuranceRequest.req_status == "rejected").scalar() or 0
+    paid = db.query(func.count(InsuranceRequest.id)).filter(InsuranceRequest.req_status == "paid").scalar() or 0
+    total_pmfby = db.query(func.count(PmfbyEnrollment.id)).scalar() or 0
+
+    return AdminInsuranceStatsResponse(
+        total=total,
+        pending=pending,
+        processing=processing,
+        approved=approved,
+        rejected=rejected,
+        paid=paid,
+        total_pmfby=total_pmfby,
+    )
+
+
 @router.get("/insurance-requests", response_model=AdminInsuranceListResponse)
+@router.get("/insurance", response_model=AdminInsuranceListResponse)
 def list_insurance_requests(
     status_filter: Optional[str] = Query(None, alias="status"),
+    search: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
     current_user: User = Depends(require_roles("admin")),
     db: Session = Depends(get_db),
 ):
-    """Lists insurance requests with optional status filter, paginated."""
+    """Lists insurance requests with optional status and search filters, paginated."""
     query = db.query(InsuranceRequest)
 
     if status_filter:
@@ -626,6 +661,24 @@ def list_insurance_requests(
                 detail=f"Invalid status. Allowed: {', '.join(sorted(valid_insurance_statuses))}",
             )
         query = query.filter(InsuranceRequest.req_status == status_filter)
+
+    if search:
+        search_term = search.strip()
+        if search_term.isdigit():
+            query = query.filter(
+                or_(
+                    InsuranceRequest.id == int(search_term),
+                    InsuranceRequest.farmer_name.ilike(f"%{search_term}%"),
+                )
+            )
+        else:
+            query = query.filter(
+                or_(
+                    InsuranceRequest.farmer_name.ilike(f"%{search_term}%"),
+                    InsuranceRequest.crop_name.ilike(f"%{search_term}%"),
+                    InsuranceRequest.district.ilike(f"%{search_term}%"),
+                )
+            )
 
     total = query.count()
     offset = (page - 1) * per_page
@@ -657,7 +710,58 @@ def list_insurance_requests(
     )
 
 
+@router.get("/insurance-requests/{request_id}", response_model=AdminInsuranceDetailResponse)
+@router.get("/insurance/{request_id}", response_model=AdminInsuranceDetailResponse)
+def get_insurance_request_detail(
+    request_id: int,
+    current_user: User = Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    """Returns comprehensive details for an insurance request including PMFBY enrollment and farmer contact info."""
+    ins_req = db.query(InsuranceRequest).filter_by(id=request_id).first()
+    if not ins_req:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Insurance request not found.")
+
+    farmer_mobile = None
+    state = None
+    if ins_req.farmer_id:
+        farmer = db.query(Farmer).filter_by(farmer_id=ins_req.farmer_id).first()
+        if farmer:
+            farmer_mobile = farmer.mobile
+            state = farmer.state
+
+    pmfby = db.query(PmfbyEnrollment).filter_by(insurance_request_id=ins_req.id).first()
+    pmfby_detail = None
+    if pmfby:
+        pmfby_detail = AdminPmfbyDetail(
+            id=pmfby.id,
+            crop_name=pmfby.crop_name,
+            land_records_verified=bool(pmfby.land_records_verified),
+            sowing_date=pmfby.sowing_date,
+            season=pmfby.season,
+            premium_calculated=float(pmfby.premium_calculated) if pmfby.premium_calculated is not None else None,
+            enrollment_date=pmfby.enrollment_date,
+        )
+
+    return AdminInsuranceDetailResponse(
+        id=ins_req.id,
+        farmer_id=ins_req.farmer_id,
+        farmer_name=ins_req.farmer_name,
+        farmer_mobile=farmer_mobile,
+        state=state,
+        district=ins_req.district,
+        crop_name=ins_req.crop_name,
+        request_type=ins_req.request_type,
+        description=ins_req.description,
+        req_status=ins_req.req_status,
+        submitted_at=ins_req.submitted_at,
+        updated_at=ins_req.updated_at,
+        pmfby_enrollment=pmfby_detail,
+    )
+
+
 @router.patch("/insurance-requests/{request_id}/status", response_model=InsuranceStatusUpdateResponse)
+@router.patch("/insurance/{request_id}/status", response_model=InsuranceStatusUpdateResponse)
 def update_insurance_status(
     request_id: int,
     body: InsuranceStatusUpdateRequest,
@@ -709,18 +813,42 @@ def update_insurance_status(
 
 
 # ═══════════════════════════════════════════════════════════════════
-# TASK 7 — Loan Application Status Management
+# TASK 7 — Loan Application Status Management & Administration
 # ═══════════════════════════════════════════════════════════════════
 
+@router.get("/loan-stats", response_model=AdminLoanStatsResponse)
+@router.get("/loans/stats", response_model=AdminLoanStatsResponse)
+def get_loan_stats(
+    current_user: User = Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    """Returns granular statistics for loan applications."""
+    total = db.query(func.count(LoanApplication.id)).scalar() or 0
+    pending = db.query(func.count(LoanApplication.id)).filter(LoanApplication.app_status == "pending").scalar() or 0
+    under_review = db.query(func.count(LoanApplication.id)).filter(LoanApplication.app_status == "under_review").scalar() or 0
+    approved = db.query(func.count(LoanApplication.id)).filter(LoanApplication.app_status == "approved").scalar() or 0
+    rejected = db.query(func.count(LoanApplication.id)).filter(LoanApplication.app_status == "rejected").scalar() or 0
+
+    return AdminLoanStatsResponse(
+        total=total,
+        pending=pending,
+        under_review=under_review,
+        approved=approved,
+        rejected=rejected,
+    )
+
+
 @router.get("/loan-applications", response_model=AdminLoanListResponse)
+@router.get("/loans", response_model=AdminLoanListResponse)
 def list_loan_applications(
     status_filter: Optional[str] = Query(None, alias="status"),
+    search: Optional[str] = Query(None),
     page: int = Query(1, ge=1),
     per_page: int = Query(20, ge=1, le=100),
     current_user: User = Depends(require_roles("admin")),
     db: Session = Depends(get_db),
 ):
-    """Lists loan applications with optional status filter, paginated."""
+    """Lists loan applications with optional status and search filters, paginated."""
     query = db.query(LoanApplication)
 
     if status_filter:
@@ -731,6 +859,24 @@ def list_loan_applications(
                 detail=f"Invalid status. Allowed: {', '.join(sorted(valid_loan_statuses))}",
             )
         query = query.filter(LoanApplication.app_status == status_filter)
+
+    if search:
+        search_term = search.strip()
+        if search_term.isdigit():
+            query = query.filter(
+                or_(
+                    LoanApplication.id == int(search_term),
+                    LoanApplication.farmer_name.ilike(f"%{search_term}%"),
+                )
+            )
+        else:
+            query = query.filter(
+                or_(
+                    LoanApplication.farmer_name.ilike(f"%{search_term}%"),
+                    LoanApplication.village.ilike(f"%{search_term}%"),
+                    LoanApplication.loan_type.ilike(f"%{search_term}%"),
+                )
+            )
 
     total = query.count()
     offset = (page - 1) * per_page
@@ -762,7 +908,44 @@ def list_loan_applications(
     )
 
 
+@router.get("/loan-applications/{application_id}", response_model=AdminLoanDetailResponse)
+@router.get("/loans/{application_id}", response_model=AdminLoanDetailResponse)
+def get_loan_application_detail(
+    application_id: int,
+    current_user: User = Depends(require_roles("admin")),
+    db: Session = Depends(get_db),
+):
+    """Returns comprehensive details for a loan application including farmer details and purpose."""
+    loan = db.query(LoanApplication).filter_by(id=application_id).first()
+    if not loan:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Loan application not found.")
+
+    farmer_mobile = None
+    state = None
+    if loan.farmer_id:
+        farmer = db.query(Farmer).filter_by(farmer_id=loan.farmer_id).first()
+        if farmer:
+            farmer_mobile = farmer.mobile
+            state = farmer.state
+
+    return AdminLoanDetailResponse(
+        id=loan.id,
+        farmer_id=loan.farmer_id,
+        farmer_name=loan.farmer_name,
+        farmer_mobile=farmer_mobile,
+        state=state,
+        village=loan.village,
+        loan_amount=float(loan.loan_amount),
+        loan_type=loan.loan_type,
+        purpose=loan.purpose,
+        app_status=loan.app_status,
+        submitted_at=loan.submitted_at,
+        reviewed_at=loan.reviewed_at,
+    )
+
+
 @router.patch("/loan-applications/{application_id}/status", response_model=LoanStatusUpdateResponse)
+@router.patch("/loans/{application_id}/status", response_model=LoanStatusUpdateResponse)
 def update_loan_status(
     application_id: int,
     body: LoanStatusUpdateRequest,

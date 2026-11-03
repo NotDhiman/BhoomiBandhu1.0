@@ -23,6 +23,19 @@ export default function FarmerDashboardPage() {
   const [schemeData, setSchemeData] = useState(null);
   const [schemeLoading, setSchemeLoading] = useState(false);
 
+  // Financial History State
+  const [financialHistory, setFinancialHistory] = useState(null);
+  const [financialLoading, setFinancialLoading] = useState(false);
+
+  // Search, Filter & Detail Inspection States
+  const [insuranceSearch, setInsuranceSearch] = useState('');
+  const [insuranceStatusFilter, setInsuranceStatusFilter] = useState('');
+  const [selectedInsurance, setSelectedInsurance] = useState(null);
+
+  const [loanSearch, setLoanSearch] = useState('');
+  const [loanStatusFilter, setLoanStatusFilter] = useState('');
+  const [selectedLoan, setSelectedLoan] = useState(null);
+
   // Edit Profile Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
@@ -62,9 +75,22 @@ export default function FarmerDashboardPage() {
     }
   }, []);
 
+  const loadFinancialHistory = useCallback(async () => {
+    setFinancialLoading(true);
+    try {
+      const data = await authFetch('/api/farmers/me/financial-history');
+      setFinancialHistory(data);
+    } catch {
+      // supplementary financial summary
+    } finally {
+      setFinancialLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchDashboard();
-  }, [fetchDashboard]);
+    loadFinancialHistory();
+  }, [fetchDashboard, loadFinancialHistory]);
 
   // Lazy tab loaders
   const loadInsurance = async () => {
@@ -296,6 +322,45 @@ export default function FarmerDashboardPage() {
                 </div>
               </div>
 
+              {/* Consolidated Financial History Summary */}
+              {financialHistory?.summary && (
+                <div className="portal-card-box" style={{ background: '#f8fafc', border: '1px solid var(--portal-border)' }}>
+                  <div className="portal-card-box-header">
+                    <h2>💳 Financial History & Claim Benefits</h2>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <button className="portal-btn btn-cancel" onClick={() => handleTabChange('insurance')}>Insurance Records</button>
+                      <button className="portal-btn btn-cancel" onClick={() => handleTabChange('loans')}>Loan Records</button>
+                    </div>
+                  </div>
+                  <div className="portal-stats-grid" style={{ marginBottom: 0 }}>
+                    <div className="portal-stat-card">
+                      <div className="portal-stat-icon-wrap blue">🛡️</div>
+                      <div className="portal-stat-info">
+                        <h3>₹{Number(financialHistory.summary.approved_insurance_amount || 0).toLocaleString('en-IN')}</h3>
+                        <p>Approved Claims Payout</p>
+                        <small style={{ color: 'var(--portal-text-muted)' }}>{financialHistory.summary.total_insurance_requests} total ({financialHistory.summary.pending_insurance_requests} pending)</small>
+                      </div>
+                    </div>
+                    <div className="portal-stat-card">
+                      <div className="portal-stat-icon-wrap purple">💰</div>
+                      <div className="portal-stat-info">
+                        <h3>₹{Number(financialHistory.summary.approved_loan_amount || 0).toLocaleString('en-IN')}</h3>
+                        <p>Approved Credit Disbursal</p>
+                        <small style={{ color: 'var(--portal-text-muted)' }}>{financialHistory.summary.total_loan_applications} total ({financialHistory.summary.pending_loan_applications} under review)</small>
+                      </div>
+                    </div>
+                    <div className="portal-stat-card">
+                      <div className="portal-stat-icon-wrap green">✅</div>
+                      <div className="portal-stat-info">
+                        <h3>₹{Number((financialHistory.summary.approved_insurance_amount || 0) + (financialHistory.summary.approved_loan_amount || 0)).toLocaleString('en-IN')}</h3>
+                        <p>Consolidated Net Benefit</p>
+                        <small style={{ color: 'var(--portal-text-muted)' }}>Approved Insurance + Credit</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Quick Actions Grid */}
               <div className="portal-card-box">
                 <div className="portal-card-box-header">
@@ -446,102 +511,198 @@ export default function FarmerDashboardPage() {
           {/* ═══════════════════════════════════════════════════════════════
              TAB 3: INSURANCE
              ═══════════════════════════════════════════════════════════════ */}
-          {activeTab === 'insurance' && (
-            <div className="portal-card-box">
-              <div className="portal-card-box-header">
-                <h2>🛡️ My Crop Insurance Applications</h2>
-                <Link to="/insurance" className="portal-btn btn-save">New Claim / Enrollment</Link>
-              </div>
+          {activeTab === 'insurance' && (() => {
+            const filteredRequests = (insuranceData?.requests || []).filter((r) => {
+              if (insuranceStatusFilter && r.req_status !== insuranceStatusFilter) return false;
+              if (insuranceSearch.trim()) {
+                const q = insuranceSearch.toLowerCase();
+                const matchCrop = (r.crop_name || '').toLowerCase().includes(q);
+                const matchType = (r.request_type || '').toLowerCase().includes(q);
+                const matchDistrict = (r.district || '').toLowerCase().includes(q);
+                const matchId = String(r.id).includes(q);
+                return matchCrop || matchType || matchDistrict || matchId;
+              }
+              return true;
+            });
 
-              {insuranceLoading ? (
-                <div className="portal-loading"><div className="portal-spinner" /><p>Loading insurance records...</p></div>
-              ) : insuranceData?.requests?.length === 0 ? (
-                <div className="portal-empty-state">
-                  <div className="portal-empty-icon">🌾</div>
-                  <h3>No Insurance Requests</h3>
-                  <p>You have not submitted any PMFBY enrollments or crop damage claims.</p>
-                  <Link to="/insurance" className="portal-btn btn-save">Apply for PMFBY Coverage</Link>
+            return (
+              <div className="portal-card-box">
+                <div className="portal-card-box-header">
+                  <h2>🛡️ My Crop Insurance Applications</h2>
+                  <Link to="/insurance" className="portal-btn btn-save">New Claim / Enrollment</Link>
                 </div>
-              ) : (
-                <div className="portal-table-container">
-                  <table className="portal-table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Request Type</th>
-                        <th>Crop</th>
-                        <th>District</th>
-                        <th>Status</th>
-                        <th>Submitted At</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {insuranceData?.requests?.map((r) => (
-                        <tr key={r.id}>
-                          <td>#{r.id}</td>
-                          <td><strong>{r.request_type}</strong></td>
-                          <td>{r.crop_name || '—'}</td>
-                          <td>{r.district || '—'}</td>
-                          <td><span className={`portal-status-badge status-${r.req_status}`}>{r.req_status}</span></td>
-                          <td>{r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : '—'}</td>
+
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                  <input
+                    type="text"
+                    className="portal-form-input"
+                    style={{ maxWidth: '300px' }}
+                    placeholder="Search by crop, type, or ID..."
+                    value={insuranceSearch}
+                    onChange={(e) => setInsuranceSearch(e.target.value)}
+                  />
+                  <select
+                    className="portal-form-select"
+                    style={{ maxWidth: '200px' }}
+                    value={insuranceStatusFilter}
+                    onChange={(e) => setInsuranceStatusFilter(e.target.value)}
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="processing">Processing</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="paid">Paid</option>
+                  </select>
+                </div>
+
+                {insuranceLoading ? (
+                  <div className="portal-loading"><div className="portal-spinner" /><p>Loading insurance records...</p></div>
+                ) : filteredRequests.length === 0 ? (
+                  <div className="portal-empty-state">
+                    <div className="portal-empty-icon">🌾</div>
+                    <h3>No Insurance Requests Found</h3>
+                    <p>{insuranceData?.requests?.length ? 'No requests match your search or filter.' : 'You have not submitted any PMFBY enrollments or crop damage claims.'}</p>
+                    <Link to="/insurance" className="portal-btn btn-save">Apply for PMFBY Coverage</Link>
+                  </div>
+                ) : (
+                  <div className="portal-table-container">
+                    <table className="portal-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Request Type</th>
+                          <th>Crop</th>
+                          <th>District</th>
+                          <th>Status</th>
+                          <th>Submitted At</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
+                      </thead>
+                      <tbody>
+                        {filteredRequests.map((r) => (
+                          <tr key={r.id}>
+                            <td>#{r.id}</td>
+                            <td><strong>{r.request_type}</strong></td>
+                            <td>{r.crop_name || '—'}</td>
+                            <td>{r.district || '—'}</td>
+                            <td><span className={`portal-status-badge status-${r.req_status}`}>{r.req_status}</span></td>
+                            <td>{r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : '—'}</td>
+                            <td>
+                              <button
+                                className="portal-btn btn-cancel"
+                                style={{ padding: '4px 10px', fontSize: '0.8rem' }}
+                                onClick={() => setSelectedInsurance(r)}
+                              >
+                                View Details
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* ═══════════════════════════════════════════════════════════════
              TAB 4: LOANS & CREDIT
              ═══════════════════════════════════════════════════════════════ */}
-          {activeTab === 'loans' && (
-            <div className="portal-card-box">
-              <div className="portal-card-box-header">
-                <h2>💰 My Loan & Financial Applications</h2>
-                <Link to="/financial" className="portal-btn btn-save">Apply for KCC Loan</Link>
-              </div>
+          {activeTab === 'loans' && (() => {
+            const filteredApplications = (loanData?.applications || []).filter((l) => {
+              if (loanStatusFilter && l.app_status !== loanStatusFilter) return false;
+              if (loanSearch.trim()) {
+                const q = loanSearch.toLowerCase();
+                const matchType = (l.loan_type || '').toLowerCase().includes(q);
+                const matchPurpose = (l.purpose || '').toLowerCase().includes(q);
+                const matchId = String(l.id).includes(q);
+                return matchType || matchPurpose || matchId;
+              }
+              return true;
+            });
 
-              {loanLoading ? (
-                <div className="portal-loading"><div className="portal-spinner" /><p>Loading loan applications...</p></div>
-              ) : loanData?.applications?.length === 0 ? (
-                <div className="portal-empty-state">
-                  <div className="portal-empty-icon">💰</div>
-                  <h3>No Loan Applications</h3>
-                  <p>You have not applied for any agricultural loans or equipment financing.</p>
-                  <Link to="/financial" className="portal-btn btn-save">Explore Financial Assistance</Link>
+            return (
+              <div className="portal-card-box">
+                <div className="portal-card-box-header">
+                  <h2>💰 My Loan & Financial Applications</h2>
+                  <Link to="/financial" className="portal-btn btn-save">Apply for KCC Loan</Link>
                 </div>
-              ) : (
-                <div className="portal-table-container">
-                  <table className="portal-table">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Loan Type</th>
-                        <th>Amount (₹)</th>
-                        <th>Purpose</th>
-                        <th>Status</th>
-                        <th>Submitted At</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {loanData?.applications?.map((l) => (
-                        <tr key={l.id}>
-                          <td>#{l.id}</td>
-                          <td><strong>{l.loan_type}</strong></td>
-                          <td>₹{Number(l.loan_amount).toLocaleString('en-IN')}</td>
-                          <td>{l.purpose || '—'}</td>
-                          <td><span className={`portal-status-badge status-${l.app_status}`}>{l.app_status.replace('_', ' ')}</span></td>
-                          <td>{l.submitted_at ? new Date(l.submitted_at).toLocaleDateString() : '—'}</td>
+
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap' }}>
+                  <input
+                    type="text"
+                    className="portal-form-input"
+                    style={{ maxWidth: '300px' }}
+                    placeholder="Search by loan type, purpose, or ID..."
+                    value={loanSearch}
+                    onChange={(e) => setLoanSearch(e.target.value)}
+                  />
+                  <select
+                    className="portal-form-select"
+                    style={{ maxWidth: '200px' }}
+                    value={loanStatusFilter}
+                    onChange={(e) => setLoanStatusFilter(e.target.value)}
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="pending">Pending</option>
+                    <option value="under_review">Under Review</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
+                </div>
+
+                {loanLoading ? (
+                  <div className="portal-loading"><div className="portal-spinner" /><p>Loading loan applications...</p></div>
+                ) : filteredApplications.length === 0 ? (
+                  <div className="portal-empty-state">
+                    <div className="portal-empty-icon">💰</div>
+                    <h3>No Loan Applications Found</h3>
+                    <p>{loanData?.applications?.length ? 'No applications match your search or filter.' : 'You have not applied for any agricultural loans or equipment financing.'}</p>
+                    <Link to="/financial" className="portal-btn btn-save">Explore Financial Assistance</Link>
+                  </div>
+                ) : (
+                  <div className="portal-table-container">
+                    <table className="portal-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Loan Type</th>
+                          <th>Amount (₹)</th>
+                          <th>Purpose</th>
+                          <th>Status</th>
+                          <th>Submitted At</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          )}
+                      </thead>
+                      <tbody>
+                        {filteredApplications.map((l) => (
+                          <tr key={l.id}>
+                            <td>#{l.id}</td>
+                            <td><strong>{l.loan_type}</strong></td>
+                            <td>₹{Number(l.loan_amount).toLocaleString('en-IN')}</td>
+                            <td>{l.purpose || '—'}</td>
+                            <td><span className={`portal-status-badge status-${l.app_status}`}>{l.app_status.replace('_', ' ')}</span></td>
+                            <td>{l.submitted_at ? new Date(l.submitted_at).toLocaleDateString() : '—'}</td>
+                            <td>
+                              <button
+                                className="portal-btn btn-cancel"
+                                style={{ padding: '4px 10px', fontSize: '0.8rem' }}
+                                onClick={() => setSelectedLoan(l)}
+                              >
+                                View Details
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* ═══════════════════════════════════════════════════════════════
              TAB 5: DIGITAL STORAGE
@@ -784,6 +945,81 @@ export default function FarmerDashboardPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ── Insurance Detail Inspection Modal ── */}
+      {selectedInsurance && (
+        <div className="portal-modal-overlay" onClick={() => setSelectedInsurance(null)}>
+          <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="portal-modal-header">
+              <h3>🛡️ Insurance Application #{selectedInsurance.id}</h3>
+              <button className="portal-modal-close" onClick={() => setSelectedInsurance(null)}>✕</button>
+            </div>
+            <div className="portal-modal-body">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '16px' }}>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Request Type</label><div style={{ fontWeight: 600 }}>{selectedInsurance.request_type}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Crop</label><div style={{ fontWeight: 600 }}>{selectedInsurance.crop_name || '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>District</label><div style={{ fontWeight: 600 }}>{selectedInsurance.district || '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${selectedInsurance.req_status}`}>{selectedInsurance.req_status}</span></div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Policy Number</label><div>{selectedInsurance.policy_number || '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Land Size (ha)</label><div>{selectedInsurance.land_size_ha != null ? `${selectedInsurance.land_size_ha} ha` : '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Sum Insured</label><div>{selectedInsurance.sum_insured != null ? `₹${Number(selectedInsurance.sum_insured).toLocaleString('en-IN')}` : '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Premium Amount</label><div>{selectedInsurance.premium_amount != null ? `₹${Number(selectedInsurance.premium_amount).toLocaleString('en-IN')}` : '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Claim Status</label><div>{selectedInsurance.claim_status || '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{selectedInsurance.submitted_at ? new Date(selectedInsurance.submitted_at).toLocaleString() : '—'}</div></div>
+              </div>
+              {selectedInsurance.description && (
+                <div style={{ marginTop: '14px', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--portal-text-muted)' }}>Damage Description / Notes</label>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>{selectedInsurance.description}</p>
+                </div>
+              )}
+            </div>
+            <div className="portal-modal-footer">
+              <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedInsurance(null)}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Loan Detail Inspection Modal ── */}
+      {selectedLoan && (
+        <div className="portal-modal-overlay" onClick={() => setSelectedLoan(null)}>
+          <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="portal-modal-header">
+              <h3>💰 Loan Application #{selectedLoan.id}</h3>
+              <button className="portal-modal-close" onClick={() => setSelectedLoan(null)}>✕</button>
+            </div>
+            <div className="portal-modal-body">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '16px' }}>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Loan Type</label><div style={{ fontWeight: 600 }}>{selectedLoan.loan_type}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Amount</label><div style={{ fontWeight: 600, color: 'var(--portal-primary)' }}>₹{Number(selectedLoan.loan_amount).toLocaleString('en-IN')}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${selectedLoan.app_status}`}>{selectedLoan.app_status.replace('_', ' ')}</span></div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{selectedLoan.submitted_at ? new Date(selectedLoan.submitted_at).toLocaleString() : '—'}</div></div>
+                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Reviewed Date</label><div>{selectedLoan.reviewed_at ? new Date(selectedLoan.reviewed_at).toLocaleString() : '—'}</div></div>
+              </div>
+              {selectedLoan.purpose && (
+                <div style={{ marginTop: '14px', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--portal-text-muted)' }}>Loan Purpose</label>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>{selectedLoan.purpose}</p>
+                </div>
+              )}
+              {selectedLoan.remarks && (
+                <div style={{ marginTop: '14px', padding: '12px', background: '#fef3c7', borderRadius: '8px' }}>
+                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#92400e' }}>Officer Remarks</label>
+                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: '#78350f' }}>{selectedLoan.remarks}</p>
+                </div>
+              )}
+            </div>
+            <div className="portal-modal-footer">
+              <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedLoan(null)}>
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

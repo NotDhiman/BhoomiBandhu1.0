@@ -1,11 +1,11 @@
 from decimal import Decimal
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from ..core.database import get_db
-from ..core.dependencies import get_current_user, get_current_farmer_id, require_roles
+from ..core.dependencies import get_current_user, get_current_user_optional, get_current_farmer_id, require_roles
 from ..models.auth_models import User, FarmerProfile
 from ..models.models import (
     Farmer,
@@ -31,8 +31,10 @@ from ..schemas.portal_schemas import (
     FarmerSchemeItem,
     FarmerEligibilityCheckItem,
     FarmerSchemeListResponse,
+    FarmerFinancialHistorySummary,
+    FarmerFinancialHistoryResponse,
 )
-from ..services.farmer_service import is_valid_mobile, upsert_farmer
+from ..services.farmer_service import is_valid_mobile, normalize_mobile, upsert_farmer
 
 router = APIRouter(tags=["Farmer Dashboard"])
 
@@ -80,8 +82,19 @@ def _build_farmer_profile_detail(user: User, farmer: Farmer) -> FarmerProfileDet
 # ═══════════════════════════════════════════════════════════════
 
 @router.post("/api/farmers", response_model=FarmerProfileResponse, status_code=status.HTTP_200_OK)
-def save_farmer_profile(payload: FarmerProfileCreate, db: Session = Depends(get_db)):
-    """Legacy endpoint for saving/upserting basic farmer profile."""
+def save_farmer_profile(
+    payload: FarmerProfileCreate,
+    current_user: Optional[User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db),
+):
+    """
+    Legacy endpoint for saving/upserting basic farmer profile.
+    Security Hardening (HIGH-02):
+    - Rejects unauthenticated callers from modifying existing registered/authenticated farmers.
+    - If unauthenticated, caller cannot overwrite an existing farmer record.
+    - If authenticated as a farmer, caller can update their own linked record.
+    - Authenticated users cannot overwrite or hijack records belonging to other users.
+    """
     name = payload.name.strip()
     state = payload.state.strip()
     mobile = payload.mobile.strip()
@@ -91,6 +104,41 @@ def save_farmer_profile(payload: FarmerProfileCreate, db: Session = Depends(get_
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="A name, state and valid mobile number are required.",
         )
+
+    norm_mobile = normalize_mobile(mobile)
+    existing_farmer = db.query(Farmer).filter(Farmer.mobile == norm_mobile).first()
+
+    if existing_farmer:
+        # Check if linked to an authenticated User via FarmerProfile or User.mobile
+        linked_profile = db.query(FarmerProfile).filter_by(legacy_farmer_id=existing_farmer.farmer_id).first()
+        linked_user = db.query(User).filter_by(mobile=norm_mobile).first()
+
+        is_registered_account = bool(linked_profile or linked_user)
+
+        if not current_user:
+            if is_registered_account:
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="This mobile number is linked to a registered account. Please log in to update your profile.",
+                )
+            # Unauthenticated caller cannot overwrite existing legacy record without authentication
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="A farmer record with this mobile number already exists. Authentication is required to update existing profiles.",
+            )
+        else:
+            # Caller is authenticated
+            if current_user.role != "farmer":
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Only farmer accounts can update farmer profiles.",
+                )
+            caller_profile = db.query(FarmerProfile).filter_by(user_id=current_user.id).first()
+            if not caller_profile or caller_profile.legacy_farmer_id != existing_farmer.farmer_id:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="You do not have permission to modify another farmer's profile.",
+                )
 
     farmer_id = upsert_farmer(
         db=db,
@@ -259,7 +307,70 @@ def get_my_farmer_dashboard(
     )
 
 
+@router.get("/api/farmers/me/financial-history", response_model=FarmerFinancialHistoryResponse)
+def get_my_financial_history(
+    current_user: User = Depends(require_roles("farmer")),
+    farmer_id: int = Depends(get_current_farmer_id),
+    db: Session = Depends(get_db),
+):
+    """
+    Returns consolidated financial history (both insurance requests and loan applications)
+    strictly scoped to the authenticated farmer's verified identity.
+    """
+    ins_query = db.query(InsuranceRequest).filter(InsuranceRequest.farmer_id == farmer_id)
+    total_ins = ins_query.count()
+    pending_ins = ins_query.filter(InsuranceRequest.req_status == "pending").count()
+    approved_ins = ins_query.filter(InsuranceRequest.req_status.in_(["approved", "paid"])).count()
+    ins_rows = ins_query.order_by(InsuranceRequest.submitted_at.desc()).all()
+
+    loan_query = db.query(LoanApplication).filter(LoanApplication.farmer_id == farmer_id)
+    total_loans = loan_query.count()
+    pending_loans = loan_query.filter(LoanApplication.app_status.in_(["pending", "under_review"])).count()
+    approved_loans = loan_query.filter(LoanApplication.app_status == "approved").count()
+    loan_rows = loan_query.order_by(LoanApplication.submitted_at.desc()).all()
+
+    summary = FarmerFinancialHistorySummary(
+        total_insurance_requests=total_ins,
+        pending_insurance_requests=pending_ins,
+        approved_insurance_requests=approved_ins,
+        total_loan_applications=total_loans,
+        pending_loan_applications=pending_loans,
+        approved_loan_applications=approved_loans,
+    )
+
+    ins_items = [
+        FarmerInsuranceSummaryItem(
+            id=r.id,
+            request_type=r.request_type,
+            crop_name=r.crop_name,
+            district=r.district,
+            req_status=r.req_status,
+            submitted_at=r.submitted_at,
+        )
+        for r in ins_rows
+    ]
+
+    loan_items = [
+        FarmerLoanSummaryItem(
+            id=r.id,
+            loan_type=r.loan_type,
+            loan_amount=float(r.loan_amount),
+            purpose=r.purpose,
+            app_status=r.app_status,
+            submitted_at=r.submitted_at,
+        )
+        for r in loan_rows
+    ]
+
+    return FarmerFinancialHistoryResponse(
+        summary=summary,
+        insurance_requests=ins_items,
+        loan_applications=loan_items,
+    )
+
+
 @router.get("/api/farmers/me/insurance", response_model=FarmerInsuranceListResponse)
+@router.get("/api/farmers/me/insurance-history", response_model=FarmerInsuranceListResponse)
 def get_my_insurance_requests(
     current_user: User = Depends(require_roles("farmer")),
     farmer_id: int = Depends(get_current_farmer_id),
@@ -287,6 +398,7 @@ def get_my_insurance_requests(
 
 
 @router.get("/api/farmers/me/loans", response_model=FarmerLoanListResponse)
+@router.get("/api/farmers/me/loan-history", response_model=FarmerLoanListResponse)
 def get_my_loan_applications(
     current_user: User = Depends(require_roles("farmer")),
     farmer_id: int = Depends(get_current_farmer_id),

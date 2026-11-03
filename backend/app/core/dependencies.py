@@ -1,5 +1,5 @@
-from typing import List, Callable
-from fastapi import Depends, HTTPException, status
+from typing import List, Callable, Optional
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 import jwt
@@ -10,6 +10,83 @@ from ..services.auth_service import decode_access_token
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
+
+
+def get_current_user_optional(
+    request: Request,
+    token: Optional[str] = Depends(oauth2_scheme_optional),
+    db: Session = Depends(get_db),
+) -> Optional[User]:
+    """
+    Extracts and validates JWT access token if present.
+    - If no Authorization header is present at all, returns None for anonymous legacy flows.
+    - If an Authorization header IS present but is invalid (wrong scheme, empty Bearer,
+      non-Bearer scheme, malformed), raises HTTP 401 so bad credentials are not silently
+      treated as anonymous.
+    - If a valid Bearer token is present but is expired, invalid, wrong-type, or user not
+      found, raises HTTP 401 Unauthorized.
+    """
+    auth_header: Optional[str] = request.headers.get("Authorization")
+
+    if auth_header is None:
+        # Genuinely absent Authorization header → anonymous legacy onboarding flow
+        return None
+
+    # Authorization header is present — any supplied credential must be fully valid.
+    # Reject empty Bearer, non-Bearer scheme, and malformed headers immediately.
+    parts = auth_header.strip().split(" ", 1)
+    if len(parts) != 2 or parts[0].lower() != "bearer" or not parts[1].strip():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials: invalid or malformed Authorization header",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # token extracted by OAuth2PasswordBearer (or re-extract from header)
+    raw_token = parts[1].strip()
+
+    try:
+        payload = decode_access_token(raw_token)
+        token_type = payload.get("type")
+        user_id_str = payload.get("sub")
+        if token_type != "access" or not user_id_str:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials: invalid token type or subject",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        user_id = int(user_id_str)
+        user = db.query(User).filter_by(id=user_id).first()
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User not found",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        if user.is_suspended:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Account is suspended. Access denied.",
+            )
+        if not user.is_active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Account is deactivated. Access denied.",
+            )
+        return user
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Access token has expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (jwt.PyJWTError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 def get_current_user(
@@ -100,10 +177,10 @@ def require_approved_professional(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Warehouse owner account is pending administrative approval.",
             )
-    elif current_user.role != "admin":
+    else:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Operational dashboard restricted to approved professionals and administrators.",
+            detail="Operational dashboard restricted to approved professionals.",
         )
 
     return current_user

@@ -524,6 +524,54 @@ body.dark .admin-status-badge.status-paid {
   border-color: var(--green);
 }
 
+.admin-search-input {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+  min-width: 220px;
+  transition: border-color 0.2s ease;
+}
+
+.admin-search-input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+/* ── Stats Pills Bar ── */
+.admin-stats-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.admin-stat-pill {
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.admin-stat-pill strong {
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.admin-stat-pill.pending strong { color: #f59e0b; }
+.admin-stat-pill.processing strong { color: #3b82f6; }
+.admin-stat-pill.approved strong { color: #16a34a; }
+.admin-stat-pill.rejected strong { color: #dc2626; }
+.admin-stat-pill.pmfby strong { color: #8b5cf6; }
+
 /* ── Confirmation Modal ── */
 .admin-modal-overlay {
   position: fixed;

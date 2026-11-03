@@ -68,7 +68,7 @@ export default function App() {
           <Route
             path="/portal/warehouse"
             element={
-              <RoleProtectedRoute allowedRoles={['warehouse_owner']} requireApproval={true}>
+              <RoleProtectedRoute allowedRoles={['warehouse_owner']}>
                 <WarehousePortalPage />
               </RoleProtectedRoute>
             }

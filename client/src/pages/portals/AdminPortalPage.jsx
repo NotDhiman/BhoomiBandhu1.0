@@ -538,14 +538,27 @@ function AllUsersSection({ onRefresh }) {
 // ── Insurance Section ──
 function InsuranceSection() {
   const [data, setData] = useState({ requests: [], total: 0 });
+  const [stats, setStats] = useState(null);
   const [page, setPage] = useState(1);
   const [perPage] = useState(20);
   const [statusFilter, setStatusFilter] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [modal, setModal] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+  const [viewLoading, setViewLoading] = useState(false);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await authFetch(`${API}/insurance/stats`);
+      setStats(res);
+    } catch {
+      // stats optional
+    }
+  }, []);
 
   const fetchInsurance = useCallback(async () => {
     setLoading(true);
@@ -553,6 +566,7 @@ function InsuranceSection() {
     try {
       const params = new URLSearchParams({ page, per_page: perPage });
       if (statusFilter) params.set('status', statusFilter);
+      if (searchQuery.trim()) params.set('search', searchQuery.trim());
       const res = await authFetch(`${API}/insurance-requests?${params}`);
       setData(res);
     } catch (err) {
@@ -560,9 +574,25 @@ function InsuranceSection() {
     } finally {
       setLoading(false);
     }
-  }, [page, perPage, statusFilter]);
+  }, [page, perPage, statusFilter, searchQuery]);
 
-  useEffect(() => { fetchInsurance(); }, [fetchInsurance]);
+  useEffect(() => {
+    fetchInsurance();
+    fetchStats();
+  }, [fetchInsurance, fetchStats]);
+
+  const handleViewInsurance = async (requestId) => {
+    setViewLoading(true);
+    setError('');
+    try {
+      const res = await authFetch(`${API}/insurance/${requestId}`);
+      setViewItem(res);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setViewLoading(false);
+    }
+  };
 
   const handleStatusUpdate = async (requestId, newStatus, notes) => {
     setActionLoading(true);
@@ -575,7 +605,11 @@ function InsuranceSection() {
       });
       setSuccess(`Insurance request #${requestId} updated to "${newStatus}".`);
       setModal(null);
+      if (viewItem && viewItem.id === requestId) {
+        setViewItem(prev => ({ ...prev, req_status: newStatus }));
+      }
       fetchInsurance();
+      fetchStats();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -586,16 +620,106 @@ function InsuranceSection() {
   const totalPages = Math.ceil(data.total / perPage);
   const statusOptions = { pending: ['processing', 'approved', 'rejected'], processing: ['approved', 'rejected'], approved: ['paid'] };
 
+  if (viewItem) {
+    return (
+      <>
+        <button className="admin-back-btn" onClick={() => setViewItem(null)}>← Back to Insurance Requests</button>
+        <div className="admin-detail-panel">
+          <h3>🛡️ Insurance Request #{viewItem.id}</h3>
+          <div className="admin-detail-grid">
+            <div className="admin-detail-field"><label>Farmer Name</label><span>{viewItem.farmer_name}</span></div>
+            <div className="admin-detail-field"><label>Farmer ID</label><span>#{viewItem.farmer_id}</span></div>
+            <div className="admin-detail-field"><label>Mobile</label><span>{viewItem.farmer_mobile || '—'}</span></div>
+            <div className="admin-detail-field"><label>Location</label><span>{viewItem.district ? `${viewItem.district}, ` : ''}{viewItem.state || '—'}</span></div>
+            <div className="admin-detail-field"><label>Request Type</label><span>{viewItem.request_type || '—'}</span></div>
+            <div className="admin-detail-field"><label>Crop Name</label><span>{viewItem.crop_name || '—'}</span></div>
+            <div className="admin-detail-field">
+              <label>Status</label>
+              <span className={`admin-status-badge status-${viewItem.req_status}`}>{viewItem.req_status}</span>
+            </div>
+            <div className="admin-detail-field"><label>Land Size</label><span>{viewItem.land_size_ha != null ? `${viewItem.land_size_ha} ha` : '—'}</span></div>
+            <div className="admin-detail-field"><label>Sowing Date</label><span>{viewItem.sowing_date || '—'}</span></div>
+            <div className="admin-detail-field"><label>Policy Number</label><span>{viewItem.policy_number || '—'}</span></div>
+            <div className="admin-detail-field"><label>Sum Insured</label><span>{viewItem.sum_insured != null ? `₹${Number(viewItem.sum_insured).toLocaleString('en-IN')}` : '—'}</span></div>
+            <div className="admin-detail-field"><label>Premium Amount</label><span>{viewItem.premium_amount != null ? `₹${Number(viewItem.premium_amount).toLocaleString('en-IN')}` : '—'}</span></div>
+            <div className="admin-detail-field"><label>Claim Status</label><span>{viewItem.claim_status || '—'}</span></div>
+            <div className="admin-detail-field"><label>Submitted Date</label><span>{viewItem.submitted_at ? new Date(viewItem.submitted_at).toLocaleString() : '—'}</span></div>
+          </div>
+
+          {viewItem.description && (
+            <div style={{ marginTop: 18 }}>
+              <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Description / Remarks</label>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.description}</p>
+            </div>
+          )}
+
+          {viewItem.pmfby_enrollment && (
+            <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
+              <h4 style={{ margin: '0 0 12px', color: 'var(--green)' }}>🌾 PMFBY Scheme Enrollment Details</h4>
+              <div className="admin-detail-grid">
+                <div className="admin-detail-field"><label>PMFBY Record ID</label><span>#{viewItem.pmfby_enrollment.id}</span></div>
+                <div className="admin-detail-field"><label>Season / Year</label><span>{viewItem.pmfby_enrollment.season || '—'} {viewItem.pmfby_enrollment.year || ''}</span></div>
+                <div className="admin-detail-field"><label>Land Verified</label><span>{viewItem.pmfby_enrollment.land_verified ? '✅ Verified' : '⚠️ Pending'}</span></div>
+                <div className="admin-detail-field"><label>Calculated Premium</label><span>{viewItem.pmfby_enrollment.calculated_premium != null ? `₹${Number(viewItem.pmfby_enrollment.calculated_premium).toLocaleString('en-IN')}` : '—'}</span></div>
+                <div className="admin-detail-field"><label>Enrollment Date</label><span>{viewItem.pmfby_enrollment.created_at ? new Date(viewItem.pmfby_enrollment.created_at).toLocaleDateString() : '—'}</span></div>
+              </div>
+            </div>
+          )}
+
+          {statusOptions[viewItem.req_status] && (
+            <div style={{ marginTop: 20 }}>
+              <button
+                className="admin-btn admin-btn-status"
+                disabled={actionLoading}
+                onClick={() => setModal({ requestId: viewItem.id, options: statusOptions[viewItem.req_status] })}
+              >
+                Update Status
+              </button>
+            </div>
+          )}
+        </div>
+
+        {modal && (
+          <StatusModal
+            title="Update Insurance Status"
+            options={modal.options}
+            onConfirm={(s, n) => handleStatusUpdate(modal.requestId, s, n)}
+            onCancel={() => setModal(null)}
+            loading={actionLoading}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <div className="admin-page-header">
         <h1>Insurance Requests</h1>
-        <p>Review and manage insurance applications</p>
+        <p>Review and manage farmer insurance requests & PMFBY enrollments</p>
       </div>
       {error && <div className="admin-error-banner">⚠️ {error}</div>}
       {success && <div className="admin-success-banner">✅ {success}</div>}
 
+      {stats && (
+        <div className="admin-stats-pills">
+          <div className="admin-stat-pill"><strong>{stats.total}</strong> Total Requests</div>
+          <div className="admin-stat-pill pending"><strong>{stats.pending}</strong> Pending</div>
+          <div className="admin-stat-pill processing"><strong>{stats.processing}</strong> Processing</div>
+          <div className="admin-stat-pill approved"><strong>{stats.approved}</strong> Approved</div>
+          <div className="admin-stat-pill rejected"><strong>{stats.rejected}</strong> Rejected</div>
+          <div className="admin-stat-pill pmfby"><strong>{stats.total_pmfby}</strong> PMFBY Enrolled</div>
+        </div>
+      )}
+
       <div className="admin-filters">
+        <input
+          type="text"
+          className="admin-search-input"
+          placeholder="Search by ID, farmer, crop, district..."
+          value={searchQuery}
+          onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
+        />
         <select className="admin-filter-select" value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }}>
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -612,7 +736,7 @@ function InsuranceSection() {
         <div className="admin-empty">
           <div className="admin-empty-icon">🛡️</div>
           <h3>No insurance requests</h3>
-          <p>No requests match your filter.</p>
+          <p>No requests match your filter or search criteria.</p>
         </div>
       ) : (
         <>
@@ -641,12 +765,17 @@ function InsuranceSection() {
                     <td><span className={`admin-status-badge status-${r.req_status}`}>{r.req_status}</span></td>
                     <td>{r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : '—'}</td>
                     <td>
-                      {statusOptions[r.req_status] && (
-                        <button className="admin-btn admin-btn-status" disabled={actionLoading}
-                          onClick={() => setModal({ requestId: r.id, options: statusOptions[r.req_status] })}>
-                          Update
+                      <div className="admin-actions">
+                        <button className="admin-btn admin-btn-view" onClick={() => handleViewInsurance(r.id)} disabled={viewLoading}>
+                          View
                         </button>
-                      )}
+                        {statusOptions[r.req_status] && (
+                          <button className="admin-btn admin-btn-status" disabled={actionLoading}
+                            onClick={() => setModal({ requestId: r.id, options: statusOptions[r.req_status] })}>
+                            Update
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -679,14 +808,27 @@ function InsuranceSection() {
 // ── Loans Section ──
 function LoansSection() {
   const [data, setData] = useState({ applications: [], total: 0 });
+  const [stats, setStats] = useState(null);
   const [page, setPage] = useState(1);
   const [perPage] = useState(20);
   const [statusFilter, setStatusFilter] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [modal, setModal] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
+  const [viewItem, setViewItem] = useState(null);
+  const [viewLoading, setViewLoading] = useState(false);
+
+  const fetchStats = useCallback(async () => {
+    try {
+      const res = await authFetch(`${API}/loans/stats`);
+      setStats(res);
+    } catch {
+      // stats optional
+    }
+  }, []);
 
   const fetchLoans = useCallback(async () => {
     setLoading(true);
@@ -694,6 +836,7 @@ function LoansSection() {
     try {
       const params = new URLSearchParams({ page, per_page: perPage });
       if (statusFilter) params.set('status', statusFilter);
+      if (searchQuery.trim()) params.set('search', searchQuery.trim());
       const res = await authFetch(`${API}/loan-applications?${params}`);
       setData(res);
     } catch (err) {
@@ -701,9 +844,25 @@ function LoansSection() {
     } finally {
       setLoading(false);
     }
-  }, [page, perPage, statusFilter]);
+  }, [page, perPage, statusFilter, searchQuery]);
 
-  useEffect(() => { fetchLoans(); }, [fetchLoans]);
+  useEffect(() => {
+    fetchLoans();
+    fetchStats();
+  }, [fetchLoans, fetchStats]);
+
+  const handleViewLoan = async (appId) => {
+    setViewLoading(true);
+    setError('');
+    try {
+      const res = await authFetch(`${API}/loans/${appId}`);
+      setViewItem(res);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setViewLoading(false);
+    }
+  };
 
   const handleStatusUpdate = async (appId, newStatus, notes) => {
     setActionLoading(true);
@@ -716,7 +875,11 @@ function LoansSection() {
       });
       setSuccess(`Loan application #${appId} updated to "${newStatus}".`);
       setModal(null);
+      if (viewItem && viewItem.id === appId) {
+        setViewItem(prev => ({ ...prev, app_status: newStatus }));
+      }
       fetchLoans();
+      fetchStats();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -727,16 +890,94 @@ function LoansSection() {
   const totalPages = Math.ceil(data.total / perPage);
   const statusOptions = { pending: ['under_review', 'approved', 'rejected'], under_review: ['approved', 'rejected'] };
 
+  if (viewItem) {
+    return (
+      <>
+        <button className="admin-back-btn" onClick={() => setViewItem(null)}>← Back to Loans</button>
+        <div className="admin-detail-panel">
+          <h3>💰 Loan Application #{viewItem.id}</h3>
+          <div className="admin-detail-grid">
+            <div className="admin-detail-field"><label>Farmer Name</label><span>{viewItem.farmer_name}</span></div>
+            <div className="admin-detail-field"><label>Farmer ID</label><span>#{viewItem.farmer_id}</span></div>
+            <div className="admin-detail-field"><label>Mobile</label><span>{viewItem.farmer_mobile || '—'}</span></div>
+            <div className="admin-detail-field"><label>Village / State</label><span>{viewItem.village ? `${viewItem.village}, ` : ''}{viewItem.state || '—'}</span></div>
+            <div className="admin-detail-field"><label>Loan Type</label><span>{viewItem.loan_type}</span></div>
+            <div className="admin-detail-field"><label>Loan Amount</label><span>₹{Number(viewItem.loan_amount).toLocaleString('en-IN')}</span></div>
+            <div className="admin-detail-field">
+              <label>Status</label>
+              <span className={`admin-status-badge status-${viewItem.app_status}`}>{viewItem.app_status.replace('_', ' ')}</span>
+            </div>
+            <div className="admin-detail-field"><label>Submitted Date</label><span>{viewItem.submitted_at ? new Date(viewItem.submitted_at).toLocaleString() : '—'}</span></div>
+            <div className="admin-detail-field"><label>Reviewed Date</label><span>{viewItem.reviewed_at ? new Date(viewItem.reviewed_at).toLocaleString() : '—'}</span></div>
+          </div>
+
+          {viewItem.purpose && (
+            <div style={{ marginTop: 18 }}>
+              <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Loan Purpose</label>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.purpose}</p>
+            </div>
+          )}
+
+          {viewItem.remarks && (
+            <div style={{ marginTop: 18 }}>
+              <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Remarks</label>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.remarks}</p>
+            </div>
+          )}
+
+          {statusOptions[viewItem.app_status] && (
+            <div style={{ marginTop: 20 }}>
+              <button
+                className="admin-btn admin-btn-status"
+                disabled={actionLoading}
+                onClick={() => setModal({ appId: viewItem.id, options: statusOptions[viewItem.app_status] })}
+              >
+                Update Status
+              </button>
+            </div>
+          )}
+        </div>
+
+        {modal && (
+          <StatusModal
+            title="Update Loan Status"
+            options={modal.options}
+            onConfirm={(s, n) => handleStatusUpdate(modal.appId, s, n)}
+            onCancel={() => setModal(null)}
+            loading={actionLoading}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <>
       <div className="admin-page-header">
         <h1>Loan Applications</h1>
-        <p>Review and manage loan requests</p>
+        <p>Review and manage farmer loan applications</p>
       </div>
       {error && <div className="admin-error-banner">⚠️ {error}</div>}
       {success && <div className="admin-success-banner">✅ {success}</div>}
 
+      {stats && (
+        <div className="admin-stats-pills">
+          <div className="admin-stat-pill"><strong>{stats.total}</strong> Total Applications</div>
+          <div className="admin-stat-pill pending"><strong>{stats.pending}</strong> Pending</div>
+          <div className="admin-stat-pill processing"><strong>{stats.under_review}</strong> Under Review</div>
+          <div className="admin-stat-pill approved"><strong>{stats.approved}</strong> Approved</div>
+          <div className="admin-stat-pill rejected"><strong>{stats.rejected}</strong> Rejected</div>
+        </div>
+      )}
+
       <div className="admin-filters">
+        <input
+          type="text"
+          className="admin-search-input"
+          placeholder="Search by ID, farmer, village, loan type..."
+          value={searchQuery}
+          onChange={e => { setSearchQuery(e.target.value); setPage(1); }}
+        />
         <select className="admin-filter-select" value={statusFilter} onChange={e => { setStatusFilter(e.target.value); setPage(1); }}>
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -752,7 +993,7 @@ function LoansSection() {
         <div className="admin-empty">
           <div className="admin-empty-icon">💰</div>
           <h3>No loan applications</h3>
-          <p>No applications match your filter.</p>
+          <p>No applications match your filter or search criteria.</p>
         </div>
       ) : (
         <>
@@ -781,12 +1022,17 @@ function LoansSection() {
                     <td><span className={`admin-status-badge status-${r.app_status}`}>{r.app_status.replace('_', ' ')}</span></td>
                     <td>{r.submitted_at ? new Date(r.submitted_at).toLocaleDateString() : '—'}</td>
                     <td>
-                      {statusOptions[r.app_status] && (
-                        <button className="admin-btn admin-btn-status" disabled={actionLoading}
-                          onClick={() => setModal({ appId: r.id, options: statusOptions[r.app_status] })}>
-                          Update
+                      <div className="admin-actions">
+                        <button className="admin-btn admin-btn-view" onClick={() => handleViewLoan(r.id)} disabled={viewLoading}>
+                          View
                         </button>
-                      )}
+                        {statusOptions[r.app_status] && (
+                          <button className="admin-btn admin-btn-status" disabled={actionLoading}
+                            onClick={() => setModal({ appId: r.id, options: statusOptions[r.app_status] })}>
+                            Update
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

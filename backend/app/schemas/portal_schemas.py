@@ -97,6 +97,21 @@ class FarmerLoanListResponse(BaseModel):
     total: int
 
 
+class FarmerFinancialHistorySummary(BaseModel):
+    total_insurance_requests: int = 0
+    pending_insurance_requests: int = 0
+    approved_insurance_requests: int = 0
+    total_loan_applications: int = 0
+    pending_loan_applications: int = 0
+    approved_loan_applications: int = 0
+
+
+class FarmerFinancialHistoryResponse(BaseModel):
+    summary: FarmerFinancialHistorySummary
+    insurance_requests: List[FarmerInsuranceSummaryItem]
+    loan_applications: List[FarmerLoanSummaryItem]
+
+
 class FarmerBookingListResponse(BaseModel):
     bookings: List[FarmerBookingSummaryItem]
     total: int

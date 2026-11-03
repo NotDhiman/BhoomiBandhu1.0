@@ -47,11 +47,7 @@ export default function LoginPage() {
           navigate('/pending-approval', { replace: true });
         }
       } else if (user.role === 'warehouse_owner') {
-        if (user.profile_details?.is_approved) {
-          navigate('/portal/warehouse', { replace: true });
-        } else {
-          navigate('/pending-approval', { replace: true });
-        }
+        navigate('/portal/warehouse', { replace: true });
       } else if (user.role === 'admin') {
         navigate('/portal/admin', { replace: true });
       } else {

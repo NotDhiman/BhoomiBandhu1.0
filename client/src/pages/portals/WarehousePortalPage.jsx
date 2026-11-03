@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
+import {
+  getWarehouseStatusLabel,
+  getWarehouseStatusBanner,
+  isOperationalActionDisabled,
+  deriveWarehouseState,
+  formatWarehouseEditPayload,
+  getWarehouseFacilitiesCount,
+} from '../../services/warehouseHelpers.js';
 import '../../pageStyles/portal.css';
 
 export default function WarehousePortalPage() {
@@ -22,14 +30,7 @@ export default function WarehousePortalPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     company_name: '',
-    license_number: '',
     gstin: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-    capacity_mt: '',
-    cold_storage: false,
   });
   const [saveLoading, setSaveLoading] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState('');
@@ -46,18 +47,11 @@ export default function WarehousePortalPage() {
 
       setEditFormData({
         company_name: profileRes.company_name || '',
-        license_number: profileRes.license_number || '',
         gstin: profileRes.gstin || '',
-        address: profileRes.address || '',
-        city: profileRes.city || '',
-        state: profileRes.state || '',
-        pincode: profileRes.pincode || '',
-        capacity_mt: profileRes.capacity_mt !== null && profileRes.capacity_mt !== undefined ? String(profileRes.capacity_mt) : '',
-        cold_storage: Boolean(profileRes.cold_storage),
       });
 
       // If approved, fetch full dashboard data
-      if (profileRes.approval_status === 'approved') {
+      if (profileRes.is_approved) {
         try {
           const dashRes = await authFetch('/api/warehouse/me/dashboard');
           setDashboardData(dashRes);
@@ -80,7 +74,7 @@ export default function WarehousePortalPage() {
   const handleTabChange = async (tab) => {
     setActiveTab(tab);
 
-    const isApproved = (profileData?.approval_status || user?.status) === 'approved';
+    const isApproved = Boolean(profileData?.is_approved);
     if (!isApproved && (tab === 'facilities' || tab === 'bookings')) {
       return;
     }
@@ -112,10 +106,10 @@ export default function WarehousePortalPage() {
 
   // Edit Profile Handlers
   const handleEditChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setEditFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: value,
     }));
   };
 
@@ -125,17 +119,7 @@ export default function WarehousePortalPage() {
     setSaveError('');
     setSaveSuccess('');
 
-    const payload = {
-      company_name: editFormData.company_name.trim() || null,
-      license_number: editFormData.license_number.trim() || null,
-      gstin: editFormData.gstin.trim() || null,
-      address: editFormData.address.trim() || null,
-      city: editFormData.city.trim() || null,
-      state: editFormData.state.trim() || null,
-      pincode: editFormData.pincode.trim() || null,
-      capacity_mt: editFormData.capacity_mt ? parseFloat(editFormData.capacity_mt) : null,
-      cold_storage: editFormData.cold_storage,
-    };
+    const payload = formatWarehouseEditPayload(editFormData);
 
     try {
       const updated = await authFetch('/api/warehouse/me', {
@@ -156,8 +140,8 @@ export default function WarehousePortalPage() {
     }
   };
 
-  const isApproved = (profileData?.approval_status || user?.status) === 'approved';
-  const approvalStatus = profileData?.approval_status || user?.status || 'pending';
+  const { isApproved, accountStatus } = deriveWarehouseState(profileData);
+  const approvalStatus = accountStatus;
 
   return (
     <div className="portal-wrapper">
@@ -168,11 +152,11 @@ export default function WarehousePortalPage() {
             🏬 Warehouse Facility Portal
           </span>
           <h1 className="portal-hero-title">
-            {profileData?.company_name || user?.full_name || 'Storage Facility Partner'}
+            {profileData?.company_name || 'Storage Facility Partner'}
           </h1>
           <p className="portal-hero-subtitle">
             <span>📞 Mobile: {profileData?.mobile || user?.mobile || '—'}</span>
-            <span>📍 {profileData?.city ? `${profileData.city}, ${profileData.state}` : 'Location unconfigured'}</span>
+            <span>✉️ Email: {profileData?.email || user?.email || '—'}</span>
             <span>📄 GSTIN: {profileData?.gstin || 'Pending'}</span>
           </p>
         </div>
@@ -202,22 +186,29 @@ export default function WarehousePortalPage() {
         </div>
       </div>
 
-      {/* ── Status Banner for Pending/Rejected Owners ── */}
-      {!isApproved && (
-        <div className="portal-notice-banner amber" style={{ borderLeftWidth: '6px' }}>
-          <div style={{ fontSize: '1.6rem' }}>⏳</div>
-          <div>
-            <h4 style={{ margin: '0 0 4px', fontSize: '1.05rem', fontWeight: '700' }}>
-              Account Verification Status: {approvalStatus.toUpperCase()}
-            </h4>
-            <p style={{ margin: 0, lineHeight: 1.5 }}>
-              {approvalStatus === 'pending'
-                ? 'Your warehouse owner profile is currently undergoing administrative verification by BhoomiBandhu. Once approved, operational facility management and incoming farmer storage booking requests will be automatically activated.'
-                : 'Your warehouse registration was not approved. Please review your company and license credentials or contact platform support.'}
-            </p>
+      {/* ── Status Banner for Pending/Rejected/Suspended Owners ── */}
+      {!isApproved && (() => {
+        const banner = getWarehouseStatusBanner(accountStatus);
+        return (
+          <div
+            className="portal-notice-banner amber"
+            style={{
+              borderLeftWidth: '6px',
+              borderLeftColor: banner.color,
+            }}
+          >
+            <div style={{ fontSize: '1.6rem' }}>{banner.icon}</div>
+            <div>
+              <h4 style={{ margin: '0 0 4px', fontSize: '1.05rem', fontWeight: '700' }}>
+                {banner.title}
+              </h4>
+              <p style={{ margin: 0, lineHeight: 1.5 }}>
+                {banner.message}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ── Main Tab Navigation ── */}
       <div className="portal-tabs-nav">
@@ -281,7 +272,7 @@ export default function WarehousePortalPage() {
                 <div className="portal-stat-card">
                   <div className="portal-stat-icon-wrap amber">✓</div>
                   <div className="portal-stat-info">
-                    <h3 style={{ textTransform: 'capitalize' }}>{approvalStatus}</h3>
+                    <h3>{getWarehouseStatusLabel(accountStatus)}</h3>
                     <p>Approval Status</p>
                   </div>
                 </div>
@@ -289,7 +280,7 @@ export default function WarehousePortalPage() {
                 <div className="portal-stat-card">
                   <div className="portal-stat-icon-wrap blue">🏬</div>
                   <div className="portal-stat-info">
-                    <h3>{dashboardData?.total_facilities ?? (profileData?.capacity_mt ? '1 Registered' : '0')}</h3>
+                    <h3>{getWarehouseFacilitiesCount(dashboardData)}</h3>
                     <p>Total Facilities</p>
                   </div>
                 </div>
@@ -319,7 +310,7 @@ export default function WarehousePortalPage() {
                     Database Architecture & Facility Ownership
                   </h4>
                   <p style={{ margin: 0, fontSize: '0.85rem', color: '#475569', lineHeight: 1.45 }}>
-                    Legacy database schema maps storage facilities at the platform level. Dedicated per-owner facility linkage and booking workflow transitions are staged in migration specification <code>003_warehouse_facility_ownership</code>. Profile verification and operational dashboards operate safely under current schema.
+                    Facility and booking management features are currently unavailable pending approved database schema migration (003_warehouse_facility_ownership: adding warehouse_owner_id to storage_facilities) and implementation of ownership CRUD workflows. Company profile verification and credentials management operate under current schema.
                   </p>
                 </div>
               </div>
@@ -332,20 +323,20 @@ export default function WarehousePortalPage() {
                 <div className="portal-actions-grid">
                   <div
                     className="portal-action-tile"
-                    style={{ cursor: isApproved ? 'pointer' : 'not-allowed', opacity: isApproved ? 1 : 0.65 }}
-                    onClick={() => isApproved && handleTabChange('facilities')}
+                    style={{ cursor: 'not-allowed', opacity: 0.5 }}
+                    title="Unavailable — requires database migration 003_warehouse_facility_ownership and facility ownership CRUD implementation"
                   >
-                    <h4>🏬 Storage Units</h4>
-                    <p>Review unit capacities, cold-chain temperature zones, and grain tonnage availability.</p>
+                    <h4>🏬 Storage Units (Unavailable)</h4>
+                    <p>Facility management is currently unavailable. This feature requires database migration 003_warehouse_facility_ownership and ownership CRUD workflows before units can be managed.</p>
                   </div>
 
                   <div
                     className="portal-action-tile"
-                    style={{ cursor: isApproved ? 'pointer' : 'not-allowed', opacity: isApproved ? 1 : 0.65 }}
-                    onClick={() => isApproved && handleTabChange('bookings')}
+                    style={{ cursor: 'not-allowed', opacity: 0.5 }}
+                    title="Unavailable — requires database migration 003_warehouse_facility_ownership and booking management CRUD implementation"
                   >
-                    <h4>🚚 Booking Requests</h4>
-                    <p>Accept or manage incoming farmer storage drop-offs and generate electronic warehouse receipts.</p>
+                    <h4>🚚 Booking Requests (Unavailable)</h4>
+                    <p>Farmer booking management is currently unavailable. This workflow requires facility ownership linkage in storage_facilities before booking assignments can be processed.</p>
                   </div>
 
                   <div
@@ -397,50 +388,15 @@ export default function WarehousePortalPage() {
 
                 <div>
                   <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>VERIFICATION STATUS</h4>
-                  <span className={`portal-status-badge status-${approvalStatus}`}>
-                    {approvalStatus.toUpperCase()}
+                  <span className={`portal-status-badge status-${accountStatus}`}>
+                    {getWarehouseStatusLabel(accountStatus)}
                   </span>
-                </div>
-
-                <div>
-                  <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>WDRA / OPERATING LICENSE</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
-                    {profileData?.license_number || 'Under verification'}
-                  </p>
                 </div>
 
                 <div>
                   <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>GSTIN</h4>
                   <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
                     {profileData?.gstin || 'Not registered'}
-                  </p>
-                </div>
-
-                <div>
-                  <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>STORAGE CAPACITY</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
-                    {profileData?.capacity_mt !== null && profileData?.capacity_mt !== undefined ? `${profileData.capacity_mt} Metric Tonnes (MT)` : 'Not specified'}
-                  </p>
-                </div>
-
-                <div>
-                  <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>COLD STORAGE CAPABILITY</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
-                    {profileData?.cold_storage ? '❄️ Active Cold Storage Available' : '🌾 Dry Grain Godown / Ambient Only'}
-                  </p>
-                </div>
-
-                <div>
-                  <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>FACILITY ADDRESS</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
-                    {profileData?.address || 'Address unconfigured'}
-                  </p>
-                </div>
-
-                <div>
-                  <h4 style={{ color: '#64748b', fontSize: '0.85rem', margin: '0 0 4px' }}>LOCATION / REGION</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1rem', margin: 0 }}>
-                    {profileData?.city || '—'}, {profileData?.state || '—'} {profileData?.pincode ? `(${profileData.pincode})` : ''}
                   </p>
                 </div>
 
@@ -601,7 +557,7 @@ export default function WarehousePortalPage() {
                 {saveError && <div className="portal-error-banner">{saveError}</div>}
 
                 <div className="portal-form-group">
-                  <label htmlFor="company_name">Company / Firm Name</label>
+                  <label htmlFor="company_name">Company / Firm Name *</label>
                   <input
                     type="text"
                     id="company_name"
@@ -610,19 +566,7 @@ export default function WarehousePortalPage() {
                     value={editFormData.company_name}
                     onChange={handleEditChange}
                     placeholder="e.g. Kisan Cold Chain Ltd."
-                  />
-                </div>
-
-                <div className="portal-form-group">
-                  <label htmlFor="license_number">WDRA / Operating License</label>
-                  <input
-                    type="text"
-                    id="license_number"
-                    name="license_number"
-                    className="portal-form-input"
-                    value={editFormData.license_number}
-                    onChange={handleEditChange}
-                    placeholder="e.g. WDRA-REG-2024-998"
+                    required
                   />
                 </div>
 
@@ -637,90 +581,6 @@ export default function WarehousePortalPage() {
                     onChange={handleEditChange}
                     placeholder="e.g. 07AAAAA0000A1Z5"
                   />
-                </div>
-
-                <div className="portal-form-group">
-                  <label htmlFor="address">Address</label>
-                  <input
-                    type="text"
-                    id="address"
-                    name="address"
-                    className="portal-form-input"
-                    value={editFormData.address}
-                    onChange={handleEditChange}
-                    placeholder="Street, Industrial Area, Highway km"
-                  />
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div className="portal-form-group">
-                    <label htmlFor="city">City / District</label>
-                    <input
-                      type="text"
-                      id="city"
-                      name="city"
-                      className="portal-form-input"
-                      value={editFormData.city}
-                      onChange={handleEditChange}
-                      placeholder="e.g. Ludhiana"
-                    />
-                  </div>
-
-                  <div className="portal-form-group">
-                    <label htmlFor="state">State</label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      className="portal-form-input"
-                      value={editFormData.state}
-                      onChange={handleEditChange}
-                      placeholder="e.g. Punjab"
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                  <div className="portal-form-group">
-                    <label htmlFor="pincode">PIN Code</label>
-                    <input
-                      type="text"
-                      id="pincode"
-                      name="pincode"
-                      className="portal-form-input"
-                      value={editFormData.pincode}
-                      onChange={handleEditChange}
-                      placeholder="e.g. 141001"
-                    />
-                  </div>
-
-                  <div className="portal-form-group">
-                    <label htmlFor="capacity_mt">Capacity (MT)</label>
-                    <input
-                      type="number"
-                      step="0.1"
-                      id="capacity_mt"
-                      name="capacity_mt"
-                      className="portal-form-input"
-                      value={editFormData.capacity_mt}
-                      onChange={handleEditChange}
-                      placeholder="e.g. 2500"
-                    />
-                  </div>
-                </div>
-
-                <div className="portal-form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
-                  <input
-                    type="checkbox"
-                    id="cold_storage"
-                    name="cold_storage"
-                    checked={editFormData.cold_storage}
-                    onChange={handleEditChange}
-                    style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-                  />
-                  <label htmlFor="cold_storage" style={{ margin: 0, cursor: 'pointer', fontWeight: 600 }}>
-                    ❄️ Cold Storage Equipment Available
-                  </label>
                 </div>
               </div>
 

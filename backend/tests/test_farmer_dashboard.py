@@ -190,3 +190,252 @@ class TestFarmerDashboardAndDataIsolation:
         r_book = client.get("/api/farmers/me/bookings", headers=headers1)
         assert r_book.status_code == 200
         assert r_book.json()["total"] == 0
+
+
+class TestLegacyFarmerEndpointSecurity:
+    def test_unauthenticated_new_farmer_registration_succeeds(self, client, db_session):
+        payload = {
+            "name": "New Legacy Farmer",
+            "mobile": "9998887766",
+            "state": "Punjab",
+            "primary_crop": "Wheat",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 200
+        assert r.json()["success"] is True
+        assert "farmer_id" in r.json()
+
+    def test_unauthenticated_attempt_to_overwrite_registered_farmer_rejected(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="71", name="Registered Farmer")
+        payload = {
+            "name": "Attacker Hijack Name",
+            "mobile": farmer.mobile,
+            "state": "Attacker State",
+            "primary_crop": "Sugarcane",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 401
+        assert "registered account" in r.json()["detail"].lower()
+
+        # Verify DB was NOT modified
+        db_session.refresh(farmer)
+        assert farmer.name == "Registered Farmer"
+
+    def test_unauthenticated_attempt_to_overwrite_existing_legacy_farmer_rejected(self, client, db_session):
+        # Create unlinked legacy farmer
+        leg_farmer = Farmer(
+            name="Existing Legacy",
+            mobile="9991112233",
+            state="Haryana",
+            primary_crop="Rice",
+        )
+        db_session.add(leg_farmer)
+        db_session.flush()
+
+        payload = {
+            "name": "Overwrite Attempt",
+            "mobile": "9991112233",
+            "state": "Haryana",
+            "primary_crop": "Barley",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 403
+        assert "already exists" in r.json()["detail"].lower()
+
+        db_session.refresh(leg_farmer)
+        assert leg_farmer.name == "Existing Legacy"
+
+    def test_authenticated_farmer_can_update_own_profile_via_legacy_endpoint(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="72", name="Original Name")
+        headers = _headers_for(user.id, "farmer")
+        payload = {
+            "name": "Legit Updated Name",
+            "mobile": farmer.mobile,
+            "state": "Punjab",
+            "primary_crop": "Cotton",
+        }
+        r = client.post("/api/farmers", json=payload, headers=headers)
+        assert r.status_code == 200
+        assert r.json()["success"] is True
+
+        db_session.refresh(farmer)
+        assert farmer.name == "Legit Updated Name"
+        assert farmer.primary_crop == "Cotton"
+
+    def test_authenticated_farmer_cannot_overwrite_another_farmer_profile(self, client, db_session):
+        user1, farmer1 = _make_farmer_account(db_session, mobile_suffix="73", name="Farmer Victim")
+        user2, farmer2 = _make_farmer_account(db_session, mobile_suffix="74", name="Farmer Attacker")
+
+        headers2 = _headers_for(user2.id, "farmer")
+        payload = {
+            "name": "Hijacked By Farmer 2",
+            "mobile": farmer1.mobile,
+            "state": "Haryana",
+            "primary_crop": "Maize",
+        }
+        r = client.post("/api/farmers", json=payload, headers=headers2)
+        assert r.status_code == 403
+        assert "permission" in r.json()["detail"].lower()
+
+        db_session.refresh(farmer1)
+        assert farmer1.name == "Farmer Victim"
+
+    # ── PROMPT 7B: Regression & Normalization Bypass Tests ──
+
+    def test_unauthenticated_exact_stored_mobile_rejected_and_data_unchanged(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="75", name="Pristine Farmer")
+        payload = {
+            "name": "Attacker Hijack Exact",
+            "mobile": farmer.mobile,
+            "state": "Malicious State",
+            "primary_crop": "Poppy",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 401
+        db_session.refresh(farmer)
+        assert farmer.name == "Pristine Farmer"
+        assert farmer.state == "Haryana"
+        assert farmer.primary_crop == "Wheat"
+
+    def test_unauthenticated_formatted_parentheses_mobile_rejected_and_data_unchanged(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="76", name="Parentheses Farmer")
+        # farmer.mobile is e.g. "9100000076". Format with parentheses: "(9100) 000076"
+        formatted_mobile = f"({farmer.mobile[:4]}) {farmer.mobile[4:]}"
+        payload = {
+            "name": "Attacker Hijack Parentheses",
+            "mobile": formatted_mobile,
+            "state": "Malicious State",
+            "primary_crop": "Poppy",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 401
+        db_session.refresh(farmer)
+        assert farmer.name == "Parentheses Farmer"
+        assert farmer.state == "Haryana"
+        assert farmer.primary_crop == "Wheat"
+
+    def test_unauthenticated_formatted_spaces_and_hyphens_mobile_rejected_and_data_unchanged(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="77", name="Hyphen Farmer")
+        # Format with spaces and hyphens: "9100-000-077"
+        formatted_mobile = f"{farmer.mobile[:4]}-{farmer.mobile[4:7]}-{farmer.mobile[7:]}"
+        payload = {
+            "name": "Attacker Hijack Hyphen",
+            "mobile": formatted_mobile,
+            "state": "Malicious State",
+            "primary_crop": "Poppy",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 401
+        db_session.refresh(farmer)
+        assert farmer.name == "Hyphen Farmer"
+        assert farmer.state == "Haryana"
+        assert farmer.primary_crop == "Wheat"
+
+    def test_unauthenticated_formatted_combination_mobile_rejected_and_data_unchanged(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="78", name="Combo Farmer")
+        # Format with combination: "(910) 000-0078"
+        formatted_mobile = f"({farmer.mobile[:3]}) {farmer.mobile[3:6]}-{farmer.mobile[6:]}"
+        payload = {
+            "name": "Attacker Hijack Combo",
+            "mobile": formatted_mobile,
+            "state": "Malicious State",
+            "primary_crop": "Poppy",
+        }
+        r = client.post("/api/farmers", json=payload)
+        assert r.status_code == 401
+        db_session.refresh(farmer)
+        assert farmer.name == "Combo Farmer"
+        assert farmer.state == "Haryana"
+        assert farmer.primary_crop == "Wheat"
+
+    def test_authenticated_farmer_can_update_own_profile_with_formatted_mobile(self, client, db_session):
+        user, farmer = _make_farmer_account(db_session, mobile_suffix="79", name="Self Format Farmer")
+        headers = _headers_for(user.id, "farmer")
+        formatted_mobile = f"({farmer.mobile[:4]}) {farmer.mobile[4:7]}-{farmer.mobile[7:]}"
+        payload = {
+            "name": "Legit Self Updated",
+            "mobile": formatted_mobile,
+            "state": "Punjab",
+            "primary_crop": "Barley",
+        }
+        r = client.post("/api/farmers", json=payload, headers=headers)
+        assert r.status_code == 200
+        assert r.json()["success"] is True
+
+        db_session.refresh(farmer)
+        assert farmer.name == "Legit Self Updated"
+        assert farmer.primary_crop == "Barley"
+        assert farmer.state == "Punjab"
+
+    def test_authenticated_farmer_cannot_overwrite_another_farmer_with_formatted_mobile(self, client, db_session):
+        user1, farmer1 = _make_farmer_account(db_session, mobile_suffix="80", name="Victim 80")
+        user2, farmer2 = _make_farmer_account(db_session, mobile_suffix="81", name="Attacker 81")
+
+        headers2 = _headers_for(user2.id, "farmer")
+        formatted_victim_mobile = f"({farmer1.mobile[:4]}) {farmer1.mobile[4:7]}-{farmer1.mobile[7:]}"
+        payload = {
+            "name": "Attacker Overwrite Via Format",
+            "mobile": formatted_victim_mobile,
+            "state": "Rajasthan",
+            "primary_crop": "Mustard",
+        }
+        r = client.post("/api/farmers", json=payload, headers=headers2)
+        assert r.status_code == 403
+        assert "permission" in r.json()["detail"].lower()
+
+        db_session.refresh(farmer1)
+        assert farmer1.name == "Victim 80"
+        assert farmer1.state == "Haryana"
+        assert farmer1.primary_crop == "Wheat"
+
+    def test_supplied_invalid_or_expired_token_returns_401_not_silent_anonymous(self, client, db_session):
+        # 1. Malformed token
+        r_malformed = client.post(
+            "/api/farmers",
+            json={"name": "Test", "mobile": "9990001122", "state": "Punjab"},
+            headers={"Authorization": "Bearer malformed.invalid.token"},
+        )
+        assert r_malformed.status_code == 401
+
+        # 2. Expired or wrong signature token
+        r_bad_sig = client.post(
+            "/api/farmers",
+            json={"name": "Test", "mobile": "9990001122", "state": "Punjab"},
+            headers={"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.t-IDcSemACt8x4iTMCda8Yhe3iZaWbvV5XKSTbuAn0M"},
+        )
+        assert r_bad_sig.status_code == 401
+
+    def test_empty_bearer_value_rejected(self, client, db_session):
+        """Phase 4 edge-case: 'Authorization: Bearer ' (empty string after Bearer) must return 401."""
+        r = client.post(
+            "/api/farmers",
+            json={"name": "Test", "mobile": "9990001133", "state": "Punjab"},
+            headers={"Authorization": "Bearer "},
+        )
+        assert r.status_code == 401, (
+            f"Empty Bearer value must not be treated as anonymous (got {r.status_code})"
+        )
+
+    def test_non_bearer_scheme_rejected(self, client, db_session):
+        """Phase 4 edge-case: 'Authorization: Basic ...' must return 401 for optional-auth endpoints."""
+        import base64
+        basic_cred = base64.b64encode(b"user:password").decode()
+        r = client.post(
+            "/api/farmers",
+            json={"name": "Test", "mobile": "9990001144", "state": "Punjab"},
+            headers={"Authorization": f"Basic {basic_cred}"},
+        )
+        assert r.status_code == 401, (
+            f"Non-Bearer authorization scheme must be rejected with 401 (got {r.status_code})"
+        )
+
+    def test_malformed_authorization_header_rejected(self, client, db_session):
+        """Phase 4 edge-case: 'Authorization: just-a-value' (no scheme) must return 401."""
+        r = client.post(
+            "/api/farmers",
+            json={"name": "Test", "mobile": "9990001155", "state": "Punjab"},
+            headers={"Authorization": "just-a-value-no-scheme"},
+        )
+        assert r.status_code == 401, (
+            f"Malformed Authorization header (no scheme) must be rejected with 401 (got {r.status_code})"
+        )

@@ -16,9 +16,9 @@ from ..schemas.portal_schemas import (
 router = APIRouter(prefix="/api/warehouse", tags=["Warehouse Owner Portal"])
 
 SCHEMA_FACILITY_NOTICE = (
-    "Direct facility and booking ownership linking is currently pending "
-    "approved Alembic migration (003_warehouse_facility_ownership: warehouse_owner_id column "
-    "in storage_facilities). Operational interface is functional."
+    "Facility and booking management features are currently unavailable pending "
+    "approved database schema migration (003_warehouse_facility_ownership: adding "
+    "warehouse_owner_id to storage_facilities) and implementation of ownership CRUD workflows."
 )
 
 
@@ -96,12 +96,14 @@ def update_my_warehouse_profile(
 
 @router.get("/me/dashboard", response_model=WarehouseDashboardResponse)
 def get_warehouse_dashboard(
-    current_user: User = Depends(require_approved_professional),
+    current_user: User = Depends(require_roles("warehouse_owner")),
+    approved_user: User = Depends(require_approved_professional),
     db: Session = Depends(get_db),
 ):
     """
     Operational dashboard for approved warehouse owners.
-    Enforces that unapproved/pending/rejected warehouse owners are denied (HTTP 403).
+    Enforces that unapproved/pending/rejected warehouse owners and non-warehouse roles (including admins)
+    are denied (HTTP 403).
     """
     profile = db.query(WarehouseOwnerProfile).filter_by(user_id=current_user.id).first()
     if not profile:
@@ -119,7 +121,8 @@ def get_warehouse_dashboard(
 
 @router.get("/facilities", response_model=WarehouseFacilitiesResponse)
 def get_warehouse_facilities(
-    current_user: User = Depends(require_approved_professional),
+    current_user: User = Depends(require_roles("warehouse_owner")),
+    approved_user: User = Depends(require_approved_professional),
     db: Session = Depends(get_db),
 ):
     """
@@ -136,7 +139,8 @@ def get_warehouse_facilities(
 
 @router.get("/bookings", response_model=WarehouseBookingsResponse)
 def get_warehouse_bookings(
-    current_user: User = Depends(require_approved_professional),
+    current_user: User = Depends(require_roles("warehouse_owner")),
+    approved_user: User = Depends(require_approved_professional),
     db: Session = Depends(get_db),
 ):
     """

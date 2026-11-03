@@ -4,7 +4,7 @@ Derived from actual existing ORM model fields and constraints.
 """
 
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from enum import Enum
 from pydantic import BaseModel, Field, field_validator
 
@@ -191,6 +191,48 @@ class AdminInsuranceListResponse(BaseModel):
     per_page: int
 
 
+class AdminPmfbyDetail(BaseModel):
+    id: int
+    crop_name: Optional[str] = None
+    land_records_verified: bool = False
+    sowing_date: Optional[date] = None
+    season: Optional[str] = None
+    premium_calculated: Optional[float] = None
+    enrollment_date: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class AdminInsuranceDetailResponse(BaseModel):
+    id: int
+    farmer_id: Optional[int] = None
+    farmer_name: str
+    farmer_mobile: Optional[str] = None
+    state: Optional[str] = None
+    district: Optional[str] = None
+    crop_name: Optional[str] = None
+    request_type: Optional[str] = None
+    description: Optional[str] = None
+    req_status: str
+    submitted_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    pmfby_enrollment: Optional[AdminPmfbyDetail] = None
+
+    class Config:
+        from_attributes = True
+
+
+class AdminInsuranceStatsResponse(BaseModel):
+    total: int = 0
+    pending: int = 0
+    processing: int = 0
+    approved: int = 0
+    rejected: int = 0
+    paid: int = 0
+    total_pmfby: int = 0
+
+
 class AdminLoanItem(BaseModel):
     id: int
     farmer_name: str
@@ -209,6 +251,32 @@ class AdminLoanListResponse(BaseModel):
     total: int
     page: int
     per_page: int
+
+
+class AdminLoanDetailResponse(BaseModel):
+    id: int
+    farmer_id: Optional[int] = None
+    farmer_name: str
+    farmer_mobile: Optional[str] = None
+    state: Optional[str] = None
+    village: Optional[str] = None
+    loan_amount: float
+    loan_type: Optional[str] = None
+    purpose: Optional[str] = None
+    app_status: str
+    submitted_at: Optional[datetime] = None
+    reviewed_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+
+class AdminLoanStatsResponse(BaseModel):
+    total: int = 0
+    pending: int = 0
+    under_review: int = 0
+    approved: int = 0
+    rejected: int = 0
 
 
 class AdminMentalHealthItem(BaseModel):

@@ -21,8 +21,7 @@ export default function Navbar() {
       return <Link to={path} style={{ fontWeight: '600', color: '#7e22ce' }}>🧠 Clinical Portal</Link>;
     }
     if (user.role === 'warehouse_owner') {
-      const path = user.profile_details?.is_approved ? '/portal/warehouse' : '/pending-approval';
-      return <Link to={path} style={{ fontWeight: '600', color: '#d97706' }}>🏬 Storage Portal</Link>;
+      return <Link to="/portal/warehouse" style={{ fontWeight: '600', color: '#d97706' }}>🏬 Storage Portal</Link>;
     }
     if (user.role === 'admin') {
       return <Link to="/portal/admin" style={{ fontWeight: '600', color: '#dc2626' }}>🔒 Admin</Link>;
