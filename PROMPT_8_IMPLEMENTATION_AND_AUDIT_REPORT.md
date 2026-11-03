@@ -50,7 +50,12 @@ All changes were implemented using the existing database models, schema CHECK co
   - Added alias endpoints `/api/farmers/me/insurance-history` and `/api/farmers/me/loan-history`.
   - Maintained cross-farmer privacy isolation: Farmer A cannot view or manipulate records belonging to Farmer B.
 
-### Frontend Modifications:
+### Frontend Modifications & Audit Alignment:
+- **`client/src/services/financialHelpers.js`** *(New)*:
+  - Created single-source-of-truth production helper module exporting `filterInsuranceRequests`, `filterLoanApplications`, `formatFinancialSummary`, `formatPmfbyDetails`, `formatAdminInsuranceDetail`, `formatFarmerInsuranceDetail`, `INSURANCE_STATUS_OPTIONS`, and `LOAN_STATUS_OPTIONS`.
+  - Strictly maps PMFBY fields (`land_records_verified`, `premium_calculated`, `enrollment_date`, `season`, `sowing_date`, `crop_name`) and rejects nonexistent keys (`land_verified`, `calculated_premium`, `created_at`, `year`).
+  - Formats farmer financial summaries based strictly on real application counts and statuses without inventing monetary data or calculating fake claim payouts or credit disbursals.
+  - Strips unsupported insurance fields (`policy_number`, `sum_insured`, `premium_amount`, `claim_status`, `land_size_ha`) from admin and farmer detail formatting.
 - **`client/src/pageStyles/admin.css`**:
   - Added styling for `.admin-search-input`, `.admin-stats-pills`, and `.admin-stat-pill` with color badges for pending, processing, approved, rejected, and PMFBY enrolled.
 - **`client/src/pages/portals/AdminPortalPage.jsx`**:
@@ -58,19 +63,29 @@ All changes were implemented using the existing database models, schema CHECK co
     - Live stats pills strip (`Total Requests`, `Pending`, `Processing`, `Approved`, `Rejected`, `PMFBY Enrolled`).
     - Search input supporting search by ID, farmer name, crop, and district.
     - Status filter dropdown.
-    - "View" detail inspection panel rendering complete applicant details, crop info, financial amounts, and PMFBY enrollment status.
-    - Status update modal with state transition guards.
+    - "View" detail inspection panel rendering complete applicant details and PMFBY enrollment status using `formatAdminInsuranceDetail`.
+    - Removed unsupported fields: `policy_number`, `sum_insured`, `premium_amount`, `claim_status`, `land_size_ha`.
+    - Aligned PMFBY fields with actual backend schema: `land_records_verified`, `premium_calculated`, `enrollment_date`, `season`, `sowing_date`, `crop_name`.
+    - Status update modal with state transition guards (`INSURANCE_STATUS_OPTIONS`).
   - **Loans Section**:
     - Live stats pills strip (`Total Applications`, `Pending`, `Under Review`, `Approved`, `Rejected`).
     - Search input supporting search by ID, farmer name, village, and loan type.
     - Status filter dropdown.
     - "View" detail inspection panel rendering complete applicant details, credit amounts, purpose, and review timestamps.
-    - Status update modal with state transition guards.
+    - Status update modal with state transition guards (`LOAN_STATUS_OPTIONS`).
 - **`client/src/pages/portals/FarmerDashboardPage.jsx`**:
   - Integrated `loadFinancialHistory()` fetching from `/api/farmers/me/financial-history`.
-  - Rendered "Financial History & Claim Benefits" consolidated summary cards in the Overview tab.
-  - Added search input and status filter in the "Crop Insurance" tab with "View Details" inspection modal.
-  - Added search input and status filter in the "Loans & Credit" tab with "View Details" inspection modal.
+  - Replaced misleading cards ("Approved Claims Payout", "Approved Credit Disbursal", "Consolidated Net Benefit") with accurate application counts and status summaries (`Insurance Applications`, `Credit Applications`, `Total Financial Requests`) via `formatFinancialSummary`.
+  - Added search input and status filter in the "Crop Insurance" tab using `filterInsuranceRequests` with "View Details" inspection modal strictly using `formatFarmerInsuranceDetail`.
+  - Added search input and status filter in the "Loans & Credit" tab using `filterLoanApplications` with "View Details" inspection modal.
+- **`client/tests/frontend_insurance_loan_admin.test.mjs`**:
+  - Updated to directly import and exercise actual exported production helpers (`client/src/services/financialHelpers.js`).
+  - Added regression test cases for:
+    - Financial summary fields and labels (application counts only, no fake money).
+    - PMFBY response field names (`land_records_verified`, `premium_calculated`, `enrollment_date`, `season`, `sowing_date`, `crop_name`).
+    - Missing optional data (null/undefined safety).
+    - Insurance and loan status display and transitions.
+    - Farmer financial-history isolation contract.
 - **`package.json`**:
   - Added test script `"test:financial": "node --test client/tests/frontend_insurance_loan_admin.test.mjs"`.
 

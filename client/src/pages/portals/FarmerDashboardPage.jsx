@@ -2,6 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
+import {
+  formatFinancialSummary,
+  formatFarmerInsuranceDetail,
+  filterInsuranceRequests,
+  filterLoanApplications
+} from '../../services/financialHelpers.js';
 import '../../pageStyles/portal.css';
 
 export default function FarmerDashboardPage() {
@@ -323,43 +329,46 @@ export default function FarmerDashboardPage() {
               </div>
 
               {/* Consolidated Financial History Summary */}
-              {financialHistory?.summary && (
-                <div className="portal-card-box" style={{ background: '#f8fafc', border: '1px solid var(--portal-border)' }}>
-                  <div className="portal-card-box-header">
-                    <h2>💳 Financial History & Claim Benefits</h2>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <button className="portal-btn btn-cancel" onClick={() => handleTabChange('insurance')}>Insurance Records</button>
-                      <button className="portal-btn btn-cancel" onClick={() => handleTabChange('loans')}>Loan Records</button>
+              {financialHistory?.summary && (() => {
+                const summaryStats = formatFinancialSummary(financialHistory.summary);
+                return (
+                  <div className="portal-card-box" style={{ background: '#f8fafc', border: '1px solid var(--portal-border)' }}>
+                    <div className="portal-card-box-header">
+                      <h2>💳 Financial & Credit Application Summary</h2>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button className="portal-btn btn-cancel" onClick={() => handleTabChange('insurance')}>Insurance Records</button>
+                        <button className="portal-btn btn-cancel" onClick={() => handleTabChange('loans')}>Loan Records</button>
+                      </div>
+                    </div>
+                    <div className="portal-stats-grid" style={{ marginBottom: 0 }}>
+                      <div className="portal-stat-card">
+                        <div className="portal-stat-icon-wrap blue">🛡️</div>
+                        <div className="portal-stat-info">
+                          <h3>{summaryStats.totalInsurance}</h3>
+                          <p>Insurance Applications</p>
+                          <small style={{ color: 'var(--portal-text-muted)' }}>{summaryStats.insuranceStatusText}</small>
+                        </div>
+                      </div>
+                      <div className="portal-stat-card">
+                        <div className="portal-stat-icon-wrap purple">💰</div>
+                        <div className="portal-stat-info">
+                          <h3>{summaryStats.totalLoans}</h3>
+                          <p>Credit Applications</p>
+                          <small style={{ color: 'var(--portal-text-muted)' }}>{summaryStats.loanStatusText}</small>
+                        </div>
+                      </div>
+                      <div className="portal-stat-card">
+                        <div className="portal-stat-icon-wrap green">🌾</div>
+                        <div className="portal-stat-info">
+                          <h3>{summaryStats.totalApplications}</h3>
+                          <p>Total Financial Requests</p>
+                          <small style={{ color: 'var(--portal-text-muted)' }}>{summaryStats.consolidatedStatusText}</small>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="portal-stats-grid" style={{ marginBottom: 0 }}>
-                    <div className="portal-stat-card">
-                      <div className="portal-stat-icon-wrap blue">🛡️</div>
-                      <div className="portal-stat-info">
-                        <h3>₹{Number(financialHistory.summary.approved_insurance_amount || 0).toLocaleString('en-IN')}</h3>
-                        <p>Approved Claims Payout</p>
-                        <small style={{ color: 'var(--portal-text-muted)' }}>{financialHistory.summary.total_insurance_requests} total ({financialHistory.summary.pending_insurance_requests} pending)</small>
-                      </div>
-                    </div>
-                    <div className="portal-stat-card">
-                      <div className="portal-stat-icon-wrap purple">💰</div>
-                      <div className="portal-stat-info">
-                        <h3>₹{Number(financialHistory.summary.approved_loan_amount || 0).toLocaleString('en-IN')}</h3>
-                        <p>Approved Credit Disbursal</p>
-                        <small style={{ color: 'var(--portal-text-muted)' }}>{financialHistory.summary.total_loan_applications} total ({financialHistory.summary.pending_loan_applications} under review)</small>
-                      </div>
-                    </div>
-                    <div className="portal-stat-card">
-                      <div className="portal-stat-icon-wrap green">✅</div>
-                      <div className="portal-stat-info">
-                        <h3>₹{Number((financialHistory.summary.approved_insurance_amount || 0) + (financialHistory.summary.approved_loan_amount || 0)).toLocaleString('en-IN')}</h3>
-                        <p>Consolidated Net Benefit</p>
-                        <small style={{ color: 'var(--portal-text-muted)' }}>Approved Insurance + Credit</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Quick Actions Grid */}
               <div className="portal-card-box">
@@ -512,18 +521,7 @@ export default function FarmerDashboardPage() {
              TAB 3: INSURANCE
              ═══════════════════════════════════════════════════════════════ */}
           {activeTab === 'insurance' && (() => {
-            const filteredRequests = (insuranceData?.requests || []).filter((r) => {
-              if (insuranceStatusFilter && r.req_status !== insuranceStatusFilter) return false;
-              if (insuranceSearch.trim()) {
-                const q = insuranceSearch.toLowerCase();
-                const matchCrop = (r.crop_name || '').toLowerCase().includes(q);
-                const matchType = (r.request_type || '').toLowerCase().includes(q);
-                const matchDistrict = (r.district || '').toLowerCase().includes(q);
-                const matchId = String(r.id).includes(q);
-                return matchCrop || matchType || matchDistrict || matchId;
-              }
-              return true;
-            });
+            const filteredRequests = filterInsuranceRequests(insuranceData?.requests, insuranceSearch, insuranceStatusFilter);
 
             return (
               <div className="portal-card-box">
@@ -611,17 +609,7 @@ export default function FarmerDashboardPage() {
              TAB 4: LOANS & CREDIT
              ═══════════════════════════════════════════════════════════════ */}
           {activeTab === 'loans' && (() => {
-            const filteredApplications = (loanData?.applications || []).filter((l) => {
-              if (loanStatusFilter && l.app_status !== loanStatusFilter) return false;
-              if (loanSearch.trim()) {
-                const q = loanSearch.toLowerCase();
-                const matchType = (l.loan_type || '').toLowerCase().includes(q);
-                const matchPurpose = (l.purpose || '').toLowerCase().includes(q);
-                const matchId = String(l.id).includes(q);
-                return matchType || matchPurpose || matchId;
-              }
-              return true;
-            });
+            const filteredApplications = filterLoanApplications(loanData?.applications, loanSearch, loanStatusFilter);
 
             return (
               <div className="portal-card-box">
@@ -950,41 +938,33 @@ export default function FarmerDashboardPage() {
       )}
 
       {/* ── Insurance Detail Inspection Modal ── */}
-      {selectedInsurance && (
-        <div className="portal-modal-overlay" onClick={() => setSelectedInsurance(null)}>
-          <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
-            <div className="portal-modal-header">
-              <h3>🛡️ Insurance Application #{selectedInsurance.id}</h3>
-              <button className="portal-modal-close" onClick={() => setSelectedInsurance(null)}>✕</button>
-            </div>
-            <div className="portal-modal-body">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '16px' }}>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Request Type</label><div style={{ fontWeight: 600 }}>{selectedInsurance.request_type}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Crop</label><div style={{ fontWeight: 600 }}>{selectedInsurance.crop_name || '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>District</label><div style={{ fontWeight: 600 }}>{selectedInsurance.district || '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${selectedInsurance.req_status}`}>{selectedInsurance.req_status}</span></div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Policy Number</label><div>{selectedInsurance.policy_number || '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Land Size (ha)</label><div>{selectedInsurance.land_size_ha != null ? `${selectedInsurance.land_size_ha} ha` : '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Sum Insured</label><div>{selectedInsurance.sum_insured != null ? `₹${Number(selectedInsurance.sum_insured).toLocaleString('en-IN')}` : '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Premium Amount</label><div>{selectedInsurance.premium_amount != null ? `₹${Number(selectedInsurance.premium_amount).toLocaleString('en-IN')}` : '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Claim Status</label><div>{selectedInsurance.claim_status || '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{selectedInsurance.submitted_at ? new Date(selectedInsurance.submitted_at).toLocaleString() : '—'}</div></div>
+      {selectedInsurance && (() => {
+        const ins = formatFarmerInsuranceDetail(selectedInsurance);
+        return (
+          <div className="portal-modal-overlay" onClick={() => setSelectedInsurance(null)}>
+            <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
+              <div className="portal-modal-header">
+                <h3>🛡️ Insurance Application #{ins.id}</h3>
+                <button className="portal-modal-close" onClick={() => setSelectedInsurance(null)}>✕</button>
               </div>
-              {selectedInsurance.description && (
-                <div style={{ marginTop: '14px', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--portal-text-muted)' }}>Damage Description / Notes</label>
-                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>{selectedInsurance.description}</p>
+              <div className="portal-modal-body">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Request Type</label><div style={{ fontWeight: 600 }}>{ins.request_type}</div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Crop</label><div style={{ fontWeight: 600 }}>{ins.crop_name}</div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>District</label><div style={{ fontWeight: 600 }}>{ins.district}</div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${ins.req_status}`}>{ins.req_status}</span></div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{ins.submitted_date}</div></div>
                 </div>
-              )}
-            </div>
-            <div className="portal-modal-footer">
-              <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedInsurance(null)}>
-                Close
-              </button>
+              </div>
+              <div className="portal-modal-footer">
+                <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedInsurance(null)}>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* ── Loan Detail Inspection Modal ── */}
       {selectedLoan && (

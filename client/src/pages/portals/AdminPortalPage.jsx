@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
+import { INSURANCE_STATUS_OPTIONS, LOAN_STATUS_OPTIONS, formatAdminInsuranceDetail } from '../../services/financialHelpers.js';
 import '../../pageStyles/admin.css';
 
 const API = '/api/admin';
@@ -618,55 +619,55 @@ function InsuranceSection() {
   };
 
   const totalPages = Math.ceil(data.total / perPage);
-  const statusOptions = { pending: ['processing', 'approved', 'rejected'], processing: ['approved', 'rejected'], approved: ['paid'] };
+  const statusOptions = INSURANCE_STATUS_OPTIONS;
 
   if (viewItem) {
+    const formatted = formatAdminInsuranceDetail(viewItem);
+    const pmfby = formatted?.pmfby_enrollment;
+
     return (
       <>
         <button className="admin-back-btn" onClick={() => setViewItem(null)}>← Back to Insurance Requests</button>
         <div className="admin-detail-panel">
-          <h3>🛡️ Insurance Request #{viewItem.id}</h3>
+          <h3>🛡️ Insurance Request #{formatted.id}</h3>
           <div className="admin-detail-grid">
-            <div className="admin-detail-field"><label>Farmer Name</label><span>{viewItem.farmer_name}</span></div>
-            <div className="admin-detail-field"><label>Farmer ID</label><span>#{viewItem.farmer_id}</span></div>
-            <div className="admin-detail-field"><label>Mobile</label><span>{viewItem.farmer_mobile || '—'}</span></div>
-            <div className="admin-detail-field"><label>Location</label><span>{viewItem.district ? `${viewItem.district}, ` : ''}{viewItem.state || '—'}</span></div>
-            <div className="admin-detail-field"><label>Request Type</label><span>{viewItem.request_type || '—'}</span></div>
-            <div className="admin-detail-field"><label>Crop Name</label><span>{viewItem.crop_name || '—'}</span></div>
+            <div className="admin-detail-field"><label>Farmer Name</label><span>{formatted.farmer_name}</span></div>
+            <div className="admin-detail-field"><label>Farmer ID</label><span>{formatted.farmer_id}</span></div>
+            <div className="admin-detail-field"><label>Mobile</label><span>{formatted.farmer_mobile}</span></div>
+            <div className="admin-detail-field"><label>Location</label><span>{formatted.location}</span></div>
+            <div className="admin-detail-field"><label>Request Type</label><span>{formatted.request_type}</span></div>
+            <div className="admin-detail-field"><label>Crop Name</label><span>{formatted.crop_name}</span></div>
             <div className="admin-detail-field">
               <label>Status</label>
-              <span className={`admin-status-badge status-${viewItem.req_status}`}>{viewItem.req_status}</span>
+              <span className={`admin-status-badge status-${formatted.req_status}`}>{formatted.req_status}</span>
             </div>
-            <div className="admin-detail-field"><label>Land Size</label><span>{viewItem.land_size_ha != null ? `${viewItem.land_size_ha} ha` : '—'}</span></div>
-            <div className="admin-detail-field"><label>Sowing Date</label><span>{viewItem.sowing_date || '—'}</span></div>
-            <div className="admin-detail-field"><label>Policy Number</label><span>{viewItem.policy_number || '—'}</span></div>
-            <div className="admin-detail-field"><label>Sum Insured</label><span>{viewItem.sum_insured != null ? `₹${Number(viewItem.sum_insured).toLocaleString('en-IN')}` : '—'}</span></div>
-            <div className="admin-detail-field"><label>Premium Amount</label><span>{viewItem.premium_amount != null ? `₹${Number(viewItem.premium_amount).toLocaleString('en-IN')}` : '—'}</span></div>
-            <div className="admin-detail-field"><label>Claim Status</label><span>{viewItem.claim_status || '—'}</span></div>
-            <div className="admin-detail-field"><label>Submitted Date</label><span>{viewItem.submitted_at ? new Date(viewItem.submitted_at).toLocaleString() : '—'}</span></div>
+            <div className="admin-detail-field"><label>Submitted Date</label><span>{formatted.submitted_date}</span></div>
+            <div className="admin-detail-field"><label>Last Updated</label><span>{formatted.updated_date}</span></div>
           </div>
 
-          {viewItem.description && (
+          {formatted.description && (
             <div style={{ marginTop: 18 }}>
               <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Description / Remarks</label>
-              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.description}</p>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{formatted.description}</p>
             </div>
           )}
 
-          {viewItem.pmfby_enrollment && (
+          {pmfby && (
             <div style={{ marginTop: 22, paddingTop: 16, borderTop: '1px solid var(--border)' }}>
               <h4 style={{ margin: '0 0 12px', color: 'var(--green)' }}>🌾 PMFBY Scheme Enrollment Details</h4>
               <div className="admin-detail-grid">
-                <div className="admin-detail-field"><label>PMFBY Record ID</label><span>#{viewItem.pmfby_enrollment.id}</span></div>
-                <div className="admin-detail-field"><label>Season / Year</label><span>{viewItem.pmfby_enrollment.season || '—'} {viewItem.pmfby_enrollment.year || ''}</span></div>
-                <div className="admin-detail-field"><label>Land Verified</label><span>{viewItem.pmfby_enrollment.land_verified ? '✅ Verified' : '⚠️ Pending'}</span></div>
-                <div className="admin-detail-field"><label>Calculated Premium</label><span>{viewItem.pmfby_enrollment.calculated_premium != null ? `₹${Number(viewItem.pmfby_enrollment.calculated_premium).toLocaleString('en-IN')}` : '—'}</span></div>
-                <div className="admin-detail-field"><label>Enrollment Date</label><span>{viewItem.pmfby_enrollment.created_at ? new Date(viewItem.pmfby_enrollment.created_at).toLocaleDateString() : '—'}</span></div>
+                <div className="admin-detail-field"><label>PMFBY Record ID</label><span>#{pmfby.id}</span></div>
+                <div className="admin-detail-field"><label>Crop Name</label><span>{pmfby.crop_name}</span></div>
+                <div className="admin-detail-field"><label>Season</label><span>{pmfby.season}</span></div>
+                <div className="admin-detail-field"><label>Sowing Date</label><span>{pmfby.sowing_date}</span></div>
+                <div className="admin-detail-field"><label>Land Records Verified</label><span>{pmfby.land_records_verified}</span></div>
+                <div className="admin-detail-field"><label>Premium Calculated</label><span>{pmfby.premium_calculated}</span></div>
+                <div className="admin-detail-field"><label>Enrollment Date</label><span>{pmfby.enrollment_date}</span></div>
               </div>
             </div>
           )}
 
-          {statusOptions[viewItem.req_status] && (
+          {statusOptions[viewItem.req_status]?.length > 0 && (
             <div style={{ marginTop: 20 }}>
               <button
                 className="admin-btn admin-btn-status"
@@ -888,7 +889,7 @@ function LoansSection() {
   };
 
   const totalPages = Math.ceil(data.total / perPage);
-  const statusOptions = { pending: ['under_review', 'approved', 'rejected'], under_review: ['approved', 'rejected'] };
+  const statusOptions = LOAN_STATUS_OPTIONS;
 
   if (viewItem) {
     return (
