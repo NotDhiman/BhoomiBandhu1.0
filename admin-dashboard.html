@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | BhoomiBandhu 2.0</title>
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <style>
+    .dash-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+    .dash-nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--c-cream-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.75rem 1.5rem;
+    }
+    .dash-nav-flex {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .admin-hero {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem;
+      color: #ffffff;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .badge-admin {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .table-container {
+      background: #ffffff;
+      border: 1px solid var(--c-cream-border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    th {
+      background: var(--c-cream-card);
+      padding: 14px 16px;
+      font-weight: 700;
+      color: var(--c-forest-dark);
+      border-bottom: 1px solid var(--c-cream-border);
+    }
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0ede4;
+      color: var(--c-text-main);
+    }
+    .role-badge {
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .role-farmer { background: #d1fae5; color: #065f46; }
+    .role-provider { background: #fef3c7; color: #92400e; }
+    .role-admin { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body style="background-color: var(--c-cream-bg);">
+
+  <!-- Admin Navbar -->
+  <nav class="dash-nav">
+    <div class="dash-nav-flex">
+      <div style="display:flex; align-items:center; gap:16px;">
+        <a href="index.html" class="brand-badge" style="background:#0f172a; text-decoration:none;">
+          <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+          <div class="brand-name" style="font-size:1.15rem;">BhoomiBandhu <span class="brand-version" style="background:#ef4444; color:#fff;">ADMIN</span></div>
+        </a>
+        <a href="index.html" class="back-link">Portal Home</a>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:14px;">
+        <div style="text-align:right;">
+          <div style="font-weight:700; font-size:0.92rem; color:var(--c-forest-dark);" id="navAdminName">Platform Administrator</div>
+          <div style="font-size:0.75rem; color:#dc2626; font-weight:600;">🛡️ Superuser Governance</div>
+        </div>
+        <button onclick="handleLogout()" class="back-link" style="background:#fee2e2; border-color:#fca5a5; color:#991b1b; cursor:pointer;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dash-container">
+    
+    <!-- Admin Hero -->
+    <header class="admin-hero">
+      <div class="badge-admin">
+        <span>🛡️</span>
+        <span>Platform Administration & Security Governance</span>
+      </div>
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem;">
+        BhoomiBandhu Platform Management
+      </h1>
+      <p style="max-width: 650px; opacity: 0.9; font-size: 1.05rem; line-height: 1.6;">
+        Monitor real-time agricultural telemetry, manage verified farmer credentials, review machinery provider compliance, and oversee system health.
+      </p>
+    </header>
+
+    <!-- Platform Telemetry Metrics -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:2rem;">
+      <div style="background:#fff; border:1px solid var(--c-cream-border); border-radius:12px; padding:1.5rem;">
+        <div style="font-size:0.85rem; color:var(--c-text-muted); font-weight:600;">Total Registered Users</div>
+        <div style="font-size:1.8rem; font-weight:800; color:var(--c-forest-dark);" id="statTotal">--</div>
+        <div style="font-size:0.78rem; color:#16a34a; font-weight:600; margin-top:4px;">Persisted in Database</div>
+      </div>
+      <div style="background:#fff; border:1px solid var(--c-cream-border); border-radius:12px; padding:1.5rem;">
+        <div style="font-size:0.85rem; color:var(--c-text-muted); font-weight:600;">Farmers Enrolled</div>
+        <div style="font-size:1.8rem; font-weight:800; color:var(--c-forest);" id="statFarmers">--</div>
+        <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;">PMFBY & AI Eligible</div>
+      </div>
+      <div style="background:#fff; border:1px solid var(--c-cream-border); border-radius:12px; padding:1.5rem;">
+        <div style="font-size:0.85rem; color:var(--c-text-muted); font-weight:600;">Service Providers</div>
+        <div style="font-size:1.8rem; font-weight:800; color:#b45309;" id="statProviders">--</div>
+        <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;">Machinery & Drone Partners</div>
+      </div>
+      <div style="background:#fff; border:1px solid var(--c-cream-border); border-radius:12px; padding:1.5rem;">
+        <div style="font-size:0.85rem; color:var(--c-text-muted); font-weight:600;">Database & API Status</div>
+        <div style="font-size:1.25rem; font-weight:800; color:#16a34a; margin-top:6px;" id="statHealth">Active (Connected)</div>
+        <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;">PostgreSQL / JSON Sync</div>
+      </div>
+    </div>
+
+    <!-- User Management Table -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+      <h2 style="font-size:1.35rem; color:var(--c-forest-dark); font-weight:800;">
+        Registered Platform Users
+      </h2>
+      <button onclick="loadUsersTable()" class="back-link" style="cursor:pointer;">
+        🔄 Refresh Users
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Full Name</th>
+            <th>Mobile Number</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Registered At</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <tr>
+            <td colspan="7" style="text-align:center; padding:20px;">Loading users...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    const token = localStorage.getItem('bb_token');
+    const userRaw = localStorage.getItem('bb_user');
+
+    if (!token || !userRaw) {
+      window.location.href = 'login.html';
+    } else {
+      try {
+        const user = JSON.parse(userRaw);
+        if (user.role !== 'admin') {
+          alert('Access denied: Administrator credentials required.');
+          window.location.href = user.role === 'service_provider' ? '/dashboard/provider' : '/dashboard/farmer';
+        }
+        document.getElementById('navAdminName').innerText = user.full_name || 'Administrator';
+        loadAdminStats();
+        loadUsersTable();
+      } catch (e) {
+        window.location.href = 'login.html';
+      }
+    }
+
+    async function loadAdminStats() {
+      try {
+        const res = await fetch('/api/auth/admin/stats', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.stats) {
+          document.getElementById('statTotal').innerText = data.stats.totalUsers;
+          document.getElementById('statFarmers').innerText = data.stats.farmers;
+          document.getElementById('statProviders').innerText = data.stats.serviceProviders;
+          document.getElementById('statHealth').innerText = data.stats.systemHealth;
+        }
+      } catch (e) {
+        console.error('Failed to load stats:', e);
+      }
+    }
+
+    async function loadUsersTable() {
+      const tbody = document.getElementById('usersTableBody');
+      try {
+        const res = await fetch('/api/auth/admin/users', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success && data.users) {
+          tbody.innerHTML = '';
+          data.users.forEach(u => {
+            const tr = document.createElement('tr');
+            const roleClass = u.role === 'admin' ? 'role-admin' : (u.role === 'service_provider' ? 'role-provider' : 'role-farmer');
+            const roleLabel = u.role === 'admin' ? 'Administrator' : (u.role === 'service_provider' ? 'Service Provider' : 'Farmer');
+
+            tr.innerHTML = `
+              <td><strong>#${u.id}</strong></td>
+              <td><strong>${u.full_name}</strong></td>
+              <td>${u.mobile}</td>
+              <td>${u.email || '—'}</td>
+              <td><span class="role-badge ${roleClass}">${roleLabel}</span></td>
+              <td><span style="color:#16a34a; font-weight:700;">● ${u.status || 'Active'}</span></td>
+              <td style="color:#666; font-size:0.8rem;">${new Date(u.created_at || Date.now()).toLocaleDateString()}</td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+      } catch (e) {
+        tbody.innerHTML = '<tr><td colspan="7" style="color:red; text-align:center;">Failed to retrieve user list.</td></tr>';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('bb_token');
+      localStorage.removeItem('bb_user');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

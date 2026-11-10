@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In | BhoomiBandhu 2.0 – Agricultural Empowerment Platform</title>
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+</head>
+<body>
+
+  <!-- Floating animated decorative leaves -->
+  <svg class="floating-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C25 25 15 60 50 95C85 60 75 25 50 5Z" fill="#52b788" fill-opacity="0.25"/>
+    <path d="M50 5V95" stroke="#40916c" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+  <svg class="floating-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C25 25 15 60 50 95C85 60 75 25 50 5Z" fill="#f6b73c" fill-opacity="0.2"/>
+    <path d="M50 5V95" stroke="#e67e22" stroke-width="2" stroke-opacity="0.25"/>
+  </svg>
+  <svg class="floating-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C25 25 15 60 50 95C85 60 75 25 50 5Z" fill="#74c69d" fill-opacity="0.22"/>
+  </svg>
+
+  <div class="auth-viewport">
+
+    <!-- =========================================================
+         LEFT PANEL: Agricultural Visual Experience
+         ========================================================= -->
+    <aside class="auth-panel-visual">
+      <!-- High quality agricultural background landscape with sunrise -->
+      <img
+        src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1600&q=80"
+        alt="Lush green agricultural fields at golden sunrise"
+        class="visual-bg-media"
+        onerror="this.style.display='none'"
+      />
+      
+      <!-- Multi-layered dark-green and warm sunlight overlay -->
+      <div class="visual-overlay"></div>
+      <div class="sunlight-glow"></div>
+
+      <!-- Top: Brand Identity -->
+      <div class="visual-content-top">
+        <a href="index.html" class="brand-badge" title="Go to BhoomiBandhu Home">
+          <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu Logo">
+          <div class="brand-name">
+            BhoomiBandhu
+            <span class="brand-version">2.0</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Middle: Vision, Headline & Feature Highlights -->
+      <div class="visual-content-middle">
+        <h1 class="visual-headline" id="txt-headline">
+          Growing Together, <br>
+          <span class="highlight">Empowering Every Farmer.</span>
+        </h1>
+
+        <p class="visual-tagline" id="txt-tagline">
+          Your trusted digital companion for smarter farming, financial security and a healthier agricultural future.
+        </p>
+
+        <!-- Three Small Visual Highlights -->
+        <div class="feature-pills">
+          <div class="feature-pill">
+            <span class="feature-pill-icon">🌱</span>
+            <span id="txt-feat-smart">Smart Farming</span>
+          </div>
+          <div class="feature-pill">
+            <span class="feature-pill-icon">🛡️</span>
+            <span id="txt-feat-security">Financial Security</span>
+          </div>
+          <div class="feature-pill">
+            <span class="feature-pill-icon">💡</span>
+            <span id="txt-feat-intelligence">Agricultural Intelligence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom: Tasteful Floating Motivational Card -->
+      <div class="visual-content-bottom">
+        <div class="motivational-card">
+          <div class="motivational-header">
+            <span class="motivational-icon">🌾</span>
+            <span class="motivational-title" id="txt-card-title">Kisan Prerna • Farmer Inspiration</span>
+          </div>
+          <blockquote class="motivational-quote" id="txt-quote">
+            "When the soil is nourished and the farmer is supported, a nation prospers."
+          </blockquote>
+          <span class="motivational-author" id="txt-quote-author">— BhoomiBandhu Agricultural Collective</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- =========================================================
+         RIGHT PANEL: Authentication Experience
+         ========================================================= -->
+    <main class="auth-panel-form">
+      
+      <!-- Top Bar: Back to Home & Language Switcher -->
+      <div class="auth-top-bar">
+        <a href="index.html" class="back-link">
+          ← <span id="txt-back-home">Back to Home</span>
+        </a>
+
+        <!-- Dual Language Toggle (English / हिन्दी) -->
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">English</button>
+          <button type="button" class="lang-btn" id="btn-lang-hi" onclick="setLanguage('hi')">हिन्दी</button>
+        </div>
+      </div>
+
+      <!-- Central Login Form Card -->
+      <div class="auth-form-card">
+        
+        <header class="auth-header">
+          <div class="auth-greeting-badge">
+            <span>✨</span>
+            <span id="txt-badge">Digital Agriculture Portal</span>
+          </div>
+          <h2 class="auth-title" id="txt-welcome">Welcome Back!</h2>
+          <p class="auth-subtitle" id="txt-subtitle">
+            Your farming journey continues here. Sign in to access your personalized agricultural dashboard.
+          </p>
+        </header>
+
+        <!-- Dynamic Alert Message (Error / Success) -->
+        <div id="authAlert" class="auth-alert" style="display: none;"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
+          
+          <!-- Email or Mobile Input -->
+          <div class="form-group">
+            <label for="identifier" class="form-label" id="txt-label-id">
+              Email Address or Mobile Number
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">👤</span>
+              <input
+                type="text"
+                id="identifier"
+                name="identifier"
+                class="form-input"
+                placeholder="e.g. 9823456789 or farmer@domain.com"
+                required
+                autocomplete="username"
+              >
+            </div>
+          </div>
+
+          <!-- Password Input with Show/Hide Toggle -->
+          <div class="form-group">
+            <label for="password" class="form-label" id="txt-label-pass">
+              Password
+            </label>
+            <div class="input-wrapper">
+              <span class="input-icon">🔒</span>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input"
+                placeholder="Enter your secure password"
+                required
+                autocomplete="current-password"
+              >
+              <button
+                type="button"
+                class="toggle-password"
+                onclick="togglePasswordVisibility('password', this)"
+                aria-label="Toggle password visibility"
+                title="Show / Hide Password"
+              >
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me & Forgot Password Row -->
+          <div class="form-row-actions">
+            <label class="checkbox-label">
+              <input type="checkbox" id="rememberMe" class="checkbox-input" checked>
+              <span id="txt-remember">Remember me</span>
+            </label>
+            <a href="forgot-password.html" class="forgot-password-link" id="txt-forgot">
+              Forgot password?
+            </a>
+          </div>
+
+          <!-- Prominent Green Login Button -->
+          <button type="submit" id="loginBtn" class="btn-primary-green">
+            <span id="loginBtnText">Sign In to Dashboard</span>
+            <span class="btn-arrow">→</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="divider-text">
+            <span id="txt-or">Or continue with</span>
+          </div>
+
+          <!-- Google Sign-in Option -->
+          <button type="button" class="btn-google" onclick="handleGoogleSignIn()">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span id="txt-google">Sign in with Google</span>
+          </button>
+
+          <!-- Register Link -->
+          <div class="auth-form-footer">
+            <span id="txt-no-account">Don't have an account yet?</span>
+            <a href="register.html" id="txt-create-link">Create Account</a>
+          </div>
+
+          <!-- Quick Test / Demo Credentials Box -->
+          <div class="demo-credentials-box">
+            <div class="demo-title">
+              <span>🌾</span>
+              <strong>Quick Role Switcher for Testing:</strong>
+            </div>
+            <div class="demo-row">
+              <span>Farmer (Ramesh):</span>
+              <a class="demo-badge-fill" onclick="fillDemo('9823456789', 'Kisan@12345')">9823456789 / Kisan@12345</a>
+            </div>
+            <div class="demo-row">
+              <span>Service Provider:</span>
+              <a class="demo-badge-fill" onclick="fillDemo('9811223344', 'Service@12345')">9811223344 / Service@12345</a>
+            </div>
+            <div class="demo-row">
+              <span>Platform Admin:</span>
+              <a class="demo-badge-fill" onclick="fillDemo('admin@bhoomibandhu.in', 'Admin@12345')">admin@bhoomibandhu.in / Admin@12345</a>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Footer copyright -->
+      <footer style="text-align: center; font-size: 0.8rem; color: var(--c-text-light); margin-top: 2rem;">
+        © 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Welfare Initiative
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- Google Sign In Simulation Modal -->
+  <div id="googleModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#fff; border-radius:16px; max-width:400px; width:100%; padding:24px; box-shadow:0 20px 40px rgba(0,0,0,0.3); text-align:center;">
+      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" style="width:50px; margin-bottom:12px;" alt="BhoomiBandhu">
+      <h3 style="font-size:1.2rem; color:var(--c-forest-dark); margin-bottom:8px;">Sign in with Google</h3>
+      <p style="font-size:0.88rem; color:var(--c-text-muted); margin-bottom:20px;">Select your verified Google account to authenticate with BhoomiBandhu 2.0:</p>
+      
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px;">
+        <button type="button" onclick="loginWithGoogleMock('ramesh.patel.farmer@gmail.com', 'Ramesh Patel', 'farmer')" style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #ddd; border-radius:10px; background:#fafafa; cursor:pointer; text-align:left;">
+          <span style="background:#2d6a4f; color:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-weight:700;">R</span>
+          <div>
+            <div style="font-weight:600; font-size:0.9rem;">Ramesh Patel (Farmer)</div>
+            <div style="font-size:0.75rem; color:#666;">ramesh.patel.farmer@gmail.com</div>
+          </div>
+        </button>
+        <button type="button" onclick="loginWithGoogleMock('vikram.singh.agro@gmail.com', 'Vikram Singh', 'service_provider')" style="display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #ddd; border-radius:10px; background:#fafafa; cursor:pointer; text-align:left;">
+          <span style="background:#f39c12; color:#fff; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-weight:700;">V</span>
+          <div>
+            <div style="font-weight:600; font-size:0.9rem;">Vikram Singh (Agro Provider)</div>
+            <div style="font-size:0.75rem; color:#666;">vikram.singh.agro@gmail.com</div>
+          </div>
+        </button>
+      </div>
+
+      <button type="button" onclick="closeGoogleModal()" style="background:#f1ede3; border:none; padding:10px 20px; border-radius:8px; font-weight:600; cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // Bilingual Translations (English & हिन्दी)
+    // ==========================================
+    const translations = {
+      en: {
+        headline: 'Growing Together, <br><span class="highlight">Empowering Every Farmer.</span>',
+        tagline: 'Your trusted digital companion for smarter farming, financial security and a healthier agricultural future.',
+        featSmart: 'Smart Farming',
+        featSecurity: 'Financial Security',
+        featIntelligence: 'Agricultural Intelligence',
+        cardTitle: 'Kisan Prerna • Farmer Inspiration',
+        quote: '"When the soil is nourished and the farmer is supported, a nation prospers."',
+        quoteAuthor: '— BhoomiBandhu Agricultural Collective',
+        backHome: 'Back to Home',
+        badge: 'Digital Agriculture Portal',
+        welcome: 'Welcome Back!',
+        subtitle: 'Your farming journey continues here. Sign in to access your personalized agricultural dashboard.',
+        labelId: 'Email Address or Mobile Number',
+        labelPass: 'Password',
+        remember: 'Remember me',
+        forgot: 'Forgot password?',
+        btnText: 'Sign In to Dashboard',
+        or: 'Or continue with',
+        google: 'Sign in with Google',
+        noAccount: "Don't have an account yet?",
+        createLink: 'Create Account'
+      },
+      hi: {
+        headline: 'साथ बढ़ें, <br><span class="highlight">हर किसान को सशक्त बनाएं।</span>',
+        tagline: 'स्मार्ट खेती, वित्तीय सुरक्षा और एक स्वस्थ कृषि भविष्य के लिए आपका विश्वसनीय डिजिटल साथी।',
+        featSmart: 'स्मार्ट खेती',
+        featSecurity: 'वित्तीय सुरक्षा',
+        featIntelligence: 'कृषि ज्ञान व एआई',
+        cardTitle: 'किसान प्रेरणा • दैनिक संदेश',
+        quote: '"जब मिट्टी पोषित होती है और किसान समर्थ होता है, तभी देश समृद्ध बनता है।"',
+        quoteAuthor: '— भूमिबंधु कृषि परिवार',
+        backHome: 'होमपेज पर जाएं',
+        badge: 'डिजिटल कृषि पोर्टल',
+        welcome: 'स्वागत है!',
+        subtitle: 'आपकी कृषि यात्रा यहाँ जारी रहती है। अपने डैशबोर्ड में प्रवेश के लिए साइन इन करें।',
+        labelId: 'ईमेल पता या मोबाइल नंबर',
+        labelPass: 'पासवर्ड',
+        remember: 'मुझे याद रखें',
+        forgot: 'पासवर्ड भूल गए?',
+        btnText: 'डैशबोर्ड में प्रवेश करें',
+        or: 'या इसके साथ लॉगिन करें',
+        google: 'गूगल से साइन इन करें',
+        noAccount: 'क्या आपका खाता नहीं है?',
+        createLink: 'नया खाता बनाएं'
+      }
+    };
+
+    function setLanguage(lang) {
+      document.getElementById('btn-lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-lang-hi').classList.toggle('active', lang === 'hi');
+      
+      const t = translations[lang];
+      document.getElementById('txt-headline').innerHTML = t.headline;
+      document.getElementById('txt-tagline').innerText = t.tagline;
+      document.getElementById('txt-feat-smart').innerText = t.featSmart;
+      document.getElementById('txt-feat-security').innerText = t.featSecurity;
+      document.getElementById('txt-feat-intelligence').innerText = t.featIntelligence;
+      document.getElementById('txt-card-title').innerText = t.cardTitle;
+      document.getElementById('txt-quote').innerText = t.quote;
+      document.getElementById('txt-quote-author').innerText = t.quoteAuthor;
+      document.getElementById('txt-back-home').innerText = t.backHome;
+      document.getElementById('txt-badge').innerText = t.badge;
+      document.getElementById('txt-welcome').innerText = t.welcome;
+      document.getElementById('txt-subtitle').innerText = t.subtitle;
+      document.getElementById('txt-label-id').innerText = t.labelId;
+      document.getElementById('txt-label-pass').innerText = t.labelPass;
+      document.getElementById('txt-remember').innerText = t.remember;
+      document.getElementById('txt-forgot').innerText = t.forgot;
+      document.getElementById('loginBtnText').innerText = t.btnText;
+      document.getElementById('txt-or').innerText = t.or;
+      document.getElementById('txt-google').innerText = t.google;
+      document.getElementById('txt-no-account').innerText = t.noAccount;
+      document.getElementById('txt-createLink').innerText = t.createLink;
+
+      localStorage.setItem('bb_lang', lang);
+    }
+
+    // Load stored language preference
+    const savedLang = localStorage.getItem('bb_lang') || 'en';
+    if (savedLang === 'hi') {
+      setLanguage('hi');
+    }
+
+    // Check URL parameters (e.g. ?id=1234567891)
+    const urlParams = new URLSearchParams(window.location.search);
+    const prefillId = urlParams.get('id');
+    if (prefillId) {
+      document.getElementById('identifier').value = prefillId;
+      document.getElementById('password').focus();
+      showAlert(`Welcome! Enter your password for account ${prefillId} to access your dashboard.`, 'info');
+    }
+
+    // Check if user is already logged in
+    const existingToken = localStorage.getItem('bb_token');
+    const existingUserRaw = localStorage.getItem('bb_user');
+    if (existingToken && existingUserRaw) {
+      try {
+        const u = JSON.parse(existingUserRaw);
+        const dashUrl = u.role === 'admin' ? '/dashboard/admin' : (u.role === 'service_provider' ? '/dashboard/provider' : '/dashboard/farmer');
+        showAlert(`🌿 Active session found for <strong>${u.full_name || 'User'}</strong> (${u.role === 'admin' ? 'Admin' : (u.role === 'service_provider' ? 'Service Provider' : 'Farmer')}). <a href="${dashUrl}" style="color:#1b4332; font-weight:700; text-decoration:underline; margin-left:6px;">Go to Dashboard →</a>`, 'success');
+      } catch (e) {}
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁️';
+      }
+    }
+
+    // Fill Demo Credentials
+    function fillDemo(id, pass) {
+      document.getElementById('identifier').value = id;
+      document.getElementById('password').value = pass;
+      showAlert(`Pre-filled credentials for ${id}. Click "Sign In to Dashboard"!`, 'info');
+    }
+
+    // Show Alert Message
+    function showAlert(msg, type = 'error') {
+      const alertBox = document.getElementById('authAlert');
+      alertBox.className = `auth-alert ${type}`;
+      alertBox.innerHTML = `<span>${type === 'error' ? '⚠️' : type === 'success' ? '✅' : 'ℹ️'}</span> <div>${msg}</div>`;
+      alertBox.style.display = 'flex';
+    }
+
+    function clearAlert() {
+      const alertBox = document.getElementById('authAlert');
+      alertBox.style.display = 'none';
+      alertBox.innerHTML = '';
+    }
+
+    // Handle Login Submission
+    async function handleLogin(e) {
+      e.preventDefault();
+      clearAlert();
+
+      const identifier = document.getElementById('identifier').value.trim();
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('rememberMe').checked;
+      const loginBtn = document.getElementById('loginBtn');
+      const loginBtnText = document.getElementById('loginBtnText');
+
+      if (!identifier) {
+        showAlert('Please enter your mobile number or email address.', 'error');
+        document.getElementById('identifier').focus();
+        return;
+      }
+      if (!password) {
+        showAlert('Please enter your password.', 'error');
+        document.getElementById('password').focus();
+        return;
+      }
+
+      // Set Loading State
+      loginBtn.disabled = true;
+      loginBtnText.innerHTML = '<span class="spinner"></span> Authenticating...';
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password, rememberMe })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          // Store token & user information
+          localStorage.setItem('bb_token', data.token);
+          localStorage.setItem('bb_user', JSON.stringify(data.user));
+
+          showAlert(`Welcome back, ${data.user.full_name}! Redirecting to your dashboard...`, 'success');
+          
+          setTimeout(() => {
+            window.location.href = data.redirectUrl || '/dashboard/farmer';
+          }, 900);
+        } else {
+          showAlert(data.message || 'Login failed. Please check your credentials.', 'error');
+          loginBtn.disabled = false;
+          loginBtnText.innerText = 'Sign In to Dashboard';
+        }
+      } catch (err) {
+        console.error('Login request failed:', err);
+        showAlert('Server communication error. Please ensure the server is running.', 'error');
+        loginBtn.disabled = false;
+        loginBtnText.innerText = 'Sign In to Dashboard';
+      }
+    }
+
+    // Google Sign-in Handlers
+    function handleGoogleSignIn() {
+      const modal = document.getElementById('googleModal');
+      modal.style.display = 'flex';
+    }
+
+    function closeGoogleModal() {
+      document.getElementById('googleModal').style.display = 'none';
+    }
+
+    async function loginWithGoogleMock(email, name, role) {
+      closeGoogleModal();
+      showAlert(`Authenticating via Google (${email})...`, 'info');
+      
+      // Auto register or login user
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: email, password: role === 'farmer' ? 'Kisan@12345' : 'Service@12345' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          localStorage.setItem('bb_token', data.token);
+          localStorage.setItem('bb_user', JSON.stringify(data.user));
+          showAlert(`Signed in as ${name}! Redirecting...`, 'success');
+          setTimeout(() => {
+            window.location.href = data.redirectUrl;
+          }, 800);
+        } else {
+          // If not registered, fill info and redirect to register
+          showAlert(`Account for ${name} not found. Redirecting to complete registration...`, 'info');
+          setTimeout(() => {
+            window.location.href = `register.html?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+          }, 1000);
+        }
+      } catch (e) {
+        showAlert('Google sign in simulated session initialized.', 'success');
+      }
+    }
+  </script>
+</body>
+</html>

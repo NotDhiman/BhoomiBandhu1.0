@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Account | BhoomiBandhu 2.0</title>
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <style>
+    .step-content {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+    .step-content.active {
+      display: block;
+    }
+    .crops-tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .crop-tag-chip {
+      background: var(--c-cream-card);
+      border: 1px solid var(--c-cream-border);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.82rem;
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition-fast);
+    }
+    .crop-tag-chip:hover {
+      border-color: var(--c-leaf);
+    }
+    .crop-tag-chip.selected {
+      background: var(--c-forest-medium);
+      color: #ffffff;
+      border-color: var(--c-forest-medium);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating animated decorative leaves -->
+  <svg class="floating-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C25 25 15 60 50 95C85 60 75 25 50 5Z" fill="#52b788" fill-opacity="0.25"/>
+    <path d="M50 5V95" stroke="#40916c" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+  <svg class="floating-leaf" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 5C25 25 15 60 50 95C85 60 75 25 50 5Z" fill="#f6b73c" fill-opacity="0.2"/>
+  </svg>
+
+  <div class="auth-viewport">
+
+    <!-- =========================================================
+         LEFT PANEL: Agricultural Visual Experience
+         ========================================================= -->
+    <aside class="auth-panel-visual">
+      <img
+        src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&w=1600&q=80"
+        alt="Lush green wheat crops during golden sunrise"
+        class="visual-bg-media"
+        onerror="this.style.display='none'"
+      />
+      
+      <div class="visual-overlay"></div>
+      <div class="sunlight-glow"></div>
+
+      <!-- Top: Brand Identity -->
+      <div class="visual-content-top">
+        <a href="index.html" class="brand-badge" title="Go to BhoomiBandhu Home">
+          <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu Logo">
+          <div class="brand-name">
+            BhoomiBandhu
+            <span class="brand-version">2.0</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Middle: Vision, Headline & Feature Highlights -->
+      <div class="visual-content-middle">
+        <h1 class="visual-headline" id="reg-headline">
+          Join India's Fastest Growing <br>
+          <span class="highlight">Farming Community.</span>
+        </h1>
+
+        <p class="visual-tagline" id="reg-tagline">
+          Empowering over 50,000+ farmers and service providers with AI crop recommendations, insurance claims, and government scheme access.
+        </p>
+
+        <!-- Three Visual Highlights -->
+        <div class="feature-pills">
+          <div class="feature-pill">
+            <span class="feature-pill-icon">🚜</span>
+            <span id="reg-feat-1">Farmer Empowerment</span>
+          </div>
+          <div class="feature-pill">
+            <span class="feature-pill-icon">🌾</span>
+            <span id="reg-feat-2">AI-Driven Yield</span>
+          </div>
+          <div class="feature-pill">
+            <span class="feature-pill-icon">📋</span>
+            <span id="reg-feat-3">Zero-Hassle PMFBY</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom: Motivational Card -->
+      <div class="visual-content-bottom">
+        <div class="motivational-card">
+          <div class="motivational-header">
+            <span class="motivational-icon">🌱</span>
+            <span class="motivational-title" id="reg-card-title">Kisan Vikas • Farmer Prosperity</span>
+          </div>
+          <blockquote class="motivational-quote" id="reg-card-quote">
+            "Every seed sown with knowledge and care reaps a golden harvest for future generations."
+          </blockquote>
+          <span class="motivational-author">— BhoomiBandhu Agricultural Collective</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- =========================================================
+         RIGHT PANEL: Multi-Step Registration Experience
+         ========================================================= -->
+    <main class="auth-panel-form">
+      
+      <!-- Top Bar: Back Link & Language Switcher -->
+      <div class="auth-top-bar">
+        <a href="login.html" class="back-link">
+          ← <span id="reg-back-login">Back to Sign In</span>
+        </a>
+
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" id="reg-lang-en" onclick="setRegLanguage('en')">English</button>
+          <button type="button" class="lang-btn" id="reg-lang-hi" onclick="setRegLanguage('hi')">हिन्दी</button>
+        </div>
+      </div>
+
+      <!-- Form Container -->
+      <div class="auth-form-card">
+        
+        <header class="auth-header" style="margin-bottom: 1.5rem;">
+          <div class="auth-greeting-badge">
+            <span>✨</span>
+            <span id="reg-badge-txt">New Member Onboarding</span>
+          </div>
+          <h2 class="auth-title" id="reg-main-title">Create Account</h2>
+          <p class="auth-subtitle" id="reg-main-subtitle">
+            Complete the 4 simple steps to unlock your tailored agricultural services.
+          </p>
+        </header>
+
+        <!-- Visual Multi-Step Progress Indicator -->
+        <div class="wizard-progress">
+          <div class="wizard-progress-bar" id="progressBar" style="width: 12%;"></div>
+          
+          <div class="wizard-step active" id="stepIndicator1">
+            <div class="step-circle">1</div>
+            <span class="step-label" id="stepLabel1">Basic Info</span>
+          </div>
+          <div class="wizard-step" id="stepIndicator2">
+            <div class="step-circle">2</div>
+            <span class="step-label" id="stepLabel2">User Type</span>
+          </div>
+          <div class="wizard-step" id="stepIndicator3">
+            <div class="step-circle">3</div>
+            <span class="step-label" id="stepLabel3">Profile</span>
+          </div>
+          <div class="wizard-step" id="stepIndicator4">
+            <div class="step-circle">4</div>
+            <span class="step-label" id="stepLabel4">Verify</span>
+          </div>
+        </div>
+
+        <!-- Alert Box -->
+        <div id="regAlert" class="auth-alert" style="display: none;"></div>
+
+        <!-- Multi-Step Form Wizard -->
+        <form id="registrationForm" onsubmit="event.preventDefault()">
+          
+          <!-- ==============================================
+               STEP 1: Basic Information
+               ============================================== -->
+          <div class="step-content active" id="step1">
+            
+            <div class="form-group">
+              <label for="fullName" class="form-label" id="lbl-fullname">Full Name *</label>
+              <div class="input-wrapper">
+                <span class="input-icon">👤</span>
+                <input type="text" id="fullName" class="form-input" placeholder="e.g. Ramesh Kumar Patel" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="mobileNumber" class="form-label" id="lbl-mobile">Mobile Number (10 Digits) *</label>
+              <div class="input-wrapper">
+                <span class="input-icon">📱</span>
+                <input type="tel" id="mobileNumber" class="form-input" placeholder="e.g. 9876543210" maxlength="10" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="emailAddress" class="form-label" id="lbl-email">Email Address (Optional)</label>
+              <div class="input-wrapper">
+                <span class="input-icon">✉️</span>
+                <input type="email" id="emailAddress" class="form-input" placeholder="farmer@bhoomibandhu.in">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="regPassword" class="form-label" id="lbl-password">Create Password *</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="regPassword" class="form-input" placeholder="Minimum 6 characters" required>
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regPassword', this)">👁️</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword" class="form-label" id="lbl-confirmpass">Confirm Password *</label>
+              <div class="input-wrapper">
+                <span class="input-icon">🔒</span>
+                <input type="password" id="confirmPassword" class="form-input" placeholder="Re-enter your password" required>
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">👁️</button>
+              </div>
+            </div>
+
+            <div class="wizard-actions">
+              <button type="button" class="btn-primary-green" onclick="goToStep(2)">
+                <span id="btn-next-1">Next: Select User Type</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ==============================================
+               STEP 2: Select User Type (Role Selection)
+               ============================================== -->
+          <div class="step-content" id="step2">
+            <p style="font-size:0.9rem; color:var(--c-text-muted); margin-bottom: 1.25rem;" id="lbl-select-type-desc">
+              Choose your profile type so we can customize your dashboard with the right tools.
+            </p>
+
+            <div class="role-cards-grid">
+              
+              <!-- Role 1: Farmer -->
+              <div class="role-card selected" id="roleFarmer" onclick="selectRole('farmer')">
+                <div class="role-radio-marker"></div>
+                <div class="role-badge-icon">🌾</div>
+                <h3 class="role-title" id="lbl-role-farmer">Farmer</h3>
+                <p class="role-desc" id="lbl-role-farmer-desc">
+                  Direct access to farm advisory, AI crop predictions, financial support, and PMFBY claims.
+                </p>
+                <ul class="role-benefits">
+                  <li>✓ AI Crop Advisor</li>
+                  <li>✓ PMFBY Claim Assistance</li>
+                  <li>✓ Govt Schemes & Subsidies</li>
+                  <li>✓ Kisan Helpline & Mental Wellness</li>
+                </ul>
+              </div>
+
+              <!-- Role 2: Agricultural Service Provider -->
+              <div class="role-card" id="roleProvider" onclick="selectRole('service_provider')">
+                <div class="role-radio-marker"></div>
+                <div class="role-badge-icon">🚜</div>
+                <h3 class="role-title" id="lbl-role-provider">Service Provider</h3>
+                <p class="role-desc" id="lbl-role-provider-desc">
+                  For machinery owners, harvesters, drone operators, cold storage operators, and seed suppliers.
+                </p>
+                <ul class="role-benefits">
+                  <li>✓ Service & Fleet Management</li>
+                  <li>✓ Farmer Booking Requests</li>
+                  <li>✓ Availability Scheduling</li>
+                  <li>✓ Customer Growth Insights</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Administrator Security Notice -->
+            <div class="admin-policy-notice">
+              <span>🛡️</span>
+              <div>
+                <strong id="lbl-admin-policy-title">Administrative Role Notice:</strong>
+                <p style="margin-top:2px;" id="lbl-admin-policy-body">
+                  Administrative privileges cannot be self-selected. Administrator accounts are provisioned exclusively through authorized BhoomiBandhu security administration.
+                </p>
+              </div>
+            </div>
+
+            <div class="wizard-actions">
+              <button type="button" class="btn-secondary" onclick="goToStep(1)" id="btn-back-2">← Back</button>
+              <button type="button" class="btn-primary-green" onclick="goToStep(3)" id="btn-next-2">Next: Profile Details →</button>
+            </div>
+          </div>
+
+          <!-- ==============================================
+               STEP 3: Agricultural / Provider Profile
+               ============================================== -->
+          <div class="step-content" id="step3">
+            
+            <!-- Dynamic Farmer Sub-Form -->
+            <div id="farmerFields">
+              <p style="font-size:0.88rem; color:var(--c-text-muted); margin-bottom:1.25rem;" id="lbl-farmer-details-hint">
+                Provide basic details about your land and crops to receive accurate weather and yield predictions.
+              </p>
+
+              <div class="form-group">
+                <label for="farmState" class="form-label" id="lbl-state">State *</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">📍</span>
+                  <input type="text" id="farmState" class="form-input" placeholder="e.g. Madhya Pradesh, Punjab, Uttar Pradesh">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group">
+                  <label for="farmDistrict" class="form-label" id="lbl-district">District *</label>
+                  <div class="input-wrapper">
+                    <span class="input-icon">🏛️</span>
+                    <input type="text" id="farmDistrict" class="form-input" placeholder="e.g. Sehore">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="farmVillage" class="form-label" id="lbl-village">Village / Tehsil</label>
+                  <div class="input-wrapper">
+                    <span class="input-icon">🏡</span>
+                    <input type="text" id="farmVillage" class="form-input" placeholder="e.g. Bilkisganj">
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group">
+                  <label for="landholdingSize" class="form-label" id="lbl-land">Land Size (Acres)</label>
+                  <div class="input-wrapper">
+                    <span class="input-icon">📐</span>
+                    <input type="text" id="landholdingSize" class="form-input" placeholder="e.g. 4.5 Acres">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="farmingExp" class="form-label" id="lbl-exp">Experience</label>
+                  <div class="input-wrapper">
+                    <span class="input-icon">⏳</span>
+                    <input type="text" id="farmingExp" class="form-input" placeholder="e.g. 10+ Years">
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="primaryCrops" class="form-label" id="lbl-crops">Primary Crops Grown</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">🌾</span>
+                  <input type="text" id="primaryCrops" class="form-input" placeholder="e.g. Wheat, Soybean, Mustard">
+                </div>
+                <div class="crops-tag-container">
+                  <span class="crop-tag-chip" onclick="addCropTag('Wheat')">Wheat (गेहूं)</span>
+                  <span class="crop-tag-chip" onclick="addCropTag('Rice')">Rice (धान)</span>
+                  <span class="crop-tag-chip" onclick="addCropTag('Soybean')">Soybean (सोयाबीन)</span>
+                  <span class="crop-tag-chip" onclick="addCropTag('Cotton')">Cotton (कपास)</span>
+                  <span class="crop-tag-chip" onclick="addCropTag('Mustard')">Mustard (सरसों)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Service Provider Sub-Form -->
+            <div id="providerFields" style="display:none;">
+              <p style="font-size:0.88rem; color:var(--c-text-muted); margin-bottom:1.25rem;">
+                Tell us about the agricultural machinery and services you provide to local farmers.
+              </p>
+
+              <div class="form-group">
+                <label for="bizName" class="form-label">Business / Agency Name *</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">🏢</span>
+                  <input type="text" id="bizName" class="form-input" placeholder="e.g. Kisan Agro Equipment & Drone Spray">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="serviceTypes" class="form-label">Services Offered *</label>
+                <div class="input-wrapper">
+                  <span class="input-icon">🛠️</span>
+                  <input type="text" id="serviceTypes" class="form-input" placeholder="e.g. Tractor, Harvester, Drones, Cold Storage">
+                </div>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <div class="form-group">
+                  <label for="providerState" class="form-label">Operational State</label>
+                  <input type="text" id="providerState" class="form-input" placeholder="e.g. Punjab">
+                </div>
+                <div class="form-group">
+                  <label for="providerDistrict" class="form-label">District Covered</label>
+                  <input type="text" id="providerDistrict" class="form-input" placeholder="e.g. Ludhiana">
+                </div>
+              </div>
+            </div>
+
+            <div class="wizard-actions">
+              <button type="button" class="btn-secondary" onclick="goToStep(2)" id="btn-back-3">← Back</button>
+              <button type="button" class="btn-primary-green" onclick="goToStep(4)" id="btn-next-3">Next: OTP Verification →</button>
+            </div>
+          </div>
+
+          <!-- ==============================================
+               STEP 4: OTP Verification & Final Submit
+               ============================================== -->
+          <div class="step-content" id="step4">
+            
+            <div style="text-align:center; margin-bottom:1.25rem;">
+              <div style="font-size:2.5rem; margin-bottom:6px;">📲</div>
+              <h3 style="font-size:1.25rem; color:var(--c-forest-dark);" id="lbl-otp-title">Verify Mobile Number</h3>
+              <p style="font-size:0.88rem; color:var(--c-text-muted);" id="lbl-otp-desc">
+                We've sent a 6-digit verification code to <strong id="displayOtpTarget">your number</strong>.
+              </p>
+            </div>
+
+            <div class="otp-inputs-row">
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 1)" id="otp1" autofocus>
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 2)" id="otp2">
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 3)" id="otp3">
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 4)" id="otp4">
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 5)" id="otp5">
+              <input type="text" class="otp-box" maxlength="1" oninput="handleOtpInput(this, 6)" id="otp6">
+            </div>
+
+            <div style="text-align:center; font-size:0.84rem; color:var(--c-text-muted); margin-bottom:1.5rem;">
+              <span id="lbl-didnt-receive">Didn't receive code?</span>
+              <a href="#" onclick="resendOtp(event)" style="color:var(--c-forest-medium); font-weight:700; margin-left:4px;" id="lbl-resend-link">
+                Resend OTP (<span id="resendTimer">45</span>s)
+              </a>
+            </div>
+
+            <!-- Quick Auto-Fill OTP Hint for Seamless Testing -->
+            <div style="background:#e8f5e9; border:1px dashed #81c784; padding:10px; border-radius:8px; text-align:center; font-size:0.82rem; margin-bottom:1.25rem;">
+              💡 <span>Testing convenience:</span>
+              <a href="#" onclick="fillDemoOtp(event)" style="color:#2e7d32; font-weight:700; text-decoration:underline; margin-left:4px;">
+                Click to Auto-fill generated OTP (<span id="devOtpCode">123456</span>)
+              </a>
+            </div>
+
+            <div class="wizard-actions">
+              <button type="button" class="btn-secondary" onclick="goToStep(3)" id="btn-back-4">← Back</button>
+              <button type="button" class="btn-primary-green" id="btnSubmitRegistration" onclick="submitFinalRegistration()">
+                <span id="btnSubmitText">Verify & Complete Registration</span>
+                <span>✓</span>
+              </button>
+            </div>
+
+          </div>
+
+        </form>
+
+        <div class="auth-form-footer" style="margin-top: 1.5rem;">
+          <span id="reg-has-account">Already have an account?</span>
+          <a href="login.html" id="reg-signin-link">Sign In</a>
+        </div>
+
+      </div>
+
+      <footer style="text-align: center; font-size: 0.8rem; color: var(--c-text-light); margin-top: 2rem;">
+        © 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Welfare Initiative
+      </footer>
+
+    </main>
+
+  </div>
+
+  <script>
+    // State variables
+    let currentStep = 1;
+    let selectedRole = 'farmer';
+    let generatedOtpCode = '123456';
+    let resendCountdown = 45;
+    let timerInterval = null;
+
+    // Bilingual dictionary for Registration
+    const regTranslations = {
+      en: {
+        headline: 'Join India\'s Fastest Growing <br><span class="highlight">Farming Community.</span>',
+        tagline: 'Empowering over 50,000+ farmers and service providers with AI crop recommendations, insurance claims, and government scheme access.',
+        feat1: 'Farmer Empowerment',
+        feat2: 'AI-Driven Yield',
+        feat3: 'Zero-Hassle PMFBY',
+        cardTitle: 'Kisan Vikas • Farmer Prosperity',
+        cardQuote: '"Every seed sown with knowledge and care reaps a golden harvest for future generations."',
+        backLogin: 'Back to Sign In',
+        badge: 'New Member Onboarding',
+        mainTitle: 'Create Account',
+        mainSubtitle: 'Complete the 4 simple steps to unlock your tailored agricultural services.',
+        step1: 'Basic Info',
+        step2: 'User Type',
+        step3: 'Profile',
+        step4: 'Verify',
+        fullName: 'Full Name *',
+        mobile: 'Mobile Number (10 Digits) *',
+        email: 'Email Address (Optional)',
+        password: 'Create Password *',
+        confirmPass: 'Confirm Password *',
+        nextStep1: 'Next: Select User Type',
+        roleFarmerTitle: 'Farmer',
+        roleFarmerDesc: 'Direct access to farm advisory, AI crop predictions, financial support, and PMFBY claims.',
+        roleProviderTitle: 'Service Provider',
+        roleProviderDesc: 'For machinery owners, harvesters, drone operators, cold storage operators, and seed suppliers.',
+        hasAccount: 'Already have an account?',
+        signIn: 'Sign In'
+      },
+      hi: {
+        headline: 'भारत के सबसे तेजी से बढ़ते <br><span class="highlight">किसान समुदाय से जुड़ें।</span>',
+        tagline: '50,000+ से अधिक किसानों और सेवा प्रदाताओं को एआई फसल सलाह, बीमा दावे और सरकारी योजनाओं से सशक्त बनाना।',
+        feat1: 'किसान सशक्तिकरण',
+        feat2: 'एआई फसल पैदावार',
+        feat3: 'सरल पीएमएफबीवाई दावा',
+        cardTitle: 'किसान विकास • समृद्ध भविष्य',
+        cardQuote: '"ज्ञान और परिश्रम से बोया गया प्रत्येक बीज आने वाली पीढ़ियों के लिए सुनहरी फसल लाता है।"',
+        backLogin: 'लॉगिन पर वापस जाएं',
+        badge: 'नया सदस्य पंजीकरण',
+        mainTitle: 'खाता बनाएं',
+        mainSubtitle: 'अपनी व्यक्तिगत कृषि सेवाओं को अनलॉक करने के लिए 4 आसान चरण पूरे करें।',
+        step1: 'मूल विवरण',
+        step2: 'उपयोगकर्ता प्रकार',
+        step3: 'प्रोफ़ाइल',
+        step4: 'सत्यापन',
+        fullName: 'पूरा नाम *',
+        mobile: 'मोबाइल नंबर (10 अंक) *',
+        email: 'ईमेल पता (वैकल्पिक)',
+        password: 'पासवर्ड बनाएं *',
+        confirmPass: 'पासवर्ड की पुष्टि करें *',
+        nextStep1: 'आगे बढ़ें: उपयोगकर्ता प्रकार चुनें',
+        roleFarmerTitle: 'किसान',
+        roleFarmerDesc: 'कृषि सलाह, एआई फसल भविष्यवाणी, वित्तीय सहायता और पीएमएफबीवाई दावों तक सीधी पहुंच।',
+        roleProviderTitle: 'कृषि सेवा प्रदाता',
+        roleProviderDesc: 'ट्रैक्टर, कंबाइन हार्वेस्टर, ड्रोन ऑपरेटर, कोल्ड स्टोरेज और बीज विक्रेताओं के लिए।',
+        hasAccount: 'क्या आपके पास पहले से खाता है?',
+        signIn: 'साइन इन करें'
+      }
+    };
+
+    function setRegLanguage(lang) {
+      document.getElementById('reg-lang-en').classList.toggle('active', lang === 'en');
+      document.getElementById('reg-lang-hi').classList.toggle('active', lang === 'hi');
+
+      const t = regTranslations[lang];
+      document.getElementById('reg-headline').innerHTML = t.headline;
+      document.getElementById('reg-tagline').innerText = t.tagline;
+      document.getElementById('reg-feat-1').innerText = t.feat1;
+      document.getElementById('reg-feat-2').innerText = t.feat2;
+      document.getElementById('reg-feat-3').innerText = t.feat3;
+      document.getElementById('reg-card-title').innerText = t.cardTitle;
+      document.getElementById('reg-card-quote').innerText = t.cardQuote;
+      document.getElementById('reg-back-login').innerText = t.backLogin;
+      document.getElementById('reg-badge-txt').innerText = t.badge;
+      document.getElementById('reg-main-title').innerText = t.mainTitle;
+      document.getElementById('reg-main-subtitle').innerText = t.mainSubtitle;
+      document.getElementById('stepLabel1').innerText = t.step1;
+      document.getElementById('stepLabel2').innerText = t.step2;
+      document.getElementById('stepLabel3').innerText = t.step3;
+      document.getElementById('stepLabel4').innerText = t.step4;
+      document.getElementById('lbl-fullname').innerText = t.fullName;
+      document.getElementById('lbl-mobile').innerText = t.mobile;
+      document.getElementById('lbl-email').innerText = t.email;
+      document.getElementById('lbl-password').innerText = t.password;
+      document.getElementById('lbl-confirmpass').innerText = t.confirmPass;
+      document.getElementById('btn-next-1').innerText = t.nextStep1;
+      document.getElementById('lbl-role-farmer').innerText = t.roleFarmerTitle;
+      document.getElementById('lbl-role-farmer-desc').innerText = t.roleFarmerDesc;
+      document.getElementById('lbl-role-provider').innerText = t.roleProviderTitle;
+      document.getElementById('lbl-role-provider-desc').innerText = t.roleProviderDesc;
+      document.getElementById('reg-has-account').innerText = t.hasAccount;
+      document.getElementById('reg-signin-link').innerText = t.signIn;
+
+      localStorage.setItem('bb_lang', lang);
+    }
+
+    const savedRegLang = localStorage.getItem('bb_lang') || 'en';
+    if (savedRegLang === 'hi') {
+      setRegLanguage('hi');
+    }
+
+    // Check if user is already logged in
+    const existingToken = localStorage.getItem('bb_token');
+    const existingUserRaw = localStorage.getItem('bb_user');
+    if (existingToken && existingUserRaw) {
+      try {
+        const u = JSON.parse(existingUserRaw);
+        const dashUrl = u.role === 'admin' ? '/dashboard/admin' : (u.role === 'service_provider' ? '/dashboard/provider' : '/dashboard/farmer');
+        showRegAlert(`🌿 You are already registered and logged in as <strong>${u.full_name || 'User'}</strong>. <a href="${dashUrl}" style="color:#1b4332; font-weight:700; text-decoration:underline; margin-left:6px;">Go to your Dashboard →</a>`, 'success');
+      } catch (e) {}
+    }
+
+    // Role Selection
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('roleFarmer').classList.toggle('selected', role === 'farmer');
+      document.getElementById('roleProvider').classList.toggle('selected', role === 'service_provider');
+
+      // Toggle Step 3 fields
+      document.getElementById('farmerFields').style.display = role === 'farmer' ? 'block' : 'none';
+      document.getElementById('providerFields').style.display = role === 'service_provider' ? 'block' : 'none';
+    }
+
+    // Tag chip addition
+    function addCropTag(crop) {
+      const input = document.getElementById('primaryCrops');
+      const current = input.value.split(',').map(s => s.trim()).filter(Boolean);
+      if (!current.includes(crop)) {
+        current.push(crop);
+        input.value = current.join(', ');
+      }
+    }
+
+    // Toggle Password Visibility
+    function togglePasswordVisibility(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        btn.innerText = '👁️';
+      }
+    }
+
+    // Alert helper
+    function showRegAlert(msg, type = 'error') {
+      const el = document.getElementById('regAlert');
+      el.className = `auth-alert ${type}`;
+      el.innerHTML = `<span>${type === 'error' ? '⚠️' : '✅'}</span> <div>${msg}</div>`;
+      el.style.display = 'flex';
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function clearRegAlert() {
+      const el = document.getElementById('regAlert');
+      el.style.display = 'none';
+      el.innerHTML = '';
+    }
+
+    // Step Navigation
+    async function goToStep(stepNumber) {
+      clearRegAlert();
+
+      // Step 1 Validation
+      if (currentStep === 1 && stepNumber > 1) {
+        const name = document.getElementById('fullName').value.trim();
+        const mobile = document.getElementById('mobileNumber').value.trim();
+        const pass = document.getElementById('regPassword').value;
+        const confirm = document.getElementById('confirmPassword').value;
+
+        if (name.length < 2) {
+          showRegAlert('Please provide your full name.', 'error');
+          return;
+        }
+        if (!/^\d{10}$/.test(mobile)) {
+          showRegAlert('Please enter a valid 10-digit Indian mobile number.', 'error');
+          return;
+        }
+        if (pass.length < 6) {
+          showRegAlert('Password must be at least 6 characters long.', 'error');
+          return;
+        }
+        if (pass !== confirm) {
+          showRegAlert('Passwords do not match. Please verify.', 'error');
+          return;
+        }
+      }
+
+      // Transition to Step 4 (Send OTP)
+      if (stepNumber === 4 && currentStep !== 4) {
+        const mobile = document.getElementById('mobileNumber').value.trim();
+        document.getElementById('displayOtpTarget').innerText = `+91 ${mobile}`;
+        sendOtpRequest(mobile);
+        startResendTimer();
+      }
+
+      // Hide all steps, activate target step
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById(`step${i}`).classList.remove('active');
+        const indicator = document.getElementById(`stepIndicator${i}`);
+        indicator.classList.remove('active');
+        if (i < stepNumber) {
+          indicator.classList.add('completed');
+        } else {
+          indicator.classList.remove('completed');
+        }
+      }
+
+      document.getElementById(`step${stepNumber}`).classList.add('active');
+      document.getElementById(`stepIndicator${stepNumber}`).classList.add('active');
+      
+      // Update progress bar width
+      const barWidths = { 1: '12%', 2: '38%', 3: '65%', 4: '98%' };
+      document.getElementById('progressBar').style.width = barWidths[stepNumber];
+
+      currentStep = stepNumber;
+    }
+
+    // OTP Handlers
+    function handleOtpInput(input, index) {
+      if (input.value.length === 1 && index < 6) {
+        document.getElementById(`otp${index + 1}`).focus();
+      }
+    }
+
+    async function sendOtpRequest(identifier) {
+      try {
+        const res = await fetch('/api/auth/send-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier })
+        });
+        const data = await res.json();
+        if (data.success && data.testOtp) {
+          generatedOtpCode = data.testOtp;
+          document.getElementById('devOtpCode').innerText = data.testOtp;
+        }
+      } catch (e) {
+        console.warn('Failed to call OTP API:', e);
+      }
+    }
+
+    function fillDemoOtp(e) {
+      if (e) e.preventDefault();
+      const code = generatedOtpCode || '123456';
+      for (let i = 0; i < 6; i++) {
+        document.getElementById(`otp${i + 1}`).value = code[i] || '';
+      }
+      showRegAlert('Demo OTP auto-filled. Click "Verify & Complete Registration"!', 'info');
+    }
+
+    function startResendTimer() {
+      clearInterval(timerInterval);
+      resendCountdown = 45;
+      const timerSpan = document.getElementById('resendTimer');
+      timerInterval = setInterval(() => {
+        resendCountdown--;
+        timerSpan.innerText = resendCountdown;
+        if (resendCountdown <= 0) {
+          clearInterval(timerInterval);
+          timerSpan.innerText = '0';
+        }
+      }, 1000);
+    }
+
+    function resendOtp(e) {
+      e.preventDefault();
+      const mobile = document.getElementById('mobileNumber').value.trim();
+      sendOtpRequest(mobile);
+      startResendTimer();
+      showRegAlert('A fresh OTP has been dispatched to your mobile number.', 'info');
+    }
+
+    // Final Registration Submission
+    async function submitFinalRegistration() {
+      clearRegAlert();
+
+      // Collect OTP digits
+      let enteredOtp = '';
+      for (let i = 1; i <= 6; i++) {
+        enteredOtp += document.getElementById(`otp${i}`).value.trim();
+      }
+
+      if (enteredOtp.length !== 6) {
+        showRegAlert('Please enter the complete 6-digit OTP code.', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitRegistration');
+      const btnText = document.getElementById('btnSubmitText');
+      btn.disabled = true;
+      btnText.innerHTML = '<span class="spinner"></span> Creating Account...';
+
+      // Assemble registration payload
+      const payload = {
+        full_name: document.getElementById('fullName').value.trim(),
+        mobile: document.getElementById('mobileNumber').value.trim(),
+        email: document.getElementById('emailAddress').value.trim() || null,
+        password: document.getElementById('regPassword').value,
+        role: selectedRole,
+        otp_verified: true
+      };
+
+      if (selectedRole === 'farmer') {
+        payload.agricultural_profile = {
+          state: document.getElementById('farmState').value.trim(),
+          district: document.getElementById('farmDistrict').value.trim(),
+          village: document.getElementById('farmVillage').value.trim(),
+          landholding_size: document.getElementById('landholdingSize').value.trim(),
+          primary_crops: document.getElementById('primaryCrops').value.trim(),
+          farming_experience: document.getElementById('farmingExp').value.trim()
+        };
+      } else {
+        payload.provider_profile = {
+          business_name: document.getElementById('bizName').value.trim(),
+          service_types: document.getElementById('serviceTypes').value.trim(),
+          state: document.getElementById('providerState').value.trim(),
+          district: document.getElementById('providerDistrict').value.trim()
+        };
+      }
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('bb_token', data.token);
+          localStorage.setItem('bb_user', JSON.stringify(data.user));
+
+          showRegAlert('Account successfully created! Welcoming you to your personalized dashboard...', 'success');
+
+          setTimeout(() => {
+            window.location.href = data.redirectUrl || (selectedRole === 'service_provider' ? '/dashboard/provider' : '/dashboard/farmer');
+          }, 1000);
+        } else {
+          let errMessage = data.message || 'Registration failed. Please check inputs and retry.';
+          if (errMessage.includes('already exists')) {
+            const mobile = payload.mobile;
+            errMessage += ` <a href="login.html?id=${encodeURIComponent(mobile)}" style="color:#1b4332; font-weight:700; text-decoration:underline; margin-left:6px;">Sign In to your Dashboard →</a>`;
+          }
+          showRegAlert(errMessage, 'error');
+          btn.disabled = false;
+          btnText.innerText = 'Verify & Complete Registration';
+        }
+      } catch (err) {
+        console.error('Registration API error:', err);
+        showRegAlert('Server communication error. Please try again.', 'error');
+        btn.disabled = false;
+        btnText.innerText = 'Verify & Complete Registration';
+      }
+    }
+  </script>
+</body>
+</html>

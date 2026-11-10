@@ -1,0 +1,263 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "full_name": "BhoomiBandhu Admin",
+      "email": "admin@bhoomibandhu.in",
+      "mobile": "9876543210",
+      "password_hash": "$2b$10$v4sz1pLBAjDS2xay4T7PgOdojyWI5eLWsy6p5Rki7OEkJZup5Dsvq",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:24.607Z",
+      "updated_at": "2026-11-10T12:11:24.630Z"
+    },
+    {
+      "id": 2,
+      "full_name": "BhoomiBandhu Admin",
+      "email": "admin@bhoomibandhu.in",
+      "mobile": "9876543210",
+      "password_hash": "$2b$10$a3ujDQXb6V5Si6CMy3NsoeK1j5LJtJUbymln17fWW9Yc42DpskrWu",
+      "role": "admin",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:24.633Z",
+      "updated_at": "2026-11-10T12:11:24.634Z"
+    },
+    {
+      "id": 3,
+      "full_name": "Ramesh Patel",
+      "email": "ramesh.farmer@bhoomibandhu.in",
+      "mobile": "9823456789",
+      "password_hash": "$2b$10$BQK6LJKRQaiJ3nkW9tpnnem/4dMZ4S32ZuEmX3YYLhHQnxnqisTwm",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:24.784Z",
+      "updated_at": "2026-11-10T12:11:24.784Z"
+    },
+    {
+      "id": 4,
+      "full_name": "Ramesh Patel",
+      "email": "ramesh.farmer@bhoomibandhu.in",
+      "mobile": "9823456789",
+      "password_hash": "$2b$10$YYeZwwN00.GDD0l/2W1JH.K7FeX9JlB0JxRXYt1By642A4Gl9S6se",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:24.791Z",
+      "updated_at": "2026-11-10T12:11:24.791Z"
+    },
+    {
+      "id": 5,
+      "full_name": "Vikram Singh (Kisan Agro Machinery)",
+      "email": "kisan.agro@bhoomibandhu.in",
+      "mobile": "9811223344",
+      "password_hash": "$2b$10$CyXbKZLMTC7t9KqfqGwQEOwjXgDw/LMXWzoUb7eaIXTqJft3nmnty",
+      "role": "service_provider",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:24.964Z",
+      "updated_at": "2026-11-10T12:11:24.964Z"
+    },
+    {
+      "id": 6,
+      "full_name": "Vikram Singh (Kisan Agro Machinery)",
+      "email": "kisan.agro@bhoomibandhu.in",
+      "mobile": "9811223344",
+      "password_hash": "$2b$10$pfK3vf0FzzsQd.n4w9ejleIhO3PFilakKwdiaDF5qcJ3G5zjbl8Gi",
+      "role": "service_provider",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:25.025Z",
+      "updated_at": "2026-11-10T12:11:25.025Z"
+    },
+    {
+      "id": 7,
+      "full_name": "Balwant Singh",
+      "email": "balwant.singh@kisan.in",
+      "mobile": "9876540011",
+      "password_hash": "$2b$10$zJjcA.OmFqfeQYDhhlzcSODjHLXrRJX6y/w/k/FXuriwYLZ8YRZTq",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:11:59.357Z",
+      "updated_at": "2026-11-10T12:11:59.456Z"
+    },
+    {
+      "id": 8,
+      "full_name": "Balwant Singh",
+      "email": "farmer_1794312772193@kisan.in",
+      "mobile": "9873106234",
+      "password_hash": "$2b$10$44gxXIOL9dA9LhDb1ajAzOLxGQ9uyGYAowY6cSCOO2INkx6zzLzCK",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:12:52.281Z",
+      "updated_at": "2026-11-10T12:12:52.357Z"
+    },
+    {
+      "id": 9,
+      "full_name": "uv",
+      "email": "ryusakuna@gmail.com",
+      "mobile": "1234567891",
+      "password_hash": "$2b$10$GK3NTlkZcl4smw6e0XK9dukE13i3ysHKNZd/v7E1OLwFv52RZWuA6",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:42:09.504Z",
+      "updated_at": "2026-11-10T12:42:09.505Z"
+    },
+    {
+      "id": 10,
+      "full_name": "Balwant Singh",
+      "email": "farmer_1794315023526@kisan.in",
+      "mobile": "9871904864",
+      "password_hash": "$2b$10$B9gcQQ3tIGg/vrcY3W.nR.efgrhc6R5K2l685O5BSfBWDw4Lx3aBC",
+      "role": "farmer",
+      "status": "active",
+      "created_at": "2026-11-10T12:50:23.599Z",
+      "updated_at": "2026-11-10T12:50:23.683Z"
+    }
+  ],
+  "farmer_profiles": [
+    {
+      "id": 1,
+      "user_id": 3,
+      "state": "Madhya Pradesh",
+      "district": "Sehore",
+      "village": "Bilkisganj",
+      "landholding_size": "4.5 Acres",
+      "primary_crops": "Soybean, Wheat, Mustard",
+      "farming_experience": "12 Years",
+      "created_at": "2026-11-10T12:11:24.787Z"
+    },
+    {
+      "id": 2,
+      "user_id": 4,
+      "state": "Madhya Pradesh",
+      "district": "Sehore",
+      "village": "Bilkisganj",
+      "landholding_size": "4.5 Acres",
+      "primary_crops": "Soybean, Wheat, Mustard",
+      "farming_experience": "12 Years",
+      "created_at": "2026-11-10T12:11:24.793Z"
+    },
+    {
+      "id": 3,
+      "user_id": 7,
+      "state": "Haryana",
+      "district": "Karnal",
+      "village": "Taraori",
+      "landholding_size": "5.2 Acres",
+      "primary_crops": "Basmati Rice, Wheat",
+      "farming_experience": "18 Years",
+      "created_at": "2026-11-10T12:11:59.359Z"
+    },
+    {
+      "id": 4,
+      "user_id": 8,
+      "state": "Haryana",
+      "district": "Karnal",
+      "village": "Taraori",
+      "landholding_size": "5.2 Acres",
+      "primary_crops": "Basmati Rice, Wheat",
+      "farming_experience": "18 Years",
+      "created_at": "2026-11-10T12:12:52.284Z"
+    },
+    {
+      "id": 5,
+      "user_id": 9,
+      "state": "haryana",
+      "district": "rewari",
+      "village": "yamunanagar",
+      "landholding_size": "8",
+      "primary_crops": "Wheat",
+      "farming_experience": "11",
+      "created_at": "2026-11-10T12:42:09.508Z"
+    },
+    {
+      "id": 6,
+      "user_id": 10,
+      "state": "Haryana",
+      "district": "Karnal",
+      "village": "Taraori",
+      "landholding_size": "5.2 Acres",
+      "primary_crops": "Basmati Rice, Wheat",
+      "farming_experience": "18 Years",
+      "created_at": "2026-11-10T12:50:23.601Z"
+    }
+  ],
+  "provider_profiles": [
+    {
+      "id": 1,
+      "user_id": 5,
+      "business_name": "Kisan Agro Equipment & Drone Services",
+      "service_types": "Tractor Rental, Harvester, Drone Spraying, Soil Testing",
+      "state": "Punjab",
+      "district": "Ludhiana",
+      "experience": "8 Years",
+      "created_at": "2026-11-10T12:11:24.966Z"
+    },
+    {
+      "id": 2,
+      "user_id": 6,
+      "business_name": "Kisan Agro Equipment & Drone Services",
+      "service_types": "Tractor Rental, Harvester, Drone Spraying, Soil Testing",
+      "state": "Punjab",
+      "district": "Ludhiana",
+      "experience": "8 Years",
+      "created_at": "2026-11-10T12:11:25.028Z"
+    }
+  ],
+  "otp_codes": [
+    {
+      "identifier": "9876540011",
+      "code": "287404",
+      "expires_at": "2026-11-10T12:21:59.260Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:11:59.262Z"
+    },
+    {
+      "identifier": "9876540011",
+      "code": "640922",
+      "expires_at": "2026-11-10T12:26:59.367Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:11:59.369Z"
+    },
+    {
+      "identifier": "9876540011",
+      "code": "411848",
+      "expires_at": "2026-11-10T12:22:36.885Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:12:36.888Z"
+    },
+    {
+      "identifier": "9873106234",
+      "code": "510168",
+      "expires_at": "2026-11-10T12:22:52.208Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:12:52.210Z"
+    },
+    {
+      "identifier": "9873106234",
+      "code": "641111",
+      "expires_at": "2026-11-10T12:27:52.293Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:12:52.294Z"
+    },
+    {
+      "identifier": "1234567891",
+      "code": "464356",
+      "expires_at": "2026-11-10T12:52:01.417Z",
+      "verified": false,
+      "created_at": "2026-11-10T12:42:01.419Z"
+    },
+    {
+      "identifier": "9871904864",
+      "code": "911538",
+      "expires_at": "2026-11-10T13:00:23.527Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:50:23.528Z"
+    },
+    {
+      "identifier": "9871904864",
+      "code": "241456",
+      "expires_at": "2026-11-10T13:05:23.608Z",
+      "verified": true,
+      "created_at": "2026-11-10T12:50:23.608Z"
+    }
+  ],
+  "password_resets": []
+}

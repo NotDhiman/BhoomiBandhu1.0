@@ -183,6 +183,9 @@
       white-space: pre-wrap;
     }
     .msg.bot .bubble strong { color: var(--green); }
+    .msg.bot .bubble a { color: var(--green); font-weight: 600; transition: opacity .2s; }
+    .msg.bot .bubble a:hover { opacity: .75; }
+    .msg.bot .bubble em { font-style: italic; opacity: .9; }
 
     /* Typing indicator */
     .typing-dots {
@@ -509,11 +512,13 @@
 
     <!-- Quick action chips below input -->
     <div class="chat-actions">
-      <button class="chat-action-btn" onclick="injectQuestion({textContent:'Meri fasal ke liye aaj ka weather kaisa hai?'})">🌦 Weather advice</button>
+      <button class="chat-action-btn" onclick="startVoice()" title="Speak your question">🎤 Voice</button>
+      <button class="chat-action-btn" onclick="injectQuestion({textContent:'Insurance claim kaise file karein step by step?'})">📋 File Claim</button>
+      <button class="chat-action-btn" onclick="injectQuestion({textContent:'Meri fasal ke liye aaj ka weather kaisa hai?'})">🌦 Weather</button>
       <button class="chat-action-btn" onclick="injectQuestion({textContent:'Soil health improve karne ke 5 tips batao'})">🪨 Soil tips</button>
       <button class="chat-action-btn" onclick="injectQuestion({textContent:'Is season mein kaun se keede zyada hote hain aur bachao kaise karein?'})">🦟 Pest alert</button>
-      <button class="chat-action-btn" onclick="injectQuestion({textContent:'Fertiliser schedule kya hona chahiye mere crop ke liye?'})">🧪 Fertiliser plan</button>
       <button class="chat-action-btn" onclick="injectQuestion({textContent:'Government se loan kaise lein kisan?'})">💰 Kisan loan</button>
+      <button class="chat-action-btn" onclick="exportChat()" title="Download chat as text">📥 Export</button>
     </div>
 
     <!-- Error banner -->
@@ -527,14 +532,41 @@
 <script src="script.js"></script>
 <script>
 /* ============================================================
-   GEMINI CHAT – BhoomiBandhu AI Farming Advisor
+   GEMINI CHAT – BhoomiBandhu AI Farming Advisor  (Enhanced)
    ============================================================ */
 
 const API_BASE = window.location.port === "3000" ? "" : "http://localhost:3000";
 
-let chatHistory   = [];   // [{role, text}]  — for context window
-let questionHistory = []; // sidebar history list
-let isThinking    = false;
+let chatHistory     = [];   // [{role, text}]  — for context window
+let questionHistory = [];   // sidebar history list
+let isThinking      = false;
+let lastFailedPrompt = null; // for retry
+
+/* ── Simple Markdown → HTML ──────────────────────────────── */
+function md(text) {
+  if (!text) return "";
+  let html = text
+    // Escape HTML entities first
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    // Bold
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    // Italic
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    // Internal page links: [Text](page.html) → clickable links
+    .replace(/\[([^\]]+)\]\(([a-z0-9\-]+\.html)\)/g,
+      '<a href="$2" style="color:var(--green);font-weight:600;text-decoration:underline;" title="Open $1">$1 ↗</a>')
+    // External links
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline;">$1 ↗</a>')
+    // Numbered lists
+    .replace(/^(\d+)\.\s+(.+)$/gm, '<div style="padding-left:8px;">$1. $2</div>')
+    // Bullet points (- or •)
+    .replace(/^[-•]\s+(.+)$/gm, '<div style="padding-left:8px;">• $1</div>')
+    // Line breaks
+    .replace(/\n\n/g, "<br><br>")
+    .replace(/\n/g, "<br>");
+  return html;
+}
 
 /* ── Helpers ──────────────────────────────────────────────── */
 function getContext() {
@@ -566,20 +598,27 @@ function handleKey(e) {
 
 /* ── Render helpers ───────────────────────────────────────── */
 function appendMessage(role, text, isTyping = false) {
-  const window  = document.getElementById("chatWindow");
-  const isUser  = role === "user";
-  const div     = document.createElement("div");
+  const win    = document.getElementById("chatWindow");
+  const isUser = role === "user";
+  const div    = document.createElement("div");
   div.className = `msg ${isUser ? "user" : "bot"}`;
   div.id        = isTyping ? "typingMsg" : "";
 
-  const avatar  = isUser ? "👨‍🌾" : "🤖";
-  const bubble  = isTyping
-    ? `<div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`
-    : `<div class="bubble">${text}</div>`;
+  const avatar = isUser ? "👨‍🌾" : "🤖";
+  let bubble;
+  if (isTyping) {
+    bubble = `<div class="bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  } else if (isUser) {
+    // User messages: plain text, escape HTML
+    bubble = `<div class="bubble">${text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}</div>`;
+  } else {
+    // Bot messages: render markdown
+    bubble = `<div class="bubble">${md(text)}</div>`;
+  }
 
   div.innerHTML = `<div class="avatar">${avatar}</div>${bubble}`;
-  window.appendChild(div);
-  window.scrollTop = window.scrollHeight;
+  win.appendChild(div);
+  win.scrollTop = win.scrollHeight;
   return div;
 }
 
@@ -588,27 +627,46 @@ function removeTyping() {
   if (el) el.remove();
 }
 
-/* Typewriter into existing bubble */
+/* Typewriter effect that renders markdown progressively */
 function typeText(div, text) {
   const bubble = div.querySelector(".bubble");
-  bubble.textContent = "";
   let i = 0;
+  const len = text.length;
+  // For short replies just render instantly
+  if (len < 80) {
+    bubble.innerHTML = md(text);
+    document.getElementById("chatWindow").scrollTop = 9999;
+    return Promise.resolve();
+  }
+  // Progressive render: build up raw text, re-render md periodically
   return new Promise(resolve => {
+    let raw = "";
+    const speed = Math.max(6, Math.min(18, Math.round(800 / len))); // adaptive speed
     const timer = setInterval(() => {
-      bubble.textContent += text[i++];
+      const chunk = Math.min(3, len - i); // render 3 chars at a time for speed
+      raw += text.substring(i, i + chunk);
+      i += chunk;
+      // Re-render markdown every 12 chars or at the end
+      if (i % 12 === 0 || i >= len) {
+        bubble.innerHTML = md(raw);
+      }
       document.getElementById("chatWindow").scrollTop = 9999;
-      if (i >= text.length) { clearInterval(timer); resolve(); }
-    }, 16);
+      if (i >= len) {
+        clearInterval(timer);
+        bubble.innerHTML = md(text); // final clean render
+        resolve();
+      }
+    }, speed);
   });
 }
 
 /* ── Add to history sidebar ───────────────────────────────── */
 function addToHistory(question) {
   questionHistory.unshift(question);
-  if (questionHistory.length > 20) questionHistory.pop();
+  if (questionHistory.length > 30) questionHistory.pop();
   const list = document.getElementById("historyList");
-  list.innerHTML = questionHistory.map((q, i) =>
-    `<div class="history-item" onclick="injectQuestion({textContent:\`${q.replace(/`/g,"'")}\`})">${q.slice(0, 55)}…</div>`
+  list.innerHTML = questionHistory.map(q =>
+    `<div class="history-item" onclick="injectQuestion({textContent:\`${q.replace(/`/g,"'")}\`})">${q.slice(0, 55)}${q.length > 55 ? '…' : ''}</div>`
   ).join("");
 }
 
@@ -626,6 +684,15 @@ function askScheme(name) {
   document.getElementById("chatInput").value = q;
   autoResize(document.getElementById("chatInput"));
   sendMessage();
+}
+
+/* ── Retry last failed message ────────────────────────────── */
+function retryLast() {
+  if (lastFailedPrompt) {
+    document.getElementById("chatInput").value = lastFailedPrompt;
+    lastFailedPrompt = null;
+    sendMessage();
+  }
 }
 
 /* ── MAIN SEND ────────────────────────────────────────────── */
@@ -648,15 +715,17 @@ async function sendMessage() {
   input.value = "";
   autoResize(input);
   errEl.className = "chat-error";
+  errEl.innerHTML = "";
+  lastFailedPrompt = null;
 
   // Typing indicator
   isThinking = true;
   sendBtn.disabled = true;
   appendMessage("bot", "", true);
 
-  // Build full prompt with context + last 4 exchanges for memory
+  // Build full prompt with context + last 6 exchanges for memory
   const ctx = getContext();
-  const memory = chatHistory.slice(-8).map(m =>
+  const memory = chatHistory.slice(-12).map(m =>
     m.role === "user" ? `Farmer: ${m.text}` : `AI: ${m.text}`
   ).join("\n");
   const fullPrompt = `${ctx}Conversation so far:\n${memory}\n\nFarmer's latest question: ${question}`;
@@ -675,10 +744,16 @@ async function sendMessage() {
     await typeText(botDiv, data.reply);
     chatHistory.push({ role:"bot", text:data.reply });
 
+    // Show follow-up suggestions if the reply mentions platform pages
+    showSuggestions(data.reply, question);
+
   } catch(err) {
     removeTyping();
-    errEl.textContent = "⚠️ " + err.message +
-      " — Ensure Node server is running (npm start) and GEMINI_API_KEY is in .env";
+    lastFailedPrompt = question;
+    // Remove the user message from history since it failed
+    chatHistory.pop();
+    errEl.innerHTML = `⚠️ ${err.message}
+      <button onclick="retryLast()" style="margin-left:12px;padding:4px 14px;border-radius:20px;border:1.5px solid #c62828;background:transparent;color:#c62828;cursor:pointer;font-family:Poppins,sans-serif;font-size:.82rem;font-weight:600;">🔄 Retry</button>`;
     errEl.className = "chat-error show";
   } finally {
     isThinking       = false;
@@ -687,9 +762,60 @@ async function sendMessage() {
   }
 }
 
+/* ── Smart follow-up suggestions based on response ────────── */
+function showSuggestions(reply, question) {
+  const lower = (reply + " " + question).toLowerCase();
+  const suggestions = [];
+
+  if (lower.includes("insurance") || lower.includes("pmfby") || lower.includes("bima")) {
+    suggestions.push({ text:"📋 File a Claim", q:"Insurance claim kaise file karein step by step?" });
+    suggestions.push({ text:"🛡️ Check Eligibility", q:"Kya main PMFBY ke liye eligible hun?" });
+  }
+  if (lower.includes("claim") || lower.includes("dawa")) {
+    suggestions.push({ text:"📄 Required Documents", q:"Claim file karne ke liye kaun se documents chahiye?" });
+    suggestions.push({ text:"📊 Track Status", q:"Mera claim status kaise check karein?" });
+  }
+  if (lower.includes("loan") || lower.includes("kcc") || lower.includes("credit")) {
+    suggestions.push({ text:"💳 KCC Details", q:"KCC kaise apply karein aur interest rate kya hai?" });
+  }
+  if (lower.includes("pest") || lower.includes("keede") || lower.includes("rog")) {
+    suggestions.push({ text:"🧪 Treatment Plan", q:"Is keede ka organic aur chemical dono treatment batao" });
+  }
+  if (lower.includes("crop") || lower.includes("fasal") || lower.includes("ugayen")) {
+    suggestions.push({ text:"🌾 Best Crop", q:"Mere soil aur season ke liye best crop kaunsa hai?" });
+    suggestions.push({ text:"📈 Yield Tips", q:"Yield kaise badhayein mere crop ki?" });
+  }
+  if (lower.includes("stress") || lower.includes("tension") || lower.includes("pareshaan")) {
+    suggestions.push({ text:"💚 Mental Health Help", q:"Kisan ke liye mental health helpline numbers batao" });
+  }
+
+  // Show max 3 unique suggestions
+  if (suggestions.length > 0) {
+    const unique = suggestions.slice(0, 3);
+    const container = document.createElement("div");
+    container.style.cssText = "display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;animation:fadeUp .35s ease;";
+    unique.forEach(s => {
+      const btn = document.createElement("button");
+      btn.className = "chat-action-btn";
+      btn.textContent = s.text;
+      btn.onclick = () => {
+        document.getElementById("chatInput").value = s.q;
+        sendMessage();
+        container.remove();
+      };
+      container.appendChild(btn);
+    });
+    document.getElementById("chatWindow").appendChild(container);
+    document.getElementById("chatWindow").scrollTop = 9999;
+  }
+}
+
 /* ── Clear chat ───────────────────────────────────────────── */
 function clearChat() {
   chatHistory = [];
+  questionHistory = [];
+  document.getElementById("historyList").innerHTML =
+    '<div style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:10px 0;">No questions yet</div>';
   const win = document.getElementById("chatWindow");
   win.innerHTML = `
     <div class="welcome-msg">
@@ -697,7 +823,52 @@ function clearChat() {
       <h3>Chat cleared! Dobara poochhein 🙏</h3>
       <p>Apne khet, mitti, fasal, keede ya sarkar ki yojna ke baare mein kuch bhi poochh sakte ho.</p>
     </div>`;
+  document.getElementById("chatError").className = "chat-error";
+  document.getElementById("chatError").innerHTML = "";
+}
+
+/* ── Voice input (if supported) ───────────────────────────── */
+function startVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert("Voice input is not supported in your browser. Chrome recommended.");
+    return;
+  }
+  const recognition = new SpeechRecognition();
+  recognition.lang = "hi-IN"; // Hindi default, also understands English
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    const input = document.getElementById("chatInput");
+    input.value = transcript;
+    autoResize(input);
+    input.focus();
+  };
+  recognition.onerror = (event) => {
+    console.warn("Voice error:", event.error);
+  };
+  recognition.start();
+}
+
+/* ── Export chat as text ──────────────────────────────────── */
+function exportChat() {
+  if (chatHistory.length === 0) { alert("Koi chat nahi hai export karne ke liye."); return; }
+  let text = "=== BhoomiBandhu AI Chat Export ===\n";
+  text += `Date: ${new Date().toLocaleString("en-IN")}\n\n`;
+  chatHistory.forEach(m => {
+    text += (m.role === "user" ? "👨‍🌾 Farmer: " : "🤖 AI: ") + m.text + "\n\n";
+  });
+  const blob = new Blob([text], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `bhoomibandhu-chat-${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 </script>
+<script src="auth-nav.js"></script>
 </body>
 </html>
