@@ -5,6 +5,9 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Your Account | BhoomiBandhu 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="auth-style.css">
   <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
   <style>
@@ -176,7 +179,7 @@
         </div>
 
         <!-- Alert Box -->
-        <div id="regAlert" class="auth-alert" style="display: none;"></div>
+        <div id="regAlert" class="auth-alert" role="alert" aria-live="polite" style="display: none;"></div>
 
         <!-- Multi-Step Form Wizard -->
         <form id="registrationForm" onsubmit="event.preventDefault()">
@@ -187,45 +190,60 @@
           <div class="step-content active" id="step1">
             
             <div class="form-group">
-              <label for="fullName" class="form-label" id="lbl-fullname">Full Name *</label>
+              <label for="fullName" class="form-label" id="lbl-fullname">
+                <span>Full Name <span class="required-indicator" aria-hidden="true">*</span></span>
+              </label>
               <div class="input-wrapper">
                 <span class="input-icon">👤</span>
                 <input type="text" id="fullName" class="form-input" placeholder="e.g. Ramesh Kumar Patel" required>
               </div>
+              <span class="form-help">Enter your official name as shown on Aadhaar or Land Records.</span>
             </div>
 
             <div class="form-group">
-              <label for="mobileNumber" class="form-label" id="lbl-mobile">Mobile Number (10 Digits) *</label>
+              <label for="mobileNumber" class="form-label" id="lbl-mobile">
+                <span>Mobile Number (10 Digits) <span class="required-indicator" aria-hidden="true">*</span></span>
+              </label>
               <div class="input-wrapper">
                 <span class="input-icon">📱</span>
                 <input type="tel" id="mobileNumber" class="form-input" placeholder="e.g. 9876543210" maxlength="10" required>
               </div>
+              <span class="form-help">Used for OTP verification and official SMS advisory alerts.</span>
             </div>
 
             <div class="form-group">
-              <label for="emailAddress" class="form-label" id="lbl-email">Email Address (Optional)</label>
+              <label for="emailAddress" class="form-label" id="lbl-email">
+                <span>Email Address (Optional)</span>
+              </label>
               <div class="input-wrapper">
                 <span class="input-icon">✉️</span>
                 <input type="email" id="emailAddress" class="form-input" placeholder="farmer@bhoomibandhu.in">
               </div>
+              <span class="form-help">For receiving digital statements, claim approvals and scheme receipts.</span>
             </div>
 
             <div class="form-group">
-              <label for="regPassword" class="form-label" id="lbl-password">Create Password *</label>
+              <label for="regPassword" class="form-label" id="lbl-password">
+                <span>Create Password <span class="required-indicator" aria-hidden="true">*</span></span>
+              </label>
               <div class="input-wrapper">
                 <span class="input-icon">🔒</span>
                 <input type="password" id="regPassword" class="form-input" placeholder="Minimum 6 characters" required>
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('regPassword', this)">👁️</button>
               </div>
+              <span class="form-help">Minimum 6 alphanumeric characters to protect your account.</span>
             </div>
 
             <div class="form-group">
-              <label for="confirmPassword" class="form-label" id="lbl-confirmpass">Confirm Password *</label>
+              <label for="confirmPassword" class="form-label" id="lbl-confirmpass">
+                <span>Confirm Password <span class="required-indicator" aria-hidden="true">*</span></span>
+              </label>
               <div class="input-wrapper">
                 <span class="input-icon">🔒</span>
                 <input type="password" id="confirmPassword" class="form-input" placeholder="Re-enter your password" required>
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPassword', this)">👁️</button>
               </div>
+              <span class="form-help">Must match the created password above.</span>
             </div>
 
             <div class="wizard-actions">
@@ -309,20 +327,26 @@
               </p>
 
               <div class="form-group">
-                <label for="farmState" class="form-label" id="lbl-state">State *</label>
+                <label for="farmState" class="form-label" id="lbl-state">
+                  <span>State <span class="required-indicator" aria-hidden="true">*</span></span>
+                </label>
                 <div class="input-wrapper">
                   <span class="input-icon">📍</span>
                   <input type="text" id="farmState" class="form-input" placeholder="e.g. Madhya Pradesh, Punjab, Uttar Pradesh">
                 </div>
+                <span class="form-help">State of your agricultural land for localized scheme notifications.</span>
               </div>
 
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
                 <div class="form-group">
-                  <label for="farmDistrict" class="form-label" id="lbl-district">District *</label>
+                  <label for="farmDistrict" class="form-label" id="lbl-district">
+                    <span>District <span class="required-indicator" aria-hidden="true">*</span></span>
+                  </label>
                   <div class="input-wrapper">
                     <span class="input-icon">🏛️</span>
                     <input type="text" id="farmDistrict" class="form-input" placeholder="e.g. Sehore">
                   </div>
+                  <span class="form-help">District name.</span>
                 </div>
 
                 <div class="form-group">
@@ -331,6 +355,7 @@
                     <span class="input-icon">🏡</span>
                     <input type="text" id="farmVillage" class="form-input" placeholder="e.g. Bilkisganj">
                   </div>
+                  <span class="form-help">Local village or taluka.</span>
                 </div>
               </div>
 
@@ -341,6 +366,7 @@
                     <span class="input-icon">📐</span>
                     <input type="text" id="landholdingSize" class="form-input" placeholder="e.g. 4.5 Acres">
                   </div>
+                  <span class="form-help">Total cultivated area.</span>
                 </div>
 
                 <div class="form-group">
@@ -349,6 +375,7 @@
                     <span class="input-icon">⏳</span>
                     <input type="text" id="farmingExp" class="form-input" placeholder="e.g. 10+ Years">
                   </div>
+                  <span class="form-help">Years engaged in farming.</span>
                 </div>
               </div>
 
@@ -358,6 +385,7 @@
                   <span class="input-icon">🌾</span>
                   <input type="text" id="primaryCrops" class="form-input" placeholder="e.g. Wheat, Soybean, Mustard">
                 </div>
+                <span class="form-help">Select or type common crops cultivated during Kharif and Rabi seasons.</span>
                 <div class="crops-tag-container">
                   <span class="crop-tag-chip" onclick="addCropTag('Wheat')">Wheat (गेहूं)</span>
                   <span class="crop-tag-chip" onclick="addCropTag('Rice')">Rice (धान)</span>
@@ -375,19 +403,25 @@
               </p>
 
               <div class="form-group">
-                <label for="bizName" class="form-label">Business / Agency Name *</label>
+                <label for="bizName" class="form-label">
+                  <span>Business / Agency Name <span class="required-indicator" aria-hidden="true">*</span></span>
+                </label>
                 <div class="input-wrapper">
                   <span class="input-icon">🏢</span>
                   <input type="text" id="bizName" class="form-input" placeholder="e.g. Kisan Agro Equipment & Drone Spray">
                 </div>
+                <span class="form-help">Registered enterprise or enterprise banner name.</span>
               </div>
 
               <div class="form-group">
-                <label for="serviceTypes" class="form-label">Services Offered *</label>
+                <label for="serviceTypes" class="form-label">
+                  <span>Services Offered <span class="required-indicator" aria-hidden="true">*</span></span>
+                </label>
                 <div class="input-wrapper">
                   <span class="input-icon">🛠️</span>
                   <input type="text" id="serviceTypes" class="form-input" placeholder="e.g. Tractor, Harvester, Drones, Cold Storage">
                 </div>
+                <span class="form-help">Custom hiring, spraying, storage or equipment fleet details.</span>
               </div>
 
               <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">

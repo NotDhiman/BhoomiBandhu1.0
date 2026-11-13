@@ -5,6 +5,9 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In | BhoomiBandhu 2.0 – Agricultural Empowerment Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="auth-style.css">
   <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
 </head>
@@ -128,15 +131,15 @@
         </header>
 
         <!-- Dynamic Alert Message (Error / Success) -->
-        <div id="authAlert" class="auth-alert" style="display: none;"></div>
+        <div id="authAlert" class="auth-alert" role="alert" aria-live="polite" style="display: none;"></div>
 
         <!-- Login Form -->
         <form id="loginForm" onsubmit="handleLogin(event)" novalidate>
           
           <!-- Email or Mobile Input -->
-          <div class="form-group">
+          <div class="form-group" id="group-identifier">
             <label for="identifier" class="form-label" id="txt-label-id">
-              Email Address or Mobile Number
+              <span>Email Address or Mobile Number <span class="required-indicator" aria-hidden="true">*</span></span>
             </label>
             <div class="input-wrapper">
               <span class="input-icon">👤</span>
@@ -148,14 +151,17 @@
                 placeholder="e.g. 9823456789 or farmer@domain.com"
                 required
                 autocomplete="username"
+                oninput="clearFieldValidation(this)"
               >
             </div>
+            <span class="form-help">Enter your registered 10-digit mobile number or official email address.</span>
+            <span class="invalid-feedback" id="identifierError"></span>
           </div>
 
           <!-- Password Input with Show/Hide Toggle -->
-          <div class="form-group">
+          <div class="form-group" id="group-password">
             <label for="password" class="form-label" id="txt-label-pass">
-              Password
+              <span>Password <span class="required-indicator" aria-hidden="true">*</span></span>
             </label>
             <div class="input-wrapper">
               <span class="input-icon">🔒</span>
@@ -167,6 +173,7 @@
                 placeholder="Enter your secure password"
                 required
                 autocomplete="current-password"
+                oninput="clearFieldValidation(this)"
               >
               <button
                 type="button"
@@ -178,6 +185,8 @@
                 👁️
               </button>
             </div>
+            <span class="form-help">Minimum 6 characters. Confidential password for account access.</span>
+            <span class="invalid-feedback" id="passwordError"></span>
           </div>
 
           <!-- Remember Me & Forgot Password Row -->
@@ -219,23 +228,21 @@
             <a href="register.html" id="txt-create-link">Create Account</a>
           </div>
 
-          <!-- Quick Test / Demo Credentials Box -->
-          <div class="demo-credentials-box">
-            <div class="demo-title">
-              <span>🌾</span>
-              <strong>Quick Role Switcher for Testing:</strong>
+          <!-- Quick Test / One-Click Demo Role Switcher -->
+          <div style="margin-top: 1.25rem; padding-top: 0.85rem; border-top: 1px dashed var(--c-cream-border); text-align: center;">
+            <div style="font-size: 0.74rem; color: var(--c-text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">
+              Quick 1-Click Demo Accounts:
             </div>
-            <div class="demo-row">
-              <span>Farmer (Ramesh):</span>
-              <a class="demo-badge-fill" onclick="fillDemo('9823456789', 'Kisan@12345')">9823456789 / Kisan@12345</a>
-            </div>
-            <div class="demo-row">
-              <span>Service Provider:</span>
-              <a class="demo-badge-fill" onclick="fillDemo('9811223344', 'Service@12345')">9811223344 / Service@12345</a>
-            </div>
-            <div class="demo-row">
-              <span>Platform Admin:</span>
-              <a class="demo-badge-fill" onclick="fillDemo('admin@bhoomibandhu.in', 'Admin@12345')">admin@bhoomibandhu.in / Admin@12345</a>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="back-link" style="padding: 4px 10px; font-size: 0.78rem; cursor: pointer;" onclick="fillDemo('9823456789', 'Kisan@12345')">
+                🌾 Farmer
+              </button>
+              <button type="button" class="back-link" style="padding: 4px 10px; font-size: 0.78rem; cursor: pointer;" onclick="fillDemo('9811223344', 'Service@12345')">
+                🚜 Provider
+              </button>
+              <button type="button" class="back-link" style="padding: 4px 10px; font-size: 0.78rem; cursor: pointer;" onclick="fillDemo('admin@bhoomibandhu.in', 'Admin@12345')">
+                🛡️ Admin
+              </button>
             </div>
           </div>
 
@@ -421,25 +428,54 @@
       alertBox.innerHTML = '';
     }
 
+    function clearFieldValidation(input) {
+      input.classList.remove('is-invalid');
+      const errEl = document.getElementById(input.id + 'Error');
+      if (errEl) {
+        errEl.innerText = '';
+        errEl.style.display = 'none';
+      }
+    }
+
+    function setFieldError(fieldId, errorMsg) {
+      const input = document.getElementById(fieldId);
+      if (input) input.classList.add('is-invalid');
+      const errEl = document.getElementById(fieldId + 'Error');
+      if (errEl) {
+        errEl.innerText = errorMsg;
+        errEl.style.display = 'block';
+      }
+    }
+
     // Handle Login Submission
     async function handleLogin(e) {
       e.preventDefault();
       clearAlert();
 
-      const identifier = document.getElementById('identifier').value.trim();
-      const password = document.getElementById('password').value;
+      const idInput = document.getElementById('identifier');
+      const passInput = document.getElementById('password');
+      clearFieldValidation(idInput);
+      clearFieldValidation(passInput);
+
+      const identifier = idInput.value.trim();
+      const password = passInput.value;
       const rememberMe = document.getElementById('rememberMe').checked;
       const loginBtn = document.getElementById('loginBtn');
       const loginBtnText = document.getElementById('loginBtnText');
 
+      let hasError = false;
       if (!identifier) {
-        showAlert('Please enter your mobile number or email address.', 'error');
-        document.getElementById('identifier').focus();
-        return;
+        setFieldError('identifier', 'Please enter your registered mobile number or email.');
+        idInput.focus();
+        hasError = true;
       }
       if (!password) {
-        showAlert('Please enter your password.', 'error');
-        document.getElementById('password').focus();
+        setFieldError('password', 'Please enter your password.');
+        if (!hasError) passInput.focus();
+        hasError = true;
+      }
+      if (hasError) {
+        showAlert('Please complete all required fields.', 'error');
         return;
       }
 

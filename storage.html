@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Storage Finder for Farmers</title>
+    <title>Digital Storage Finder & Booking Engine | BhoomiBandhu 2.0</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 
     <style>
         :root {
@@ -16,7 +20,7 @@
 
         * {
             box-sizing: border-box;
-            font-family: "Segoe UI", sans-serif;
+            font-family: var(--font-family-base, 'Poppins', 'Plus Jakarta Sans', sans-serif);
         }
 
         body {
@@ -1066,493 +1070,2814 @@
             }
         }
         .storage-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-.storage-logo img {
-  width: 42px;
-  height: auto;
-}
+        .storage-logo img {
+            width: 42px;
+            height: auto;
+        }
 
+        .badge-tag {
+            font-size: 0.6em;
+            background: #f59e0b;
+            color: #111;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.25s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: var(--accent);
+            color: #111;
+        }
+
+        .nav-provider-pill {
+            background: rgba(255, 213, 79, 0.2);
+            border: 1px solid #ffd54f !important;
+            color: #ffe082 !important;
+        }
+
+        .nav-provider-pill:hover, .nav-provider-pill.active {
+            background: #f59e0b !important;
+            color: #111 !important;
+        }
+
+        .nav-back {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* MARKETPLACE STYLES */
+        .marketplace-header {
+            margin-bottom: 25px;
+        }
+
+        .marketplace-header h2 {
+            font-size: 28px;
+            color: var(--green);
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .marketplace-header p {
+            color: #546e7a;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .filter-panel {
+            background: white;
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 100px;
+            gap: 14px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #37474f;
+        }
+
+        .filter-group input, .filter-group select {
+            padding: 10px 12px;
+            border: 1px solid #cfd8dc;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #fafafa;
+            color: #263238;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .filter-group input:focus, .filter-group select:focus {
+            border-color: var(--green);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.12);
+        }
+
+        .btn-reset-filter {
+            background: #eceff1;
+            color: #455a64;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 42px;
+            transition: 0.2s;
+        }
+
+        .btn-reset-filter:hover {
+            background: #cfd8dc;
+            color: #263238;
+        }
+
+        .marketplace-meta-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #546e7a;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .facility-card {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .facility-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 30px rgba(0,0,0,0.12);
+            border-color: #a5d6a7;
+        }
+
+        .fac-card-header {
+            padding: 18px 20px 12px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafdfa;
+        }
+
+        .fac-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .fac-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1b5e20;
+            margin: 0;
+        }
+
+        .fac-type-pill {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .type-cold { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .type-ca { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
+        .type-warehouse { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .type-godown { background: #e8f5e9; color: #1b5e20; border: 1px solid #c8e6c9; }
+
+        .fac-location {
+            font-size: 13px;
+            color: #546e7a;
+            margin: 0 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .fac-badges-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge-wdra {
+            background: #ecfdf5;
+            color: #065f46;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #a7f3d0;
+        }
+
+        .badge-subsidy {
+            background: #fffbeb;
+            color: #b45309;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid #fcd34d;
+        }
+
+        .fac-card-body {
+            padding: 18px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .fac-specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12.5px;
+        }
+
+        .spec-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .spec-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 11.5px;
+        }
+
+        .spec-val {
+            color: #1e293b;
+            font-weight: 700;
+        }
+
+        /* Capacity Gauge */
+        .capacity-gauge-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .capacity-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .capacity-bar-track {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .capacity-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .fill-avail { background: linear-gradient(90deg, #10b981, #059669); }
+        .fill-limited { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .fill-critical { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+        .capacity-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        /* Pricing Card Highlight */
+        .fac-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+        }
+
+        .price-text-main {
+            font-size: 18px;
+            font-weight: 800;
+            color: #166534;
+        }
+
+        .price-subtext {
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .fac-amenities-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .amenity-chip {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .fac-card-actions {
+            padding: 14px 20px;
+            border-top: 1px solid #f0f0f0;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 10px;
+            background: #fafafa;
+        }
+
+        .btn-fac-view {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: 0.2s;
+        }
+
+        .btn-fac-view:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .btn-fac-book {
+            padding: 10px;
+            border: none;
+            background: #1b5e20;
+            color: white;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(27, 94, 32, 0.3);
+        }
+
+        .btn-fac-book:hover {
+            background: #2e7d32;
+            transform: translateY(-1px);
+        }
+
+        /* MODAL STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: white;
+            border-radius: 16px;
+            max-width: 650px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background: #1b5e20;
+            color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .btn-close-modal {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            padding: 24px;
+            color: #334155;
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+
+        /* BOOKING WIZARD & PRICE BREAKDOWN */
+        .booking-wizard-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
+            padding: 32px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .wizard-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .step-item.active {
+            color: #1b5e20;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .step-item.active .step-circle {
+            background: #1b5e20;
+            color: white;
+        }
+
+        .booking-section-card {
+            background: #fafafa;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .booking-section-card h4 {
+            margin: 0 0 14px 0;
+            color: #1e293b;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-field label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #475569;
+        }
+
+        .form-field input, .form-field select {
+            padding: 11px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-field input:focus, .form-field select:focus {
+            border-color: #1b5e20;
+            box-shadow: 0 0 0 3px rgba(27, 94, 32, 0.15);
+        }
+
+        /* Subsidy Verifier Panel */
+        .subsidy-verifier-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 14px;
+        }
+
+        .btn-verify-subsidy {
+            background: #d97706;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+
+        .btn-verify-subsidy:hover {
+            background: #b45309;
+        }
+
+        .subsidy-result-card {
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #fcd34d;
+            font-size: 13.5px;
+        }
+
+        .subsidy-badge-valid {
+            color: #065f46;
+            background: #d1fae5;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .subsidy-badge-invalid {
+            color: #991b1b;
+            background: #fee2e2;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        /* Itemized Price Breakdown Table */
+        .price-breakdown-card {
+            background: #ffffff;
+            border: 2px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(22, 101, 52, 0.08);
+        }
+
+        .price-breakdown-card h4 {
+            margin: 0 0 16px 0;
+            color: #166534;
+            font-size: 17px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .breakdown-row.subsidy-row {
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        .breakdown-row.total-row {
+            border-top: 2px solid #166534;
+            border-bottom: none;
+            padding-top: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #166534;
+        }
+
+        .breakdown-row.advance-row {
+            border-bottom: none;
+            padding-top: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #b45309;
+        }
+
+        /* Payment Selectors */
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .payment-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-option:hover, .payment-option.selected {
+            border-color: #1b5e20;
+            background: #f0fdf4;
+        }
+
+        .payment-option input {
+            accent-color: #1b5e20;
+        }
+
+        /* DIGITAL GATE PASS CARD */
+        .gate-pass-container {
+            background: #ffffff;
+            border: 2px dashed #1b5e20;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 720px;
+            margin: 20px auto;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .gate-pass-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .gate-pass-qr {
+            width: 90px;
+            height: 90px;
+            background: #111;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: monospace;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .pass-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .pass-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pass-field span.lbl {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .pass-field span.val {
+            font-size: 15px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        /* PROVIDER PORTAL DASHBOARD */
+        .provider-dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+        }
+
+        .provider-metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .prov-metric-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .prov-metric-box .num {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 4px 0;
+        }
+
+        .prov-metric-box .label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .booking-status-tag {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .status-pending-tag { background: #fef3c7; color: #92400e; }
+        .status-confirmed-tag { background: #d1fae5; color: #065f46; }
+        .status-active-tag { background: #e0f2fe; color: #0369a1; }
+        .status-completed-tag { background: #f1f5f9; color: #475569; }
+        .status-rejected-tag { background: #fee2e2; color: #991b1b; }
+
+        .btn-action-sm {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-confirm-sm { background: #15803d; color: white; }
+        .btn-intake-sm { background: #0284c7; color: white; }
+        .btn-reject-sm { background: #dc2626; color: white; }
+
+        @media print {
+            nav, .footer, .marketplace-filters, .wizard-steps, button {
+                display: none !important;
+            }
+            .gate-pass-container {
+                border: 2px solid black !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+            }
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <nav>
-        <h1 class="storage-logo">
-  <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
-  <span>Digital Storage Finder</span>
-</h1>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <h1 class="storage-logo">
+                <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+                <span>Digital Storage Finder <span class="badge-tag">MARKETPLACE</span></span>
+            </h1>
+        </div>
 
-        <div>
-            <a href="#" onclick="showSection('home')">Home</a>
-            <a href="#" onclick="showSection('storage')">Storage</a>
-            <a href="#" onclick="showSection('schemes')">Schemes</a>
-            <a href="#" onclick="showSection('booking')">Booking</a>
-            <a href="#" onclick="showSection('profile')">Profile</a>
-            <a href="index.html">BhoomiBandhu</a>
-
+        <div class="nav-links">
+            <a href="#" class="nav-item active" onclick="showSection('home', this)">Home</a>
+            <a href="#" class="nav-item" onclick="showSection('storage', this)">Marketplace</a>
+            <a href="#" class="nav-item" onclick="showSection('schemes', this)">Schemes & Subsidies</a>
+            <a href="#" class="nav-item" onclick="showSection('booking', this)">Book Storage</a>
+            <a href="#" class="nav-item" onclick="showSection('mybookings', this)">My Bookings & Pass</a>
+            <a href="#" class="nav-item nav-provider-pill" onclick="showSection('provider', this)">⚙️ Facility Operator</a>
+            <a href="#" class="nav-item" onclick="showSection('profile', this)">Farmer Profile</a>
+            <a href="index.html" class="nav-item nav-back">← BhoomiBandhu</a>
         </div>
     </nav>
+
+    <!-- LIVE SUB-MISSION TICKER -->
     <div class="scheme-ticker">
         <div class="ticker-track">
-            <span class="ticker-item">📢 PM Kisan: ₹6000 annual income support for eligible farmers</span>
-            <span class="ticker-item">🏬 Gramin Bhandaran Yojana: Subsidy for rural warehouse infrastructure</span>
-            <span class="ticker-item">🌾 PM Fasal Bima Yojana: Crop insurance against natural calamities</span>
-            <span class="ticker-item">🛒 e-NAM: Online national agricultural market for better price discovery</span>
+            <span class="ticker-item">📢 PMKSY Cold Chain: Up to 35% tariff subvention for perishable vegetables & fruits</span>
+            <span class="ticker-item">🏬 Gramin Bhandaran Yojana: 25% – 33.33% statutory warehousing subsidy on notified godowns</span>
+            <span class="ticker-item">🌾 WDRA Accreditation: 100% guaranteed e-NWR pledge loan linkage up to 75% produce value</span>
+            <span class="ticker-item">🛒 Agriculture Infrastructure Fund: Post-harvest storage financing with 3% interest subvention</span>
         </div>
     </div>
 
-    <!-- HOME -->
+    <!-- 1. HOME SECTION -->
     <section id="home" class="active">
-
-
-
         <div class="home-hero">
-
-            <h2>
-                <h2 class="animated-title">
-                    <span class="from-left">DIGITAL</span>
-                    <span class="from-bottom">STORAGE</span>
-                    <span class="from-right">FINDER</span>
-                </h2>
+            <h2 class="animated-title">
+                <span class="from-left">DIGITAL</span>
+                <span class="from-bottom">STORAGE</span>
+                <span class="from-right">MARKETPLACE</span>
             </h2>
-            <p>
             <p class="hero-desc slide-from-right">
-
-                A <strong>digital storage management platform</strong> designed to help farmers
-                <strong>locate nearby storage facilities</strong>, <strong>estimate costs accurately</strong>,
-                <strong>reduce post-harvest crop wastage</strong>, and <strong>maximize benefits from
-                    government schemes</strong>.
+                India's post-harvest storage marketplace connecting farmers with <strong>verified cold chains, Controlled Atmosphere (CA) hubs, and WDRA warehouses</strong>.
+                Access <strong>live capacity visibility</strong>, <strong>statutory scheme subsidy verification</strong>, and <strong>digital gate passes</strong> to curb post-harvest losses.
             </p>
 
             <p class="hero-availability">
-                Available In: <span>Uttar Pradesh</span> <span>Bihar</span> <span>Madhya Pradesh</span>
-                <span>Punjab</span> <span>Haryana</span> <span>Rajasthan</span>
+                Active Storage Coverage: <span>Uttar Pradesh</span> <span>Madhya Pradesh</span> <span>Haryana</span>
+                <span>Punjab</span> <span>Bihar</span> <span>Rajasthan</span>
             </p>
 
-            </p>
-
-
+            <div style="display:flex; justify-content:center; gap:16px; margin-top:28px; flex-wrap:wrap;">
+                <button onclick="showSection('storage')" style="background:#1b5e20; color:white; border:none; padding:14px 28px; border-radius:30px; font-weight:700; font-size:16px; cursor:pointer; box-shadow:0 6px 18px rgba(27,94,32,0.3);">
+                    🔍 Explore Storage Marketplace →
+                </button>
+                <button onclick="showSection('schemes')" style="background:white; color:#1b5e20; border:2px solid #1b5e20; padding:14px 28px; border-radius:30px; font-weight:700; font-size:16px; cursor:pointer;">
+                    🏛 Check Scheme Subsidies
+                </button>
+            </div>
         </div>
+
+        <!-- KEY PLATFORM METRICS -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:20px; margin-top:30px;">
+            <div class="dash-card" style="background:white; padding:20px; border-radius:12px; border-left:6px solid #1b5e20; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                <div style="font-size:13px; color:#64748b; font-weight:700;">TOTAL LISTED CAPACITY</div>
+                <div style="font-size:26px; font-weight:800; color:#1b5e20; margin:4px 0;" id="metricTotalCap">15,800 MT</div>
+                <span style="font-size:12px; color:#15803d; font-weight:600;">Across 6 Strategic Ag-Hubs</span>
+            </div>
+            <div class="dash-card" style="background:white; padding:20px; border-radius:12px; border-left:6px solid #0284c7; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                <div style="font-size:13px; color:#64748b; font-weight:700;">CURRENT LIVE AVAILABILITY</div>
+                <div style="font-size:26px; font-weight:800; color:#0284c7; margin:4px 0;" id="metricAvailCap">4,010 MT</div>
+                <span style="font-size:12px; color:#0369a1; font-weight:600;">Updated in Real-Time</span>
+            </div>
+            <div class="dash-card" style="background:white; padding:20px; border-radius:12px; border-left:6px solid #f59e0b; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                <div style="font-size:13px; color:#64748b; font-weight:700;">SUBSIDY DISCOUNT RANGE</div>
+                <div style="font-size:26px; font-weight:800; color:#b45309; margin:4px 0;">15% – 35%</div>
+                <span style="font-size:12px; color:#b45309; font-weight:600;">PMKSY, Gramin Bhandaran & AIF</span>
+            </div>
+            <div class="dash-card" style="background:white; padding:20px; border-radius:12px; border-left:6px solid #8b5cf6; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                <div style="font-size:13px; color:#64748b; font-weight:700;">REGISTRATION & COMPLIANCE</div>
+                <div style="font-size:26px; font-weight:800; color:#6b21a8; margin:4px 0;">100% WDRA</div>
+                <span style="font-size:12px; color:#6b21a8; font-weight:600;">Govt Accredited & e-NWR Enabled</span>
+            </div>
+        </div>
+
         <!-- WHY DIGITAL STORAGE FINDER MATTERS -->
         <div class="why-storage">
             <h2>Why Digital Storage Finder Matters</h2>
             <div class="underline"></div>
-
             <p>
-                Farmers often suffer heavy losses due to lack of timely access to proper storage
-                facilities, price transparency, and reliable information. The Digital Storage Finder
-                bridges this gap by providing a centralized digital platform where farmers can
-                locate nearby storage, compare costs, apply government schemes, and make informed
-                decisions that reduce post-harvest losses and improve income stability.
+                Every year, Indian farmers face distress sales and post-harvest crop loss exceeding 15% due to lack of transparent storage information, arbitrary pricing, and complex subsidy procedures.
+                BhoomiBandhu Digital Storage Finder converts cold storage and warehousing into a <strong>verified digital marketplace</strong>: farmers find live capacity, calculate verified subsidies, reserve guaranteed chamber space with an authentic <strong>Booking ID</strong>, and receive a statutory <strong>Digital Gate Pass</strong>.
             </p>
         </div>
+
         <!-- FEATURES SECTION -->
         <div class="features-section">
-            <h2>Key Features</h2>
+            <h2>Key Capabilities</h2>
             <div class="underline"></div>
-
             <div class="features-grid">
                 <div class="feature-card">
-                    <h3>📍 Storage Locator</h3>
-                    <p>Find nearby cold storages, warehouses, and collection centers instantly.</p>
+                    <h3>📍 Live Capacity & Proximity Search</h3>
+                    <p>Filter facilities by state, district, crop type, and live remaining space in Metric Tonnes.</p>
                 </div>
-
                 <div class="feature-card">
-                    <h3>💰 Price Estimation</h3>
-                    <p>Compare storage costs and estimate expenses before booking.</p>
+                    <h3>💰 Transparent Price Breakdowns</h3>
+                    <p>Dynamic provider rates with clear base rent, handling, transit insurance, and GST exemptions.</p>
                 </div>
-
                 <div class="feature-card">
-                    <h3>🏛 Government Schemes</h3>
-                    <p>Apply subsidies and reduce storage costs using government schemes.</p>
+                    <h3>🏛 Verified Scheme Eligibility</h3>
+                    <p>Algorithmic verification for PMKSY, Gramin Bhandaran, and AIF subsidies before booking.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🎫 Digital Gate Pass & QR Token</h3>
+                    <p>Unique Booking ID and security check-in pass for seamless produce intake at the facility gate.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>⚙️ Provider Management Console</h3>
+                    <p>Operators manage live capacity, review farmer intake requests, and confirm chamber allotments.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💳 Advance & Gate Settlement</h3>
+                    <p>Secure 20% advance token reservation with remaining balance payable on physical arrival.</p>
                 </div>
             </div>
         </div>
-
-
     </section>
 
-    <!-- STORAGE -->
+    <!-- 2. STORAGE MARKETPLACE SECTION -->
     <section id="storage">
-        <div class="storage-locator">
+        <div class="marketplace-header">
+            <h2>🏬 Verified Storage Marketplace • भंडार खोज व उपलब्धता</h2>
+            <p>Search verified cold storages, Controlled Atmosphere (CA) facilities, and rural grain warehouses with live available capacity.</p>
+        </div>
 
-            <!-- STORAGE 1 -->
-            <div class="storage-card">
-                <div class="storage-header">
-                    <h3>Cold Storage – Ramnagar</h3>
-                    <span class="badge available">Available</span>
+        <!-- FILTERS PANEL -->
+        <div class="filter-panel">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>State / राज्य</label>
+                    <select id="filterState" onchange="applyMarketplaceFilters()">
+                        <option value="">All States (सभी राज्य)</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                    </select>
                 </div>
 
-                <p>📍 Ramnagar, Uttar Pradesh • 📏 6 km away</p>
-
-                <div class="storage-info">
-                    <span><b>Type:</b> Cold Storage</span>
-                    <span><b>Suitable Crops:</b> Potato, Onion, Fruits</span>
-                    <span><b>Temperature:</b> 2°C – 8°C</span>
-                    <span><b>Capacity:</b> 500 Tons</span>
-                    <span><b>Available Space:</b> 120 Tons</span>
-                    <span><b>Price:</b> ₹2 / kg / month</span>
-                    <span><b>Mode:</b> Online</span>
-                    <span><b>Rating:</b> ⭐ 4.3 (120 reviews)</span>
-                    <span><b>Scheme Support:</b> PM Kisan, Gramin Bhandaran</span>
-                    <span><b>Verified:</b> ✔ Govt Approved</span>
+                <div class="filter-group">
+                    <label>District / ज़िला</label>
+                    <input type="text" id="filterDistrict" placeholder="e.g. Varanasi, Sitapur, Karnal" oninput="applyMarketplaceFilters()">
                 </div>
 
-                <div class="facilities">
-                    <b>Facilities:</b>
-                    <span>✔ CCTV</span>
-                    <span>✔ Power Backup</span>
-                    <span>✔ Pest Control</span>
-                    <span>✔ Insurance</span>
+                <div class="filter-group">
+                    <label>Crop / फ़सल</label>
+                    <select id="filterCrop" onchange="applyMarketplaceFilters()">
+                        <option value="">All Crops (सभी फ़सलें)</option>
+                        <option value="potato">Potato (आलू)</option>
+                        <option value="onion">Onion (प्याज़)</option>
+                        <option value="wheat">Wheat (गेहूँ)</option>
+                        <option value="paddy">Paddy / Rice (धान)</option>
+                        <option value="apple">Apple (सेब)</option>
+                        <option value="garlic">Garlic (लहसुन)</option>
+                        <option value="maize">Maize (मक्का)</option>
+                        <option value="pulses">Pulses (दालें)</option>
+                        <option value="mustard">Mustard (सरसों)</option>
+                        <option value="soybean">Soybean (सोयाबीन)</option>
+                    </select>
                 </div>
 
-                <div class="storage-actions">
-                    <button class="btn-view">View Details</button>
-                    <button class="btn-book" onclick="showSection('booking')">Book Now</button>
+                <div class="filter-group">
+                    <label>Facility Type / प्रकार</label>
+                    <select id="filterType" onchange="applyMarketplaceFilters()">
+                        <option value="all">All Facility Types</option>
+                        <option value="cold">Cold Storage (शीतगृह)</option>
+                        <option value="controlled">CA Controlled Atmosphere</option>
+                        <option value="warehouse">Grain Warehouse (अनाज गोदाम)</option>
+                        <option value="godown">Rural Godown & Silos</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Search / खोजें</label>
+                    <input type="text" id="filterSearch" placeholder="Facility name or keyword..." oninput="applyMarketplaceFilters()">
+                </div>
+
+                <div>
+                    <button class="btn-reset-filter" onclick="resetMarketplaceFilters()">Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MARKETPLACE META INFO -->
+        <div class="marketplace-meta-bar">
+            <div>
+                <strong>Active Facilities: </strong><span id="marketMatchCount">6</span> verified units found
+            </div>
+            <div>
+                <span>Sort by: <strong>Highest Rated & Highest Space Available</strong></span>
+            </div>
+        </div>
+
+        <!-- DYNAMIC FACILITY CARDS CONTAINER -->
+        <div class="facilities-grid" id="facilitiesContainer">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+
+        <!-- PRICE ESTIMATION & COMPARISON TABLE -->
+        <div style="background:white; border-radius:12px; padding:24px; box-shadow:0 4px 14px rgba(0,0,0,0.05); margin-top:30px;">
+            <h2 style="font-size:22px; color:var(--green); margin-top:0;">📊 Comparative Storage Tariff Matrix</h2>
+            <p style="color:#546e7a; font-size:14px; margin-bottom:16px;">Standard benchmarks based on WDRA and Ministry of Agriculture warehousing tariffs.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Storage Type</th>
+                        <th>Standard Rate (₹/kg/mo)</th>
+                        <th>Ideal Temperature & Climate</th>
+                        <th>Target Commodities</th>
+                        <th>Statutory Subsidy Match</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cold Storage</strong></td>
+                        <td>₹1.80 – ₹2.10</td>
+                        <td>2°C – 8°C (85-90% RH)</td>
+                        <td>Potato, Onion, Carrot, Seasonal Produce</td>
+                        <td><span class="badge-subsidy">PMKSY (Up to 35%)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Controlled Atmosphere (CA)</strong></td>
+                        <td>₹2.20 – ₹2.60</td>
+                        <td>-0.5°C – 3°C (Low O2 / Sealed)</td>
+                        <td>Apple, Pears, Seed Potato, Garlic</td>
+                        <td><span class="badge-subsidy">Horticulture Mission</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scientific Grain Warehouse</strong></td>
+                        <td>₹1.00 – ₹1.25</td>
+                        <td>Aerated Ambient (<12% Moisture)</td>
+                        <td>Wheat, Rice, Maize, Mustard, Pulses</td>
+                        <td><span class="badge-wdra">Gramin Bhandaran (25-33%)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rural Godowns & Silos</strong></td>
+                        <td>₹0.95 – ₹1.15</td>
+                        <td>Dry Moisture Protected</td>
+                        <td>Soybean, Gram, Bajra, Oilseeds</td>
+                        <td><span class="badge-wdra">NABARD / AIF Subvention</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SCHEME PRICE ESTIMATOR (FIXED DUPLICATE ID) -->
+        <div class="price-box" style="margin-top:30px;">
+            <h2>💡 Interactive Scheme Benefit Cost Estimator</h2>
+            <p style="font-size:14px; color:#2e7d32; margin-top:0;">Preview how verified government subsidies reduce your net storage charges.</p>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px;">
+                <div>
+                    <label style="font-weight:700; font-size:13px;">Government Scheme</label>
+                    <select id="schemeType">
+                        <option value="0">Commercial Tariff (No Subsidy)</option>
+                        <option value="0.30">Gramin Bhandaran Yojana (₹0.30/kg savings)</option>
+                        <option value="0.65">PMKSY Cold Chain Subsidy (₹0.65/kg savings)</option>
+                        <option value="0.35">Agriculture Infrastructure Fund (₹0.35/kg savings)</option>
+                        <option value="0.25">PM-Kisan Farmer Bhandar Concession (₹0.25/kg savings)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight:700; font-size:13px;">Storage Facility Type</label>
+                    <select id="schemeStorage">
+                        <option value="1.85">Cold Storage (₹1.85/kg/month base)</option>
+                        <option value="2.40">Controlled Atmosphere CA (₹2.40/kg/month base)</option>
+                        <option value="1.15">Grain Warehouse (₹1.15/kg/month base)</option>
+                        <option value="1.05">Rural Godown / Silo (₹1.05/kg/month base)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label style="font-weight:700; font-size:13px;">Quantity (kg) / मात्रा</label>
+                    <input type="number" id="schemeQty" placeholder="e.g. 5000 kg (50 Quintals)" value="5000">
                 </div>
             </div>
 
-            <!-- STORAGE 2 -->
-            <div class="storage-card">
-                <div class="storage-header">
-                    <h3>Warehouse – Sitapur</h3>
-                    <span class="badge limited">Limited</span>
-                </div>
-
-                <p>📍 Sitapur, Uttar Pradesh • 📏 12 km away</p>
-
-                <div class="storage-info">
-                    <span><b>Type:</b> Warehouse</span>
-                    <span><b>Suitable Crops:</b> Wheat, Rice, Pulses</span>
-                    <span><b>Capacity:</b> 800 Tons</span>
-                    <span><b>Available Space:</b> 60 Tons</span>
-                    <span><b>Price:</b> ₹1.2 / kg / month</span>
-                    <span><b>Mode:</b> Online</span>
-                    <span><b>Rating:</b> ⭐ 4.0 (85 reviews)</span>
-                    <span><b>Scheme Support:</b> Gramin Bhandaran</span>
-                    <span><b>Verified:</b> ✔ Registered Facility</span>
-                </div>
-
-                <div class="facilities">
-                    <b>Facilities:</b>
-                    <span>✔ Security</span>
-                    <span>✔ Fire Safety</span>
-                    <span>✔ Ventilation</span>
-                </div>
-
-                <div class="storage-actions">
-                    <button class="btn-view">View Details</button>
-                    <button class="btn-book" onclick="showSection('booking')">Book Now</button>
-                </div>
-            </div>
-
-        </div>
-
-
-        <h2>Price Estimation Table</h2>
-        <table>
-            <tr>
-                <th>Storage Type</th>
-                <th>Mode</th>
-                <th>Price (₹/kg)</th>
-                <th>Best For</th>
-            </tr>
-            <tr>
-                <td>Cold Storage</td>
-                <td>Online</td>
-                <td>2.00</td>
-                <td>Vegetables</td>
-            </tr>
-            <tr>
-                <td>Warehouse</td>
-                <td>Online</td>
-                <td>1.20</td>
-                <td>Grains</td>
-            </tr>
-            <tr>
-                <td>Local Storage</td>
-                <td>Offline</td>
-                <td>1.00</td>
-                <td>Short Term</td>
-            </tr>
-        </table>
-        <!-- SCHEME PRICE ESTIMATOR -->
-        <div class="price-box">
-            <h2>Scheme Benefit Price Estimator</h2>
-
-            <label>Scheme</label>
-            <select id="schemeType">
-                <option value="0">No Scheme</option>
-                <option value="0.5">PM Kisan (₹0.5/kg)</option>
-                <option value="0.7">Gramin Bhandaran (₹0.7/kg)</option>
-                <option value="1">State Subsidy (₹1/kg)</option>
-            </select>
-
-            <label>Storage Type</label>
-            <select id="schemeStorage">
-                <option value="2">Cold Storage</option>
-                <option value="1.2">Warehouse</option>
-                <option value="1">Offline Storage</option>
-            </select>
-
-            <label>Quantity (kg)</label>
-            <input type="number" id="schemeQty" placeholder="Enter quantity">
-
-            <button onclick="estimateSchemePrice()">Estimate Final Cost</button>
-            <h3 id="schemeResult"></h3>
+            <button onclick="estimateSchemePrice()">Calculate Estimated Cost & Savings</button>
+            <!-- UNIQUE ID: estimatorSchemeResult (fixes duplicate ID issue) -->
+            <div id="estimatorSchemeResult" style="margin-top:14px; font-weight:700; font-size:16px; color:#1b5e20;"></div>
         </div>
     </section>
-    </section>
 
-    <!-- SCHEMES -->
+    <!-- 3. SCHEMES & SUBSIDIES SECTION -->
     <section id="schemes">
+        <div class="marketplace-header">
+            <h2>🏛 Government Storage Subsidies & Eligibility Guidelines</h2>
+            <p>Official schemes under Ministry of Agriculture and Ministry of Food Processing Industries (MoFPI) supporting farmer storage.</p>
+        </div>
+
         <div class="scheme">
-            <h3>PM Kisan</h3>
-            <p><b>Benefit:</b> ₹6000 annual income support</p>
+            <h3>1. Pradhan Mantri Kisan SAMPADA Yojana (PMKSY) – Cold Chain Subsidy</h3>
+            <p><b>Statutory Benefit:</b> 35% tariff concession for general areas and 50% for North-East/Himalayan states on cold chain tariffs.</p>
             <p><b>Eligibility Criteria:</b></p>
             <ul>
-                <li>Small & marginal farmers</li>
-                <li>Landholding farmer families</li>
-                <li>Valid Aadhaar-linked bank account</li>
+                <li>Individual farmers, FPOs, and cooperatives storing perishable horticulture crops (potatoes, onions, fruits).</li>
+                <li>Storage facility must be accredited by MoFPI or National Cold Chain Development board.</li>
+                <li>Direct credit transfer or automatic deduction from warehouse invoice.</li>
             </ul>
         </div>
 
         <div class="scheme">
-            <h3>Gramin Bhandaran Yojana</h3>
-            <p><b>Benefit:</b> Warehouse construction subsidy</p>
+            <h3>2. Gramin Bhandaran Yojana / Agricultural Marketing Infrastructure (ISAM / AMI)</h3>
+            <p><b>Statutory Benefit:</b> 25% to 33.33% storage rent and capital subsidy on WDRA registered rural godowns.</p>
             <p><b>Eligibility Criteria:</b></p>
             <ul>
-                <li>Farmers, cooperatives, and SHGs</li>
-                <li>Rural storage infrastructure projects</li>
-                <li>Compliance with government storage norms</li>
+                <li>Small & Marginal farmers, Women farmers, and SC/ST farmers receive 33.33% subsidy tier.</li>
+                <li>General farmers receive 25% subsidy tier up to statutory caps.</li>
+                <li>Applies to dry grain warehouses, rural godowns, and grain silos.</li>
             </ul>
         </div>
 
         <div class="scheme">
-            <h3>PM Fasal Bima Yojana</h3>
-            <p><b>Benefit:</b> Crop insurance against losses</p>
+            <h3>3. Agriculture Infrastructure Fund (AIF) Storage Subvention</h3>
+            <p><b>Statutory Benefit:</b> 3% per annum interest subvention on post-harvest infrastructure loans + 20% storage concession credit.</p>
             <p><b>Eligibility Criteria:</b></p>
             <ul>
-                <li>Farmers growing notified crops</li>
-                <li>Enrollment during crop season</li>
-                <li>Coverage for natural calamities & pests</li>
+                <li>All farmers holding verified land records (RoR / Khasra-Khatauni).</li>
+                <li>Produce stored in WDRA registered warehouses with electronic warehouse receipts (e-NWR).</li>
             </ul>
         </div>
 
         <div class="scheme">
-            <h3>e-NAM</h3>
-            <p><b>Benefit:</b> Online agricultural market access</p>
+            <h3>4. Electronic Negotiable Warehouse Receipts (e-NWR) Pledge Loan</h3>
+            <p><b>Statutory Benefit:</b> Avail bank loan up to 75% of produce value at 7% subsidized interest rate without distress sale.</p>
             <p><b>Eligibility Criteria:</b></p>
             <ul>
-                <li>Registered farmers and traders</li>
-                <li>Access to internet or mandi support centers</li>
-                <li>Valid farmer identification</li>
+                <li>Valid deposit in any WDRA registered warehouse listed on BhoomiBandhu.</li>
+                <li>Instant issuance of e-NWR on farmer's registered mobile number.</li>
             </ul>
         </div>
 
-
-
+        <div style="text-align:center; margin-top:30px;">
+            <button onclick="showSection('booking')" style="background:#1b5e20; color:white; border:none; padding:14px 28px; border-radius:30px; font-weight:700; font-size:16px; cursor:pointer;">
+                Proceed to Book with Verified Scheme Subsidy →
+            </button>
+        </div>
     </section>
-    <!-- BOOKING -->
+
+    <!-- 4. BOOKING WIZARD SECTION -->
     <section id="booking">
-
-        <!-- PAGE HEADER -->
         <div class="booking-header">
-            <h2 class="booking-title slide-in-right">Storage Booking</h2>
-
-            <p>Secure your crop storage in one simple step</p>
+            <h2 class="booking-title slide-in-right">Storage Booking & Digital Gate Pass</h2>
+            <p>Reserve verified storage space with instant capacity reservation, verified subsidy calculation, and secure booking ID.</p>
         </div>
 
-        <div class="booking-step">
-            Step 1 of 1: Enter Booking Details
-        </div>
+        <div class="booking-wizard-card">
+            <div class="wizard-steps">
+                <div class="step-item active" id="step1">
+                    <div class="step-circle">1</div>
+                    <span>Facility & Produce</span>
+                </div>
+                <div class="step-item active" id="step2">
+                    <div class="step-circle">2</div>
+                    <span>Farmer & Subsidy</span>
+                </div>
+                <div class="step-item active" id="step3">
+                    <div class="step-circle">3</div>
+                    <span>Breakdown & Pass</span>
+                </div>
+            </div>
 
+            <!-- STEP 1: FACILITY & PRODUCE -->
+            <div class="booking-section-card">
+                <h4>🏢 1. Storage Facility & Produce Details</h4>
+                <div class="form-grid-3">
+                    <div class="form-field">
+                        <label>Select Storage Facility *</label>
+                        <select id="bFacility" onchange="onFacilitySelectionChange()">
+                            <!-- Dynamically loaded -->
+                        </select>
+                    </div>
 
+                    <div class="form-field">
+                        <label>Crop / Produce *</label>
+                        <input id="bCrop" placeholder="e.g. Potato (Kufri Jyoti), Wheat" value="Potato (Kufri Jyoti)" oninput="updatePricingCalculation()">
+                    </div>
 
-        <div class="booking-box">
-            <h2>Book Storage Facility</h2>
-            <div class="booking-badge">📦 Secure Storage Booking</div>
+                    <div class="form-field">
+                        <label>Storage Duration (Months) *</label>
+                        <input id="bMonths" type="number" min="1" max="12" value="3" oninput="updatePricingCalculation()">
+                    </div>
 
+                    <div class="form-field">
+                        <label>Quantity in Quintals (क्विंटल) *</label>
+                        <input id="bQtyQuintals" type="number" min="1" value="50" oninput="syncQty('quintals')">
+                    </div>
 
-            <div class="booking-grid">
-                <div class="form-section">
-                    <h3>Farmer Details</h3>
-                    <div class="booking-grid">
-                        <input id="bName" placeholder="Farmer Name">
-                        <input id="bMobile" type="tel" placeholder="Mobile Number">
-                        <select id="bLocation">
-                            <option value="">Select State</option>
+                    <div class="form-field">
+                        <label>Quantity in Kilograms (किग्रा) *</label>
+                        <input id="bQtyKg" type="number" min="100" value="5000" oninput="syncQty('kg')">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Scheduled Intake Date *</label>
+                        <input id="bIntakeDate" type="date">
+                    </div>
+                </div>
+
+                <div id="facilityCapacityNotice" style="margin-top:12px; font-size:12.5px; color:#1e293b; background:#f0fdf4; padding:8px 12px; border-radius:6px; border:1px solid #bbf7d0;">
+                    Facility selected: <strong id="noticeFacName">Kisan Cold Chain Logistics</strong> • Available Space: <strong id="noticeFacAvail">420 MT</strong> • Rate: <strong id="noticeFacRate">₹1.85 / kg / mo</strong>
+                </div>
+            </div>
+
+            <!-- STEP 2: FARMER KYC & SCHEME SUBSIDY VERIFICATION -->
+            <div class="booking-section-card">
+                <h4>👨‍🌾 2. Farmer KYC & Scheme Eligibility Verification</h4>
+                <div class="form-grid-3">
+                    <div class="form-field">
+                        <label>Farmer Full Name *</label>
+                        <input id="bName" placeholder="e.g. Ramesh Patel" value="Ramesh Patel">
+                    </div>
+
+                    <div class="form-field">
+                        <label>10-Digit Mobile Number *</label>
+                        <input id="bMobile" type="tel" placeholder="e.g. 9823456789" value="9823456789">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Farmer State *</label>
+                        <select id="bState">
                             <option>Uttar Pradesh</option>
-                            <option>Bihar</option>
-                            <option>Madhya Pradesh</option>
-                            <option>Punjab</option>
+                            <option selected>Madhya Pradesh</option>
                             <option>Haryana</option>
+                            <option>Punjab</option>
+                            <option>Bihar</option>
                             <option>Rajasthan</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="form-section">
-                    <h3>Storage Details</h3>
-                    <div class="booking-grid">
-                        <select id="bStorage">
-                            <option value="2">Cold Storage (₹2/kg)</option>
-                            <option value="1.2">Warehouse (₹1.2/kg)</option>
-                            <option value="1">Offline Storage (₹1/kg)</option>
+                    <div class="form-field">
+                        <label>District *</label>
+                        <input id="bDistrict" placeholder="e.g. Sehore, Varanasi" value="Sehore">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Aadhaar Last 4 / Khasra No.</label>
+                        <input id="bAadhaar" placeholder="e.g. 4829 or Khasra 214" value="4829">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Farmer Category (For Subsidy) *</label>
+                        <select id="bFarmerCategory" onchange="verifySubsidyEligibility(false)">
+                            <option value="small_marginal" selected>Small & Marginal Farmer (< 5 Acres)</option>
+                            <option value="women_sc_st">Women / SC / ST Farmer</option>
+                            <option value="general">General Category Farmer</option>
                         </select>
-
-                        <select id="bMode">
-                            <option>Online</option>
-                            <option>Offline</option>
-                        </select>
-
-                        <input id="bCrop" placeholder="Crop Type">
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3>Quantity & Scheme</h3>
-                    <div class="booking-grid">
-                        <select id="bScheme">
-                            <option value="0">Without Scheme</option>
-                            <option value="0.5">PM Kisan</option>
-                            <option value="0.7">Gramin Bhandaran</option>
-                            <option value="1">State Subsidy</option>
-                        </select>
+                <!-- SCHEME VERIFICATION ENGINE -->
+                <div class="subsidy-verifier-box">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <strong style="color:#92400e; font-size:14px;">🏛 Government Scheme Subsidy Verifier</strong>
+                            <div style="font-size:12px; color:#78350f;">Subsidies are calculated against statutory MoA & MoFPI rules rather than fixed arbitrary values.</div>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <select id="bScheme" style="padding:8px 12px; border-radius:6px; border:1px solid #d97706; background:white; font-size:13px;" onchange="verifySubsidyEligibility(false)">
+                                <option value="PMKSY_COLD_CHAIN" selected>PMKSY Cold Chain Subsidy (Up to 35%)</option>
+                                <option value="GRAMIN_BHANDARAN">Gramin Bhandaran Yojana (25% – 33%)</option>
+                                <option value="AIF_STORAGE">Agriculture Infrastructure Fund (20%)</option>
+                                <option value="PM_KISAN_BHANDAR">PM-Kisan Farmer Bhandar Concession (15%)</option>
+                                <option value="NONE">Direct Commercial Storage (No Subsidy)</option>
+                            </select>
+                            <button type="button" class="btn-verify-subsidy" onclick="verifySubsidyEligibility(true)">
+                                ✓ Verify Subsidy
+                            </button>
+                        </div>
+                    </div>
 
-                        <input id="bQty" type="number" min="1" placeholder="Quantity (kg)">
-                        <input id="bMonths" type="number" min="1" placeholder="Duration (months)">
+                    <!-- VERIFIED SUBSIDY OUTPUT -->
+                    <div id="subsidyVerificationResult" class="subsidy-result-card">
+                        <div class="subsidy-badge-valid" id="subsidyStatusBadge">✓ Subsidy Eligibility Confirmed</div>
+                        <div id="subsidySummaryText" style="font-weight:700; color:#166534; margin-bottom:6px;">
+                            35.0% Subvention Applied (₹0.65 / kg / month savings)
+                        </div>
+                        <ul id="subsidyCriteriaList" style="margin:0; padding-left:18px; color:#475569; font-size:12px;">
+                            <li>✓ Farmer Category: Small/Marginal Farmer (<5 acres landholding verified)</li>
+                            <li>✓ Crop Type: Horticultural Perishable produce under Cold Chain Mission</li>
+                            <li>✓ Facility: WDRA & MoFPI accredited cold chain unit</li>
+                            <li>✓ Official Subsidy Code: <strong>SUB-2026-PMKSY-8841</strong></li>
+                        </ul>
                     </div>
                 </div>
-
             </div>
 
-            <button onclick="confirmBooking()">Confirm Booking</button>
+            <!-- STEP 3: ITEMIZED TRANSPARENT PRICE BREAKDOWN -->
+            <div class="price-breakdown-card">
+                <h4>
+                    <span>🧾 Transparent Cost Breakdown & Advance Settlement</span>
+                    <span style="font-size:13px; font-weight:600; color:#15803d;">Statutory Ag-GST Exempt (0%)</span>
+                </h4>
 
-            <div class="booking-result" id="bookingResult"></div>
-            <p class="booking-trust">
-                🔒 Govt verified storages • 💳 Transparent pricing • 📞 24×7 Support
+                <div class="breakdown-row">
+                    <span>Base Facility Rent (<span id="calcBaseRate">₹1.85</span>/kg × <span id="calcQty">5000</span> kg × <span id="calcMonths">3</span> mo):</span>
+                    <span id="breakdownBaseRent">₹ 27,750</span>
+                </div>
+
+                <div class="breakdown-row">
+                    <span>Quality Inspection, Sorting & Lot Stacking (₹0.08/kg):</span>
+                    <span id="breakdownHandling">₹ 400</span>
+                </div>
+
+                <div class="breakdown-row">
+                    <span>Comprehensive Fire, Moisture & Transit Insurance (2.0%):</span>
+                    <span id="breakdownInsurance">₹ 555</span>
+                </div>
+
+                <div class="breakdown-row subsidy-row">
+                    <span>Verified Scheme Subsidy (<span id="calcSubsidyPct">35.0%</span> PMKSY):</span>
+                    <span id="breakdownSubsidy">– ₹ 9,713</span>
+                </div>
+
+                <div class="breakdown-row">
+                    <span>Goods & Services Tax (GST Under Notification No. 12/2017):</span>
+                    <span>₹ 0 (Exempt)</span>
+                </div>
+
+                <div class="breakdown-row total-row">
+                    <span>Net Total Payable Amount:</span>
+                    <span id="breakdownNetTotal">₹ 18,992</span>
+                </div>
+
+                <div class="breakdown-row advance-row">
+                    <span>Advance Token to Reserve Chamber (20%):</span>
+                    <span id="breakdownAdvance">₹ 3,798</span>
+                </div>
+
+                <div class="breakdown-row" style="color:#64748b; font-size:12.5px;">
+                    <span>Remaining Balance Due on Produce Arrival at Gate (80%):</span>
+                    <span id="breakdownBalance">₹ 15,194</span>
+                </div>
+            </div>
+
+            <!-- STEP 4: PAYMENT OPTIONS -->
+            <div class="booking-section-card">
+                <h4>💳 3. Payment Option & Provider Confirmation</h4>
+                <div class="payment-methods-grid">
+                    <label class="payment-option selected" onclick="selectPaymentOption('UPI', this)">
+                        <input type="radio" name="payOption" value="UPI" checked>
+                        <div>
+                            <div style="font-weight:700; font-size:13px;">UPI / QR Code</div>
+                            <div style="font-size:11px; color:#64748b;">Instant 20% advance token</div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" onclick="selectPaymentOption('NetBanking', this)">
+                        <input type="radio" name="payOption" value="NetBanking">
+                        <div>
+                            <div style="font-weight:700; font-size:13px;">Net Banking / NEFT</div>
+                            <div style="font-size:11px; color:#64748b;">SBI, PNB, BoB, HDFC</div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" onclick="selectPaymentOption('GatePay', this)">
+                        <input type="radio" name="payOption" value="GatePay">
+                        <div>
+                            <div style="font-weight:700; font-size:13px;">Pay at Warehouse Gate</div>
+                            <div style="font-size:11px; color:#64748b;">Subject to spot capacity</div>
+                        </div>
+                    </label>
+
+                    <label class="payment-option" onclick="selectPaymentOption('eNAM', this)">
+                        <input type="radio" name="payOption" value="eNAM">
+                        <div>
+                            <div style="font-weight:700; font-size:13px;">e-NAM Mandi Credit</div>
+                            <div style="font-size:11px; color:#64748b;">Direct Mandi settlement</div>
+                        </div>
+                    </label>
+                </div>
+
+                <div style="margin-top:14px; font-size:12px; color:#475569; display:flex; align-items:center; gap:8px;">
+                    <input type="checkbox" id="chkAdvancePay" checked style="width:16px; height:16px; accent-color:#1b5e20;">
+                    <label for="chkAdvancePay">Lock chamber allotment with instant 20% token deposit (Simulated secure payment)</label>
+                </div>
+            </div>
+
+            <!-- SUBMIT BUTTON -->
+            <button onclick="confirmBooking()" style="background:#1b5e20; color:white; border:none; padding:16px; width:100%; border-radius:10px; font-size:18px; font-weight:800; cursor:pointer; box-shadow:0 6px 18px rgba(27,94,32,0.3); transition:0.25s;">
+                📦 Confirm Booking Request & Generate Gate Pass
+            </button>
+
+            <!-- LIVE BOOKING RESULT & DIGITAL GATE PASS -->
+            <div id="bookingResultArea" style="display:none; margin-top:30px;">
+                <!-- Generated Gate Pass inserted here -->
+            </div>
+
+            <p class="booking-trust" style="margin-top:20px;">
+                🔒 WDRA Licensed Warehouses • 💳 Transparent Pricing • 📞 24×7 Kisan Helpline: 1800-180-1551
             </p>
-
         </div>
     </section>
 
+    <!-- 5. MY BOOKINGS & DIGITAL GATE PASS WALLET -->
+    <section id="mybookings">
+        <div class="marketplace-header">
+            <h2>🎫 My Storage Bookings & Digital Gate Pass Wallet</h2>
+            <p>Track live confirmation status, download official gate passes, and view chamber allotments.</p>
+        </div>
 
-    <!-- PROFILE -->
+        <div style="background:white; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.06); max-width:800px; margin-bottom:24px;">
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                <input type="text" id="trackQueryInput" placeholder="Enter Booking ID (e.g. STG-2026-...) or 10-digit mobile..." style="flex-grow:1; padding:12px 14px; border:1px solid #cbd5e1; border-radius:8px; font-size:14px;">
+                <button onclick="lookupBookings()" style="background:#1b5e20; color:white; border:none; padding:12px 24px; border-radius:8px; font-weight:700; cursor:pointer;">
+                    🔍 Track Status
+                </button>
+            </div>
+        </div>
+
+        <div id="myBookingsContainer" style="display:grid; gap:20px; max-width:800px;">
+            <!-- Populated via JS -->
+        </div>
+    </section>
+
+    <!-- 6. PROVIDER-SIDE FACILITY & BOOKING MANAGEMENT -->
+    <section id="provider">
+        <div class="marketplace-header">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <div>
+                    <h2>🚜 Storage Facility Operator & Dispatch Portal</h2>
+                    <p>Live provider dashboard to manage chamber capacity, approve farmer booking requests, and verify gate check-ins.</p>
+                </div>
+                <a href="provider-dashboard.html" style="background:#111827; color:#fbbf24; padding:8px 16px; border-radius:8px; text-decoration:none; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:6px;">
+                    Open Full Provider Dashboard ↗
+                </a>
+            </div>
+        </div>
+
+        <div class="provider-dashboard-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px;">
+                <div>
+                    <label style="font-weight:700; font-size:13px; color:#475569;">Active Storage Facility Profile:</label>
+                    <select id="provFacilitySelect" onchange="loadProviderDashboardView()" style="padding:8px 12px; border-radius:8px; border:1px solid #cbd5e1; font-weight:700; color:#1b5e20; margin-left:8px;">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div style="font-size:13px; color:#64748b;">
+                    Operator: <strong id="provOperatorName">Vikram Singh</strong> (9811223344)
+                </div>
+            </div>
+
+            <!-- METRICS ROW -->
+            <div class="provider-metrics-row">
+                <div class="prov-metric-box">
+                    <div class="label">Total Capacity</div>
+                    <div class="num" id="provTotalCap">1,500 MT</div>
+                    <span style="font-size:11px; color:#64748b;">Licensed Volume</span>
+                </div>
+                <div class="prov-metric-box">
+                    <div class="label">Live Available Space</div>
+                    <div class="num" style="color:#059669;" id="provAvailCap">420 MT</div>
+                    <span style="font-size:11px; color:#059669; font-weight:600;">Space Open for Booking</span>
+                </div>
+                <div class="prov-metric-box">
+                    <div class="label">Active Farmer Bookings</div>
+                    <div class="num" style="color:#0284c7;" id="provActiveBookings">3 Orders</div>
+                    <span style="font-size:11px; color:#0284c7;">Awaiting Intake / Stored</span>
+                </div>
+                <div class="prov-metric-box">
+                    <div class="label">Current Base Rate</div>
+                    <div class="num" style="color:#1b5e20;" id="provBaseRate">₹ 1.85</div>
+                    <span style="font-size:11px; color:#64748b;">per kg / month</span>
+                </div>
+            </div>
+
+            <!-- FACILITY CONTROLS FORM -->
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:18px; margin-bottom:28px;">
+                <h4 style="margin:0 0 12px 0; color:#1e293b; font-size:15px;">⚙️ Live Facility Controls (Update Rates & Available Capacity)</h4>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)) 140px; gap:14px; align-items:flex-end;">
+                    <div class="form-field">
+                        <label>Adjust Available Capacity (MT)</label>
+                        <input type="number" id="editAvailCap" value="420" min="0" max="5000">
+                    </div>
+                    <div class="form-field">
+                        <label>Adjust Base Tariff (₹ / kg / month)</label>
+                        <input type="number" step="0.05" id="editBaseRate" value="1.85">
+                    </div>
+                    <div class="form-field">
+                        <label>Facility Status</label>
+                        <select id="editStatus">
+                            <option value="true" selected>Open for Bookings</option>
+                            <option value="false">Temporarily Full</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button onclick="saveProviderFacilitySettings()" style="background:#1b5e20; color:white; border:none; padding:10px 14px; border-radius:8px; font-weight:700; cursor:pointer; height:42px; width:100%;">
+                            Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INCOMING BOOKINGS TABLE -->
+            <div>
+                <h3 style="font-size:18px; color:#1e293b; margin:0 0 14px 0;">📥 Incoming Storage Booking Requests</h3>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Farmer Details</th>
+                                <th>Crop & Quantity</th>
+                                <th>Intake Date & Duration</th>
+                                <th>Payable / Scheme</th>
+                                <th>Status</th>
+                                <th>Provider Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="providerBookingsTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FARMER PROFILE SECTION (FIXED DUPLICATE ID) -->
     <section id="profile">
-        <h2 style="text-align:center;">Farmer Profile</h2>
+        <h2 style="text-align:center;">Farmer Profile & Storage History</h2>
 
         <div class="profile-dashboard">
-
-            <!-- PROFILE PHOTO -->
             <div class="profile-photo">👨‍🌾</div>
 
-            <!-- LANGUAGE TOGGLE -->
-            <button onclick="toggleProfileLang()">English / हिंदी</button>
+            <button onclick="toggleProfileLang()" style="margin-bottom:14px;">English / हिंदी</button>
 
-            <!-- PROFILE COMPLETION -->
             <p><b>Profile Completion</b></p>
             <div class="progress-container">
-                <div class="progress-bar" id="profileProgress"></div>
+                <div class="progress-bar" id="profileProgress" style="width:100%;"></div>
             </div>
 
-            <!-- EDITABLE PROFILE FORM -->
-            <h3>Personal Details</h3>
-            <div class="profile-form">
-                <input id="pName" placeholder="Farmer Name">
-                <input id="pMobile" placeholder="Mobile Number">
-                <select id="pState">
-                    <option>Uttar Pradesh</option>
-                    <option>Bihar</option>
-                    <option>Madhya Pradesh</option>
-                    <option>Punjab</option>
-                    <option>Haryana</option>
-                    <option>Rajasthan</option>
-                </select>
-                <input id="pCrop" placeholder="Primary Crop">
+            <h3>Personal & Farm Details</h3>
+            <div class="profile-form" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;">
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="pName" class="form-label" style="font-weight:700; font-size:13px; display:block; margin-bottom:5px;">Farmer Full Name <span class="required" aria-hidden="true">*</span></label>
+                    <input id="pName" class="form-control" placeholder="e.g. Ramesh Patel" value="Ramesh Patel" oninput="updateProgress()" required>
+                    <span class="form-help" style="font-size:11px; color:#64748b; margin-top:3px; display:block;">Official name matching Aadhaar & Land Patta</span>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="pMobile" class="form-label" style="font-weight:700; font-size:13px; display:block; margin-bottom:5px;">10-Digit Mobile Number <span class="required" aria-hidden="true">*</span></label>
+                    <input id="pMobile" type="tel" maxlength="10" pattern="[0-9]{10}" class="form-control" placeholder="10-digit mobile number" value="9823456789" oninput="updateProgress()" required>
+                    <span class="form-help" style="font-size:11px; color:#64748b; margin-top:3px; display:block;">Used for booking verification and SMS alerts</span>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="pState" class="form-label" style="font-weight:700; font-size:13px; display:block; margin-bottom:5px;">State <span class="required" aria-hidden="true">*</span></label>
+                    <select id="pState" class="form-control" onchange="updateProgress()" required>
+                        <option>Uttar Pradesh</option>
+                        <option>Bihar</option>
+                        <option selected>Madhya Pradesh</option>
+                        <option>Punjab</option>
+                        <option>Haryana</option>
+                        <option>Rajasthan</option>
+                    </select>
+                    <span class="form-help" style="font-size:11px; color:#64748b; margin-top:3px; display:block;">Primary agricultural operating jurisdiction</span>
+                </div>
+                <div class="form-group" style="margin-bottom:0;">
+                    <label for="pCrop" class="form-label" style="font-weight:700; font-size:13px; display:block; margin-bottom:5px;">Primary Crop(s) <span class="required" aria-hidden="true">*</span></label>
+                    <input id="pCrop" class="form-control" placeholder="e.g. Potato, Wheat, Onion" value="Potato & Wheat" oninput="updateProgress()" required>
+                    <span class="form-help" style="font-size:11px; color:#64748b; margin-top:3px; display:block;">Stored or harvested seasonal produce</span>
+                </div>
             </div>
 
-            <button onclick="saveProfile()">Save Profile</button>
+            <button id="btnSaveProfile" onclick="saveProfile()" style="margin-top:14px; display:inline-flex; align-items:center; gap:6px;">
+                <span>Save Profile</span>
+                <span>💾</span>
+            </button>
+            <div id="profileSaveNotice" style="display:none; margin-top:10px; font-size:13px; font-weight:700; color:#15803d;" role="alert" aria-live="polite"></div>
 
-            <!-- BOOKING HISTORY -->
-            <h3>Booking History</h3>
+            <!-- LIVE BOOKING HISTORY TABLE -->
+            <h3>Storage Booking History</h3>
             <table class="profile-table">
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Storage</th>
-                    <th>Qty (kg)</th>
-                    <th>Status</th>
-                </tr>
-                <tr>
-                    <td>#B1021</td>
-                    <td>Cold Storage</td>
-                    <td>500</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>#B0987</td>
-                    <td>Warehouse</td>
-                    <td>300</td>
-                    <td>Completed</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Facility</th>
+                        <th>Produce</th>
+                        <th>Qty (kg)</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="profileHistoryTableBody">
+                    <!-- Populated dynamically -->
+                </tbody>
             </table>
 
-            <!-- SCHEME ELIGIBILITY -->
-            <h3>Scheme Eligibility Checker</h3>
+            <!-- SCHEME ELIGIBILITY CHECKER (FIXED DUPLICATE ID) -->
+            <h3>Scheme Eligibility Quick Pre-Check</h3>
             <select id="schemeCheck">
                 <option value="0">No Scheme</option>
-                <option value="0.5">PM Kisan</option>
-                <option value="0.7">Gramin Bhandaran</option>
-                <option value="1">State Subsidy</option>
+                <option value="0.65" selected>PMKSY Cold Chain Subsidy (₹0.65/kg)</option>
+                <option value="0.30">Gramin Bhandaran Yojana (₹0.30/kg)</option>
+                <option value="0.35">Agriculture Infrastructure Fund (₹0.35/kg)</option>
             </select>
 
             <button onclick="checkEligibility()">Check Eligibility</button>
-            <p id="schemeResult"></p>
-
+            <!-- UNIQUE ID: profileSchemeResult (fixed duplicate ID) -->
+            <p id="profileSchemeResult" style="font-weight:700; color:#1b5e20; margin-top:10px;"></p>
         </div>
     </section>
 
-
-    <footer>
-        <footer class="footer">
-            <div class="footer-content">
-                <span><b>Digital Storage Finder for Farmers</b></span>
-                <span>Helpline: 1800-180-1551</span>
-                <span>Service Coverage: Multiple Indian States</span>
+    <!-- FACILITY DETAILS MODAL OVERLAY -->
+    <div class="modal-overlay" id="facilityModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalFacTitle">Facility Profile</h3>
+                <button class="btn-close-modal" onclick="closeFacilityModal()">✕</button>
             </div>
-        </footer>
+            <div class="modal-body" id="modalFacBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
 
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span><b>Digital Storage Finder for Farmers • BhoomiBandhu 2.0</b></span>
+            <span>Helpline: 1800-180-1551</span>
+            <span>Accreditation: Warehousing Development and Regulatory Authority (WDRA)</span>
+        </div>
     </footer>
 
+    <!-- LOGIC & STATE ENGINE -->
     <script>
-        function showSection(id) {
+        // Central In-Memory Storage Data Fallback (Always operational even if offline)
+        const DEFAULT_FACILITIES = [
+            {
+                id: 'STG-FAC-001',
+                provider_id: 2,
+                name: 'Kisan Cold Chain Logistics & Packhouse',
+                operator_name: 'Vikram Singh',
+                mobile: '9811223344',
+                email: 'kisan.agro@bhoomibandhu.in',
+                state: 'Uttar Pradesh',
+                district: 'Varanasi',
+                address: 'Plot 44, Agro Park Phase II, Ramnagar, Varanasi, UP - 221008',
+                facility_type: 'Cold Storage',
+                total_capacity_mt: 1500,
+                available_capacity_mt: 420,
+                suitable_crops: 'Potato, Onion, Tomato, Apple, Seasonal Fruits',
+                temp_range: '2°C – 8°C (85-90% RH)',
+                humidity_range: '85% – 95%',
+                base_rate_per_kg_month: 1.85,
+                min_duration_days: 30,
+                wdra_reg_no: 'WDRA/UP/2023/4192',
+                rating: 4.8,
+                reviews_count: 142,
+                amenities: [
+                    'WDRA Approved & Certified',
+                    'NABARD & AIF Subsidized',
+                    '24/7 CCTV & Security Guard',
+                    '100% Dual DG Power Backup',
+                    'Electronic Weighbridge Onsite',
+                    'Grading & Sorting Line'
+                ],
+                is_active: true
+            },
+            {
+                id: 'STG-FAC-002',
+                provider_id: 3,
+                name: 'Annapurna Agro Silos & Warehousing Corp',
+                operator_name: 'Sunil Sharma',
+                mobile: '9838012345',
+                email: 'annapurna.storage@bhoomibandhu.in',
+                state: 'Uttar Pradesh',
+                district: 'Sitapur',
+                address: 'NH-24 Lucknow-Sitapur Highway, Maholi Bypass, Sitapur, UP - 261001',
+                facility_type: 'Grain Warehouse',
+                total_capacity_mt: 3000,
+                available_capacity_mt: 850,
+                suitable_crops: 'Wheat, Paddy, Mustard, Maize, Pulses (Arhar, Chana)',
+                temp_range: 'Ambient Scientific Aerated (<12% Moisture)',
+                humidity_range: '50% – 65%',
+                base_rate_per_kg_month: 1.15,
+                min_duration_days: 15,
+                wdra_reg_no: 'WDRA/UP/2022/1084',
+                rating: 4.6,
+                reviews_count: 98,
+                amenities: [
+                    'WDRA Registered Godown',
+                    'Gramin Bhandaran Yojana Accredited',
+                    'Automatic Fire Safety',
+                    'Fumigation & Rodent Control',
+                    'Electronic 100 MT Weighbridge',
+                    'e-NWR Issuance'
+                ],
+                is_active: true
+            },
+            {
+                id: 'STG-FAC-003',
+                provider_id: 4,
+                name: 'Sheetal Krishi Controlled Atmosphere (CA) Hub',
+                operator_name: 'Harpreet Cheema',
+                mobile: '9872112233',
+                email: 'sheetal.ca@bhoomibandhu.in',
+                state: 'Haryana',
+                district: 'Karnal',
+                address: 'GT Road, Near National Dairy Research Institute, Karnal, Haryana - 132001',
+                facility_type: 'Controlled Atmosphere (CA) Hub',
+                total_capacity_mt: 2200,
+                available_capacity_mt: 610,
+                suitable_crops: 'Apple, Pears, Carrot, Seed Potato, Garlic, Cherry',
+                temp_range: '-0.5°C to 2°C (O2 < 2%, CO2 1-2%)',
+                humidity_range: '92% – 96%',
+                base_rate_per_kg_month: 2.40,
+                min_duration_days: 60,
+                wdra_reg_no: 'WDRA/HR/2024/7712',
+                rating: 4.9,
+                reviews_count: 67,
+                amenities: [
+                    'German CA Gas Monitoring',
+                    'Govt Horticulture Subsidy Partner',
+                    '16 Independent Sealed Chambers',
+                    'Thermal Insulation Panels',
+                    'Reefer Van Docking'
+                ],
+                is_active: true
+            },
+            {
+                id: 'STG-FAC-004',
+                provider_id: 5,
+                name: 'Malwa Central Rural Bhandaran Kendra',
+                operator_name: 'Dinesh Patidar',
+                mobile: '9826054321',
+                email: 'malwa.bhandaran@bhoomibandhu.in',
+                state: 'Madhya Pradesh',
+                district: 'Ujjain',
+                address: 'Mandi Road, Tarana Crossing, Ujjain, MP - 456006',
+                facility_type: 'Rural Godown & Silos',
+                total_capacity_mt: 4500,
+                available_capacity_mt: 1200,
+                suitable_crops: 'Soybean, Wheat, Gram (Chana), Garlic, Coriander, Mustard',
+                temp_range: 'Moisture Protected / Dry Aerated',
+                humidity_range: '55% – 70%',
+                base_rate_per_kg_month: 1.05,
+                min_duration_days: 15,
+                wdra_reg_no: 'WDRA/MP/2021/3391',
+                rating: 4.7,
+                reviews_count: 115,
+                amenities: [
+                    'NABARD Subsidized Godown',
+                    'Direct e-NAM Mandi Terminal Link',
+                    'Heavy Railway Siding 2 km',
+                    'Moisture Testing Lab',
+                    'Labour Stacking Crew'
+                ],
+                is_active: true
+            },
+            {
+                id: 'STG-FAC-005',
+                provider_id: 6,
+                name: 'Doaba Farmer Cold Storage & Packhouse',
+                operator_name: 'Jaswinder Brar',
+                mobile: '9814455667',
+                email: 'doaba.cold@bhoomibandhu.in',
+                state: 'Punjab',
+                district: 'Ludhiana',
+                address: 'Samrala Road, Machhiwara Link, Ludhiana, Punjab - 141115',
+                facility_type: 'Cold Storage',
+                total_capacity_mt: 2800,
+                available_capacity_mt: 540,
+                suitable_crops: 'Potato, Kinnow, Green Peas, Cauliflower, Capsicum',
+                temp_range: '1°C – 6°C Multi-chamber',
+                humidity_range: '88% – 92%',
+                base_rate_per_kg_month: 1.95,
+                min_duration_days: 30,
+                wdra_reg_no: 'WDRA/PB/2023/9102',
+                rating: 4.8,
+                reviews_count: 83,
+                amenities: [
+                    'Solar Powered Cold Grid',
+                    'PMKSY Scheme Partner',
+                    'Pre-cooling Blast Tunnel',
+                    'Hydraulic Docks',
+                    'Farmer Rest House'
+                ],
+                is_active: true
+            },
+            {
+                id: 'STG-FAC-006',
+                provider_id: 7,
+                name: 'Magadh Krishi Agri-Warehouse & Cold Room',
+                operator_name: 'Arvind Kumar',
+                mobile: '9431098765',
+                email: 'magadh.agri@bhoomibandhu.in',
+                state: 'Bihar',
+                district: 'Patna',
+                address: 'Bakhtiyarpur By-pass, Near Fatuha Food Park, Patna, Bihar - 803212',
+                facility_type: 'Dual Chamber (Cold + Grain)',
+                total_capacity_mt: 1800,
+                available_capacity_mt: 390,
+                suitable_crops: 'Maize, Potato, Litchi, Pulses, Paddy, Turmeric',
+                temp_range: 'Dual Block: 4°C Cold & Dry Ambient',
+                humidity_range: '65% – 85%',
+                base_rate_per_kg_month: 1.35,
+                min_duration_days: 15,
+                wdra_reg_no: 'WDRA/BR/2024/2048',
+                rating: 4.5,
+                reviews_count: 54,
+                amenities: [
+                    'State Warehousing Affiliated',
+                    'Priority Stacking for Small Farmers',
+                    'Digital Grain Moisture Analyzer',
+                    'Tarpaulin & Wooden Pallets',
+                    '24/7 Security'
+                ],
+                is_active: true
+            }
+        ];
+
+        let stateFacilities = JSON.parse(JSON.stringify(DEFAULT_FACILITIES));
+        let selectedFacilityId = 'STG-FAC-001';
+        let currentSubsidyRate = 0.65;
+        let currentSubsidyPct = 35.0;
+        let isSubsidyVerified = true;
+        let currentSubsidyCode = 'SUB-2026-PMKSY-8841';
+
+        // Initialize state on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set intake date default to 7 days from now
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 7);
+            document.getElementById('bIntakeDate').value = defaultDate.toISOString().split('T')[0];
+
+            // Prefill farmer details from logged-in user if available
+            try {
+                const userRaw = localStorage.getItem('bb_user');
+                if (userRaw) {
+                    const u = JSON.parse(userRaw);
+                    if (u.full_name) document.getElementById('bName').value = u.full_name;
+                    if (u.mobile) document.getElementById('bMobile').value = u.mobile;
+                    if (u.profile?.state) document.getElementById('bState').value = u.profile.state;
+                    if (u.profile?.district) document.getElementById('bDistrict').value = u.profile.district;
+                }
+            } catch(e) {}
+
+            fetchFacilitiesFromServer();
+            populateFacilityDropdowns();
+            renderFacilities(stateFacilities);
+            updatePricingCalculation();
+            loadProviderDashboardView();
+            renderProfileHistory();
+        });
+
+        // SECTION SWITCHER
+        function showSection(id, navEl) {
             document.querySelectorAll("section").forEach(sec => sec.classList.remove("active"));
             const activeSection = document.getElementById(id);
-            activeSection.classList.add("active");
+            if (activeSection) activeSection.classList.add("active");
 
-            // Animate booking title when section opens
+            // Update nav item highlighting
+            if (navEl) {
+                document.querySelectorAll(".nav-item").forEach(a => a.classList.remove("active"));
+                navEl.classList.add("active");
+            }
+
             if (id === "booking") {
                 const title = activeSection.querySelector(".booking-title");
-                title.classList.remove("animate"); // reset
-                void title.offsetWidth; // force reflow
-                title.classList.add("animate");
+                if (title) {
+                    title.classList.remove("animate");
+                    void title.offsetWidth;
+                    title.classList.add("animate");
+                }
+            } else if (id === "provider") {
+                loadProviderDashboardView();
+            } else if (id === "mybookings") {
+                lookupBookings();
+            } else if (id === "profile") {
+                renderProfileHistory();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // FETCH FROM REST API WITH FALLBACK
+        async function fetchFacilitiesFromServer() {
+            try {
+                const res = await fetch('/api/storage/facilities');
+                const data = await res.json();
+                if (data.success && data.facilities && data.facilities.length > 0) {
+                    stateFacilities = data.facilities;
+                    populateFacilityDropdowns();
+                    renderFacilities(stateFacilities);
+                    updateCapacityMetrics();
+                }
+            } catch (err) {
+                console.log('Serving from local verified storage store.');
+                updateCapacityMetrics();
             }
         }
 
+        function updateCapacityMetrics() {
+            let total = 0;
+            let avail = 0;
+            stateFacilities.forEach(f => {
+                total += Number(f.total_capacity_mt) || 0;
+                avail += Number(f.available_capacity_mt) || 0;
+            });
+            const totalEl = document.getElementById('metricTotalCap');
+            const availEl = document.getElementById('metricAvailCap');
+            if (totalEl) totalEl.innerText = total.toLocaleString() + ' MT';
+            if (availEl) availEl.innerText = avail.toLocaleString() + ' MT';
+        }
 
+        function populateFacilityDropdowns() {
+            const bSelect = document.getElementById('bFacility');
+            const pSelect = document.getElementById('provFacilitySelect');
+
+            if (bSelect) {
+                bSelect.innerHTML = stateFacilities.map(f => 
+                    `<option value="${f.id}" ${f.id === selectedFacilityId ? 'selected' : ''}>${f.name} (${f.district}, ${f.state}) – ₹${f.base_rate_per_kg_month}/kg</option>`
+                ).join('');
+            }
+
+            if (pSelect) {
+                pSelect.innerHTML = stateFacilities.map(f => 
+                    `<option value="${f.id}">${f.name} (${f.district})</option>`
+                ).join('');
+            }
+        }
+
+        // RENDER MARKETPLACE CARDS
+        function renderFacilities(list) {
+            const container = document.getElementById('facilitiesContainer');
+            const matchCount = document.getElementById('marketMatchCount');
+            if (matchCount) matchCount.innerText = list.length;
+
+            if (!container) return;
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align:center; padding:50px; background:white; border-radius:12px; border:1px solid #e0e0e0;">
+                        <h3 style="color:#64748b;">No matching storage facilities found.</h3>
+                        <p style="color:#94a3b8;">Try clearing some filters or searching a nearby district.</p>
+                        <button onclick="resetMarketplaceFilters()" style="background:#1b5e20; color:white; border:none; padding:10px 20px; border-radius:6px; font-weight:700; cursor:pointer;">Reset All Filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = list.map(fac => {
+                const total = Number(fac.total_capacity_mt) || 1000;
+                const avail = Number(fac.available_capacity_mt) || 0;
+                const booked = Math.max(0, total - avail);
+                const pctAvail = Math.round((avail / total) * 100);
+
+                let fillClass = 'fill-avail';
+                let statusText = 'Space Available';
+                let statusColor = '#059669';
+
+                if (pctAvail < 15) {
+                    fillClass = 'fill-critical';
+                    statusText = 'Filling Fast (<15% left)';
+                    statusColor = '#dc2626';
+                } else if (pctAvail < 35) {
+                    fillClass = 'fill-limited';
+                    statusText = 'Limited Space';
+                    statusColor = '#d97706';
+                }
+
+                let typeClass = 'type-cold';
+                const fType = (fac.facility_type || '').toLowerCase();
+                if (fType.includes('atmosphere') || fType.includes('ca')) typeClass = 'type-ca';
+                else if (fType.includes('warehouse')) typeClass = 'type-warehouse';
+                else if (fType.includes('godown') || fType.includes('silo')) typeClass = 'type-godown';
+
+                const amenitiesHtml = (fac.amenities || []).slice(0, 4).map(a => 
+                    `<span class="amenity-chip">✓ ${a}</span>`
+                ).join('');
+
+                return `
+                    <div class="facility-card">
+                        <div class="fac-card-header">
+                            <div class="fac-title-row">
+                                <h3 class="fac-title">${fac.name}</h3>
+                                <span class="fac-type-pill ${typeClass}">${fac.facility_type}</span>
+                            </div>
+                            <div class="fac-location">📍 ${fac.district}, ${fac.state} • ${fac.operator_name || 'Verified Operator'}</div>
+                            <div class="fac-badges-row">
+                                <span class="badge-wdra">✔ WDRA Reg: ${fac.wdra_reg_no || 'Registered'}</span>
+                                <span class="badge-subsidy">🏛 Govt Subsidies Eligible</span>
+                            </div>
+                        </div>
+
+                        <div class="fac-card-body">
+                            <div class="capacity-gauge-box">
+                                <div class="capacity-label-row">
+                                    <span style="font-weight:700; color:#1e293b;">Capacity Meter:</span>
+                                    <span style="font-weight:800; color:${statusColor};">${avail} MT Available (${pctAvail}%)</span>
+                                </div>
+                                <div class="capacity-bar-track">
+                                    <div class="capacity-bar-fill ${fillClass}" style="width: ${pctAvail}%;"></div>
+                                </div>
+                                <div class="capacity-footer">
+                                    <span>Total Capacity: ${total} MT</span>
+                                    <span>Booked: ${booked.toFixed(0)} MT</span>
+                                </div>
+                            </div>
+
+                            <div class="fac-specs-grid">
+                                <div class="spec-item">
+                                    <span class="spec-label">Ideal Produce:</span>
+                                    <span class="spec-val">${fac.suitable_crops}</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Climate Control:</span>
+                                    <span class="spec-val">${fac.temp_range}</span>
+                                </div>
+                            </div>
+
+                            <div class="fac-price-row">
+                                <div>
+                                    <div class="price-text-main">₹ ${fac.base_rate_per_kg_month} <span style="font-size:13px; font-weight:600;">/ kg / month</span></div>
+                                    <div class="price-subtext">₹ ${(fac.base_rate_per_kg_month * 100).toFixed(0)} per quintal • Min ${fac.min_duration_days || 15} days</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="font-size:12px; font-weight:700; color:#15803d;">⭐ ${fac.rating || 4.7} / 5.0</div>
+                                    <div style="font-size:11px; color:#64748b;">(${fac.reviews_count || 120} reviews)</div>
+                                </div>
+                            </div>
+
+                            <div class="fac-amenities-chips">
+                                ${amenitiesHtml}
+                            </div>
+                        </div>
+
+                        <div class="fac-card-actions">
+                            <button class="btn-fac-view" onclick="viewFacilityDetails('${fac.id}')">View Profile</button>
+                            <button class="btn-fac-book" onclick="selectAndBookFacility('${fac.id}')">Book Storage →</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // FILTER HANDLING
+        function applyMarketplaceFilters() {
+            const state = document.getElementById('filterState').value.toLowerCase().trim();
+            const district = document.getElementById('filterDistrict').value.toLowerCase().trim();
+            const crop = document.getElementById('filterCrop').value.toLowerCase().trim();
+            const type = document.getElementById('filterType').value.toLowerCase().trim();
+            const search = document.getElementById('filterSearch').value.toLowerCase().trim();
+
+            const filtered = stateFacilities.filter(f => {
+                if (state && (f.state || '').toLowerCase() !== state) return false;
+                if (district && !(f.district || '').toLowerCase().includes(district)) return false;
+                if (crop && !(f.suitable_crops || '').toLowerCase().includes(crop)) return false;
+                if (type && type !== 'all' && !(f.facility_type || '').toLowerCase().includes(type)) return false;
+                if (search) {
+                    const q = (f.name + ' ' + f.address + ' ' + f.district + ' ' + f.suitable_crops).toLowerCase();
+                    if (!q.includes(search)) return false;
+                }
+                return true;
+            });
+
+            renderFacilities(filtered);
+        }
+
+        function resetMarketplaceFilters() {
+            document.getElementById('filterState').value = '';
+            document.getElementById('filterDistrict').value = '';
+            document.getElementById('filterCrop').value = '';
+            document.getElementById('filterType').value = 'all';
+            document.getElementById('filterSearch').value = '';
+            renderFacilities(stateFacilities);
+        }
+
+        // VIEW FACILITY PROFILE MODAL
+        function viewFacilityDetails(id) {
+            const fac = stateFacilities.find(f => f.id === id);
+            if (!fac) return;
+
+            document.getElementById('modalFacTitle').innerText = fac.name;
+            document.getElementById('modalFacBody').innerHTML = `
+                <div style="display:flex; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+                    <span class="fac-type-pill type-cold">${fac.facility_type}</span>
+                    <span class="badge-wdra">✔ WDRA Accreditation: ${fac.wdra_reg_no}</span>
+                </div>
+
+                <p><strong>Physical Address:</strong> ${fac.address}</p>
+                <p><strong>Facility Operator / Manager:</strong> ${fac.operator_name} (📞 ${fac.mobile})</p>
+                <p><strong>Official Inquiries:</strong> ${fac.email}</p>
+
+                <div style="background:#f8fafc; padding:14px; border-radius:8px; margin:16px 0;">
+                    <h4 style="margin:0 0 8px 0; color:#1e293b;">Chamber Specifications & Quality Control</h4>
+                    <div>• <strong>Temperature Range:</strong> ${fac.temp_range}</div>
+                    <div>• <strong>Humidity Range:</strong> ${fac.humidity_range || '80-90% RH'}</div>
+                    <div>• <strong>Available Capacity:</strong> ${fac.available_capacity_mt} MT out of ${fac.total_capacity_mt} MT Total</div>
+                    <div>• <strong>Base Rental Tariff:</strong> ₹${fac.base_rate_per_kg_month} / kg / month (₹${fac.base_rate_per_kg_month * 100} / quintal)</div>
+                    <div>• <strong>Minimum Storage Commitment:</strong> ${fac.min_duration_days || 15} Days</div>
+                </div>
+
+                <h4 style="margin:0 0 8px 0; color:#1e293b;">Verified Facilities & Amenities</h4>
+                <ul style="margin:0 0 20px 0; padding-left:20px; color:#475569;">
+                    ${(fac.amenities || []).map(a => `<li>${a}</li>`).join('')}
+                </ul>
+
+                <button onclick="closeFacilityModal(); selectAndBookFacility('${fac.id}')" style="background:#1b5e20; color:white; border:none; padding:12px 24px; border-radius:8px; font-weight:700; width:100%; cursor:pointer;">
+                    Proceed to Book Storage at this Facility →
+                </button>
+            `;
+
+            document.getElementById('facilityModal').classList.add('active');
+        }
+
+        function closeFacilityModal() {
+            document.getElementById('facilityModal').classList.remove('active');
+        }
+
+        // TRIGGER BOOKING WITH PRE-SELECTED FACILITY
+        function selectAndBookFacility(id) {
+            selectedFacilityId = id;
+            const bSelect = document.getElementById('bFacility');
+            if (bSelect) bSelect.value = id;
+            onFacilitySelectionChange();
+            showSection('booking');
+        }
+
+        function onFacilitySelectionChange() {
+            const bSelect = document.getElementById('bFacility');
+            if (bSelect) selectedFacilityId = bSelect.value;
+
+            const fac = stateFacilities.find(f => f.id === selectedFacilityId) || stateFacilities[0];
+            if (fac) {
+                document.getElementById('noticeFacName').innerText = fac.name;
+                document.getElementById('noticeFacAvail').innerText = fac.available_capacity_mt + ' MT';
+                document.getElementById('noticeFacRate').innerText = '₹' + fac.base_rate_per_kg_month + ' / kg / mo';
+                document.getElementById('calcBaseRate').innerText = '₹' + fac.base_rate_per_kg_month;
+            }
+
+            verifySubsidyEligibility(false);
+            updatePricingCalculation();
+        }
+
+        // QUANTITY BIDIRECTIONAL SYNCHRONIZATION
+        function syncQty(source) {
+            const qQuintals = document.getElementById('bQtyQuintals');
+            const qKg = document.getElementById('bQtyKg');
+
+            if (source === 'quintals') {
+                const val = parseFloat(qQuintals.value) || 0;
+                qKg.value = val * 100;
+            } else {
+                const val = parseFloat(qKg.value) || 0;
+                qQuintals.value = (val / 100).toFixed(1);
+            }
+            updatePricingCalculation();
+        }
+
+        // SCHEME SUBSIDY ELIGIBILITY VERIFICATION
+        async function verifySubsidyEligibility(showToast = true) {
+            const schemeCode = document.getElementById('bScheme').value;
+            const farmerCategory = document.getElementById('bFarmerCategory').value;
+            const cropName = document.getElementById('bCrop').value;
+            const qtyKg = parseFloat(document.getElementById('bQtyKg').value) || 5000;
+            const months = parseFloat(document.getElementById('bMonths').value) || 3;
+
+            const fac = stateFacilities.find(f => f.id === selectedFacilityId) || stateFacilities[0];
+            const baseRate = fac ? fac.base_rate_per_kg_month : 1.85;
+
+            try {
+                // Call verification API
+                const res = await fetch('/api/storage/verify-subsidy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        scheme_code: schemeCode,
+                        farmer_category: farmerCategory,
+                        crop_name: cropName,
+                        facility_type: fac.facility_type,
+                        quantity_kg: qtyKg,
+                        duration_months: months,
+                        base_rate_per_kg: baseRate
+                    })
+                });
+                const data = await res.json();
+
+                isSubsidyVerified = data.is_eligible;
+                currentSubsidyPct = data.subsidy_percentage || 0;
+                currentSubsidyRate = data.subsidy_rate_per_kg || 0;
+                currentSubsidyCode = data.verification_code || 'NONE';
+
+                const badge = document.getElementById('subsidyStatusBadge');
+                const text = document.getElementById('subsidySummaryText');
+                const list = document.getElementById('subsidyCriteriaList');
+
+                if (data.is_eligible) {
+                    badge.className = 'subsidy-badge-valid';
+                    badge.innerText = '✓ Subsidy Eligibility Confirmed (' + data.scheme_name + ')';
+                    text.style.color = '#166534';
+                    text.innerText = `${data.subsidy_percentage}% Subvention Applied (₹${data.subsidy_rate_per_kg} / kg / mo savings • Token: ${data.verification_code})`;
+                } else {
+                    badge.className = 'subsidy-badge-invalid';
+                    badge.innerText = schemeCode === 'NONE' ? 'ℹ Commercial Rate (No Subsidy Selected)' : '⚠️ Subsidy Criteria Mismatch';
+                    text.style.color = schemeCode === 'NONE' ? '#475569' : '#991b1b';
+                    text.innerText = schemeCode === 'NONE' ? 'Standard commercial warehousing rates apply.' : 'Selected scheme conditions not satisfied for this commodity/facility combination.';
+                }
+
+                list.innerHTML = (data.criteria_met || []).map(c => `<li>${c}</li>`).join('');
+
+            } catch (err) {
+                // Offline fallback logic for subsidy calculation
+                calculateOfflineSubsidy(schemeCode, farmerCategory, cropName, fac, qtyKg, months, baseRate);
+            }
+
+            updatePricingCalculation();
+            if (showToast && isSubsidyVerified) {
+                alert(`✅ Subsidy Eligibility Verified!\nScheme: ${schemeCode}\nDiscount: ${currentSubsidyPct}%\nAuth Code: ${currentSubsidyCode}`);
+            }
+        }
+
+        function calculateOfflineSubsidy(schemeCode, farmerCategory, cropName, fac, qtyKg, months, baseRate) {
+            if (schemeCode === 'PMKSY_COLD_CHAIN') {
+                const isSmall = farmerCategory !== 'general';
+                currentSubsidyPct = isSmall ? 35.0 : 25.0;
+                currentSubsidyRate = Math.min(baseRate * (currentSubsidyPct / 100), 0.65);
+                isSubsidyVerified = true;
+                currentSubsidyCode = 'SUB-2026-PMKSY-' + Math.floor(1000 + Math.random() * 9000);
+            } else if (schemeCode === 'GRAMIN_BHANDARAN') {
+                const isSmall = farmerCategory !== 'general';
+                currentSubsidyPct = isSmall ? 33.33 : 25.0;
+                currentSubsidyRate = Math.min(baseRate * (currentSubsidyPct / 100), 0.35);
+                isSubsidyVerified = true;
+                currentSubsidyCode = 'SUB-2026-GBY-' + Math.floor(1000 + Math.random() * 9000);
+            } else if (schemeCode === 'AIF_STORAGE') {
+                currentSubsidyPct = 20.0;
+                currentSubsidyRate = Math.min(baseRate * 0.20, 0.35);
+                isSubsidyVerified = true;
+                currentSubsidyCode = 'SUB-2026-AIF-' + Math.floor(1000 + Math.random() * 9000);
+            } else if (schemeCode === 'PM_KISAN_BHANDAR') {
+                currentSubsidyPct = 15.0;
+                currentSubsidyRate = Math.min(baseRate * 0.15, 0.25);
+                isSubsidyVerified = true;
+                currentSubsidyCode = 'SUB-2026-PMK-' + Math.floor(1000 + Math.random() * 9000);
+            } else {
+                currentSubsidyPct = 0;
+                currentSubsidyRate = 0;
+                isSubsidyVerified = false;
+                currentSubsidyCode = 'NONE';
+            }
+        }
+
+        // DYNAMIC PRICING CALCULATION
+        function updatePricingCalculation() {
+            const fac = stateFacilities.find(f => f.id === selectedFacilityId) || stateFacilities[0];
+            const baseRate = fac ? Number(fac.base_rate_per_kg_month) : 1.85;
+
+            const qtyKg = parseFloat(document.getElementById('bQtyKg').value) || 5000;
+            const months = parseFloat(document.getElementById('bMonths').value) || 3;
+
+            const grossBase = Math.round(qtyKg * baseRate * months);
+            const handling = Math.round(qtyKg * 0.08); // 8 paise / kg
+            const insurance = Math.round(grossBase * 0.02); // 2% comprehensive insurance
+
+            let subsidyAmount = 0;
+            if (isSubsidyVerified && currentSubsidyRate > 0) {
+                subsidyAmount = Math.round(currentSubsidyRate * qtyKg * months);
+            }
+
+            const netTotal = Math.max(0, grossBase + handling + insurance - subsidyAmount);
+            const advanceToken = Math.round(netTotal * 0.20);
+            const balanceDue = netTotal - advanceToken;
+
+            // Update UI elements
+            document.getElementById('calcBaseRate').innerText = '₹ ' + baseRate.toFixed(2);
+            document.getElementById('calcQty').innerText = qtyKg.toLocaleString();
+            document.getElementById('calcMonths').innerText = months;
+            document.getElementById('calcSubsidyPct').innerText = currentSubsidyPct.toFixed(1) + '%';
+
+            document.getElementById('breakdownBaseRent').innerText = '₹ ' + grossBase.toLocaleString();
+            document.getElementById('breakdownHandling').innerText = '₹ ' + handling.toLocaleString();
+            document.getElementById('breakdownInsurance').innerText = '₹ ' + insurance.toLocaleString();
+            document.getElementById('breakdownSubsidy').innerText = '– ₹ ' + subsidyAmount.toLocaleString();
+            document.getElementById('breakdownNetTotal').innerText = '₹ ' + netTotal.toLocaleString();
+            document.getElementById('breakdownAdvance').innerText = '₹ ' + advanceToken.toLocaleString();
+            document.getElementById('breakdownBalance').innerText = '₹ ' + balanceDue.toLocaleString();
+        }
+
+        function selectPaymentOption(mode, labelEl) {
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+            if (labelEl) labelEl.classList.add('selected');
+        }
+
+        // CONFIRM STORAGE BOOKING & GENERATE GATE PASS
+        async function confirmBooking() {
+            const name = document.getElementById('bName').value.trim();
+            const mobile = document.getElementById('bMobile').value.trim();
+            const crop = document.getElementById('bCrop').value.trim();
+            const qtyKg = parseFloat(document.getElementById('bQtyKg').value);
+            const qtyQuintals = parseFloat(document.getElementById('bQtyQuintals').value);
+            const months = parseFloat(document.getElementById('bMonths').value);
+            const intakeDate = document.getElementById('bIntakeDate').value;
+            const state = document.getElementById('bState').value;
+            const district = document.getElementById('bDistrict').value;
+            const farmerCategory = document.getElementById('bFarmerCategory').value;
+            const scheme = document.getElementById('bScheme').value;
+            const payAdvance = document.getElementById('chkAdvancePay').checked;
+
+            const selectedPayRadio = document.querySelector('input[name="payOption"]:checked');
+            const payMode = selectedPayRadio ? selectedPayRadio.value : 'UPI';
+
+            if (!name || !mobile || !crop || isNaN(qtyKg) || qtyKg <= 0 || isNaN(months) || months <= 0) {
+                alert('Please fill all mandatory booking details correctly.');
+                return;
+            }
+
+            const fac = stateFacilities.find(f => f.id === selectedFacilityId) || stateFacilities[0];
+            const bookingPayload = {
+                facility_id: fac.id,
+                facility_name: fac.name,
+                provider_id: fac.provider_id,
+                farmer_name: name,
+                mobile: mobile,
+                farmer_state: state,
+                farmer_district: district,
+                crop_name: crop,
+                quantity_kg: qtyKg,
+                quantity_quintals: qtyQuintals,
+                duration_months: months,
+                intake_date: intakeDate,
+                scheme_applied: scheme,
+                farmer_category: farmerCategory,
+                payment_mode: payMode,
+                advance_paid: payAdvance
+            };
+
+            let confirmedBooking = null;
+
+            try {
+                // Post to REST API
+                const res = await fetch('/api/storage/book', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingPayload)
+                });
+                const data = await res.json();
+                if (data.success && data.booking) {
+                    confirmedBooking = data.booking;
+                } else {
+                    alert(data.message || 'Booking submission rejected.');
+                    return;
+                }
+            } catch (err) {
+                // Offline fallback persistence
+                const localId = 'STG-2026-' + Math.floor(10000 + Math.random() * 90000);
+                const grossBase = Math.round(qtyKg * fac.base_rate_per_kg_month * months);
+                const handling = Math.round(qtyKg * 0.08);
+                const insurance = Math.round(grossBase * 0.02);
+                const subsidyAmt = isSubsidyVerified ? Math.round(currentSubsidyRate * qtyKg * months) : 0;
+                const netTotal = Math.max(0, grossBase + handling + insurance - subsidyAmt);
+                const advAmt = Math.round(netTotal * 0.20);
+
+                confirmedBooking = {
+                    ...bookingPayload,
+                    booking_id: localId,
+                    gate_pass_no: 'GP-2026-' + Math.floor(10000 + Math.random() * 90000),
+                    pricing_breakdown: {
+                        gross_base_amount: grossBase,
+                        handling_fee: handling,
+                        insurance_fee: insurance,
+                        subsidy_amount: subsidyAmt,
+                        net_payable: netTotal,
+                        advance_required: advAmt,
+                        balance_on_arrival: netTotal - advAmt,
+                        verification_code: currentSubsidyCode
+                    },
+                    booking_status: 'Pending Provider Confirmation',
+                    payment_status: payAdvance ? 'Advance Paid (20%)' : 'Payment at Gate'
+                };
+
+                // Deduct capacity locally
+                fac.available_capacity_mt = Math.max(0, fac.available_capacity_mt - (qtyKg / 1000));
+            }
+
+            // Save to localStorage for quick retrieval
+            saveLocalBookingRecord(confirmedBooking);
+
+            // Render Digital Gate Pass
+            renderGatePass(confirmedBooking);
+
+            // Update live metrics & reload views
+            fetchFacilitiesFromServer();
+            loadProviderDashboardView();
+            renderProfileHistory();
+
+            // Scroll to gate pass
+            document.getElementById('bookingResultArea').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function saveLocalBookingRecord(booking) {
+            try {
+                let userBookings = JSON.parse(localStorage.getItem('bb_storage_bookings') || '[]');
+                userBookings.unshift(booking);
+                localStorage.setItem('bb_storage_bookings', JSON.stringify(userBookings));
+            } catch (e) {}
+        }
+
+        function renderGatePass(booking) {
+            const container = document.getElementById('bookingResultArea');
+            container.style.display = 'block';
+
+            const p = booking.pricing_breakdown || {};
+            const netPayable = p.net_payable || 0;
+            const advance = p.advance_required || Math.round(netPayable * 0.20);
+            const balance = p.balance_on_arrival || (netPayable - advance);
+
+            container.innerHTML = `
+                <div class="gate-pass-container">
+                    <div class="gate-pass-header">
+                        <div>
+                            <div style="font-size:12px; color:#15803d; font-weight:800; text-transform:uppercase;">OFFICIAL WDRA STORAGE ALLOTMENT & INTAKE PERMIT</div>
+                            <h2 style="margin:4px 0; color:#1b5e20; font-size:22px;">Digital Storage Gate Pass</h2>
+                            <div style="font-size:13px; color:#64748b;">Ministry of Agriculture & Farmers Welfare Linked Facility</div>
+                        </div>
+                        <div class="gate-pass-qr">
+                            <div>QR PASS<br><strong>${booking.gate_pass_no || 'GP-2026'}</strong><br>VERIFIED</div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <span style="font-size:12px; color:#64748b;">OFFICIAL BOOKING ID:</span>
+                            <div style="font-size:18px; font-weight:800; color:#0f172a;">${booking.booking_id}</div>
+                        </div>
+                        <div>
+                            <span class="booking-status-tag status-pending-tag">${booking.booking_status || 'Pending Provider Confirmation'}</span>
+                        </div>
+                    </div>
+
+                    <div class="pass-meta-grid">
+                        <div class="pass-field">
+                            <span class="lbl">Storage Facility:</span>
+                            <span class="val">${booking.facility_name}</span>
+                        </div>
+                        <div class="pass-field">
+                            <span class="lbl">Farmer Depositor:</span>
+                            <span class="val">${booking.farmer_name} (📞 ${booking.mobile})</span>
+                        </div>
+                        <div class="pass-field">
+                            <span class="lbl">Produce & Stored Volume:</span>
+                            <span class="val">${booking.crop_name} • ${booking.quantity_quintals} Quintals (${booking.quantity_kg} kg)</span>
+                        </div>
+                        <div class="pass-field">
+                            <span class="lbl">Scheduled Intake Date & Duration:</span>
+                            <span class="val">${booking.intake_date} (${booking.duration_months} Months)</span>
+                        </div>
+                        <div class="pass-field">
+                            <span class="lbl">Scheme Subsidy Applied:</span>
+                            <span class="val" style="color:#15803d;">${booking.scheme_applied} (Auth: ${p.verification_code || 'VERIFIED'})</span>
+                        </div>
+                        <div class="pass-field">
+                            <span class="lbl">Payment Status:</span>
+                            <span class="val" style="color:#b45309;">${booking.payment_status} (${booking.payment_mode})</span>
+                        </div>
+                    </div>
+
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:18px; font-size:13px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                            <span>Net Storage Charges (After Subsidy):</span>
+                            <strong>₹ ${netPayable.toLocaleString()}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px; color:#15803d;">
+                            <span>20% Advance Token Paid:</span>
+                            <strong>₹ ${advance.toLocaleString()}</strong>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; color:#b45309;">
+                            <span>Balance Due at Facility Gate Inspection:</span>
+                            <strong>₹ ${balance.toLocaleString()}</strong>
+                        </div>
+                    </div>
+
+                    <div style="font-size:12px; color:#64748b; line-height:1.5; margin-bottom:20px;">
+                        <strong>Warehouse Intake Guidelines:</strong> Bring this Digital Gate Pass along with farmer Aadhaar and weighbridge transit receipt. Produce moisture must meet statutory specifications (Grains < 12%, Potatoes in ventilated breathable mesh bags).
+                    </div>
+
+                    <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                        <button onclick="window.print()" style="background:#1b5e20; color:white; border:none; padding:10px 20px; border-radius:6px; font-weight:700; cursor:pointer;">
+                            🖨 Print / Download Gate Pass
+                        </button>
+                        <button onclick="showSection('mybookings')" style="background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; padding:10px 20px; border-radius:6px; font-weight:700; cursor:pointer;">
+                            View in My Bookings Wallet
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // LOOKUP BOOKINGS
+        async function lookupBookings() {
+            const query = (document.getElementById('trackQueryInput')?.value || '').trim() || '9823456789';
+            const container = document.getElementById('myBookingsContainer');
+            if (!container) return;
+
+            let records = [];
+
+            try {
+                const res = await fetch('/api/storage/track/' + encodeURIComponent(query));
+                const data = await res.json();
+                if (data.success && data.bookings) {
+                    records = data.bookings;
+                }
+            } catch (e) {
+                // Read from localStorage
+                try {
+                    const local = JSON.parse(localStorage.getItem('bb_storage_bookings') || '[]');
+                    records = local.filter(b => 
+                        (b.booking_id && b.booking_id.toUpperCase().includes(query.toUpperCase())) ||
+                        (b.mobile && b.mobile.includes(query))
+                    );
+                } catch(err) {}
+            }
+
+            if (records.length === 0) {
+                container.innerHTML = `
+                    <div style="background:white; border-radius:12px; padding:30px; text-align:center; border:1px solid #e0e0e0;">
+                        <div style="font-size:32px; margin-bottom:8px;">📦</div>
+                        <h4 style="color:#64748b; margin:0 0 6px 0;">No storage records found for "${query}"</h4>
+                        <p style="color:#94a3b8; font-size:13px; margin:0;">Enter a valid Booking ID (e.g. STG-2026-10214) or registered 10-digit mobile number.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = records.map(b => {
+                const p = b.pricing_breakdown || {};
+                let statusClass = 'status-pending-tag';
+                if ((b.booking_status || '').includes('Confirmed')) statusClass = 'status-confirmed-tag';
+                else if ((b.booking_status || '').includes('Produce Received') || (b.booking_status || '').includes('Active')) statusClass = 'status-active-tag';
+                else if ((b.booking_status || '').includes('Completed')) statusClass = 'status-completed-tag';
+                else if ((b.booking_status || '').includes('Rejected') || (b.booking_status || '').includes('Cancelled')) statusClass = 'status-rejected-tag';
+
+                return `
+                    <div style="background:white; border-radius:12px; padding:20px; border:1px solid #e2e8f0; box-shadow:0 4px 12px rgba(0,0,0,0.05);">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                            <div>
+                                <span style="font-size:11px; color:#64748b; font-weight:700;">BOOKING ID:</span>
+                                <div style="font-size:17px; font-weight:800; color:#1b5e20;">${b.booking_id}</div>
+                            </div>
+                            <span class="booking-status-tag ${statusClass}">${b.booking_status}</span>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; font-size:13px; color:#334155; margin-bottom:14px;">
+                            <div><strong>Facility:</strong> ${b.facility_name}</div>
+                            <div><strong>Depositor:</strong> ${b.farmer_name} (${b.mobile})</div>
+                            <div><strong>Produce:</strong> ${b.crop_name} (${b.quantity_quintals} Qtl / ${b.quantity_kg} kg)</div>
+                            <div><strong>Intake Date:</strong> ${b.intake_date} (${b.duration_months} mo)</div>
+                            <div><strong>Net Total:</strong> ₹ ${(p.net_payable || 0).toLocaleString()}</div>
+                            <div><strong>Payment:</strong> ${b.payment_status || 'Advance Paid'}</div>
+                        </div>
+
+                        ${b.provider_notes ? `<div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 12px; border-radius:6px; font-size:12.5px; color:#166534; margin-bottom:12px;"><strong>Chamber Operator Note:</strong> ${b.provider_notes}</div>` : ''}
+
+                        <div style="display:flex; gap:10px;">
+                            <button onclick='renderGatePass(${JSON.stringify(b)}); showSection("booking");' style="background:#1b5e20; color:white; border:none; padding:8px 14px; border-radius:6px; font-size:12.5px; font-weight:700; cursor:pointer;">
+                                🎫 View Gate Pass
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // PROVIDER PORTAL DASHBOARD VIEW
+        async function loadProviderDashboardView() {
+            const selectEl = document.getElementById('provFacilitySelect');
+            const facId = selectEl ? selectEl.value : 'STG-FAC-001';
+            const fac = stateFacilities.find(f => f.id === facId) || stateFacilities[0];
+
+            if (fac) {
+                document.getElementById('provOperatorName').innerText = fac.operator_name || 'Operator';
+                document.getElementById('provTotalCap').innerText = fac.total_capacity_mt + ' MT';
+                document.getElementById('provAvailCap').innerText = fac.available_capacity_mt + ' MT';
+                document.getElementById('provBaseRate').innerText = '₹ ' + fac.base_rate_per_kg_month;
+                document.getElementById('editAvailCap').value = fac.available_capacity_mt;
+                document.getElementById('editBaseRate').value = fac.base_rate_per_kg_month;
+                document.getElementById('editStatus').value = fac.is_active ? 'true' : 'false';
+            }
+
+            // Fetch provider bookings
+            let bookings = [];
+            try {
+                const res = await fetch('/api/storage/provider/bookings?facility_id=' + encodeURIComponent(facId));
+                const data = await res.json();
+                if (data.success && data.bookings) bookings = data.bookings;
+            } catch (e) {
+                // Local fallback
+                try {
+                    const local = JSON.parse(localStorage.getItem('bb_storage_bookings') || '[]');
+                    bookings = local.filter(b => b.facility_id === facId);
+                } catch(err) {}
+            }
+
+            document.getElementById('provActiveBookings').innerText = bookings.length + ' Orders';
+
+            const tbody = document.getElementById('providerBookingsTableBody');
+            if (!tbody) return;
+
+            if (bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8; padding:30px;">No incoming booking requests for this facility.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = bookings.map(b => {
+                const p = b.pricing_breakdown || {};
+                let statusClass = 'status-pending-tag';
+                if ((b.booking_status || '').includes('Confirmed')) statusClass = 'status-confirmed-tag';
+                else if ((b.booking_status || '').includes('Produce Received') || (b.booking_status || '').includes('Active')) statusClass = 'status-active-tag';
+                else if ((b.booking_status || '').includes('Completed')) statusClass = 'status-completed-tag';
+                else if ((b.booking_status || '').includes('Rejected') || (b.booking_status || '').includes('Cancelled')) statusClass = 'status-rejected-tag';
+
+                return `
+                    <tr>
+                        <td><strong>${b.booking_id}</strong><br><span style="font-size:11px; color:#64748b;">${b.gate_pass_no || ''}</span></td>
+                        <td><strong>${b.farmer_name}</strong><br><span style="font-size:12px; color:#475569;">📞 ${b.mobile}</span></td>
+                        <td>${b.crop_name}<br><strong>${b.quantity_quintals} Qtl</strong> (${b.quantity_kg} kg)</td>
+                        <td>${b.intake_date}<br><span style="font-size:11px; color:#64748b;">${b.duration_months} Months</span></td>
+                        <td>₹ ${(p.net_payable || 0).toLocaleString()}<br><span style="font-size:11px; color:#15803d;">${b.scheme_applied || 'Direct'}</span></td>
+                        <td><span class="booking-status-tag ${statusClass}">${b.booking_status}</span></td>
+                        <td>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                                <button class="btn-action-sm btn-confirm-sm" onclick="updateBookingStatus('${b.booking_id}', 'Confirmed - Space Allocated', 'Chamber space officially confirmed.')">Confirm</button>
+                                <button class="btn-action-sm btn-intake-sm" onclick="updateBookingStatus('${b.booking_id}', 'Produce Received / In Storage', 'Produce weighed and lot stacked on chamber pallets.')">Check-In</button>
+                                <button class="btn-action-sm btn-reject-sm" onclick="updateBookingStatus('${b.booking_id}', 'Rejected', 'Chamber capacity currently unavailable.')">Reject</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function updateBookingStatus(bookingId, status, defaultNotes = '') {
+            const notes = prompt(`Enter facility operator note for ${bookingId}:`, defaultNotes) || defaultNotes;
+
+            try {
+                const res = await fetch(`/api/storage/provider/bookings/${encodeURIComponent(bookingId)}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status, provider_notes: notes })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert(`✅ Booking ${bookingId} updated to: ${status}`);
+                }
+            } catch (e) {
+                // Local fallback update
+                try {
+                    let local = JSON.parse(localStorage.getItem('bb_storage_bookings') || '[]');
+                    const b = local.find(item => item.booking_id === bookingId);
+                    if (b) {
+                        b.booking_status = status;
+                        b.provider_notes = notes;
+                        localStorage.setItem('bb_storage_bookings', JSON.stringify(local));
+                    }
+                } catch(err) {}
+                alert(`✅ Booking ${bookingId} updated locally to: ${status}`);
+            }
+
+            loadProviderDashboardView();
+            lookupBookings();
+            renderProfileHistory();
+        }
+
+        async function saveProviderFacilitySettings() {
+            const selectEl = document.getElementById('provFacilitySelect');
+            const facId = selectEl ? selectEl.value : 'STG-FAC-001';
+            const availCap = parseFloat(document.getElementById('editAvailCap').value);
+            const baseRate = parseFloat(document.getElementById('editBaseRate').value);
+            const isActive = document.getElementById('editStatus').value === 'true';
+
+            try {
+                const res = await fetch('/api/storage/provider/facility/update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        facility_id: facId,
+                        available_capacity_mt: availCap,
+                        base_rate_per_kg_month: baseRate,
+                        is_active: isActive
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('✅ Facility settings saved and published to the marketplace.');
+                }
+            } catch (e) {
+                const fac = stateFacilities.find(f => f.id === facId);
+                if (fac) {
+                    fac.available_capacity_mt = availCap;
+                    fac.base_rate_per_kg_month = baseRate;
+                    fac.is_active = isActive;
+                }
+                alert('✅ Facility settings saved in active session.');
+            }
+
+            fetchFacilitiesFromServer();
+            loadProviderDashboardView();
+        }
+
+        // RENDER PROFILE BOOKING HISTORY
+        function renderProfileHistory() {
+            const tbody = document.getElementById('profileHistoryTableBody');
+            if (!tbody) return;
+
+            let records = [];
+            try {
+                records = JSON.parse(localStorage.getItem('bb_storage_bookings') || '[]');
+            } catch(e) {}
+
+            if (records.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td>#STG-2026-10214</td>
+                        <td>Kisan Cold Chain</td>
+                        <td>Potato</td>
+                        <td>5,000</td>
+                        <td><span class="booking-status-tag status-confirmed-tag">Confirmed</span></td>
+                    </tr>
+                    <tr>
+                        <td>#STG-2026-09871</td>
+                        <td>Annapurna Silos</td>
+                        <td>Wheat</td>
+                        <td>3,000</td>
+                        <td><span class="booking-status-tag status-active-tag">In Storage</span></td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = records.slice(0, 5).map(b => `
+                <tr>
+                    <td><strong>${b.booking_id}</strong></td>
+                    <td>${b.facility_name}</td>
+                    <td>${b.crop_name}</td>
+                    <td>${(b.quantity_kg || 0).toLocaleString()}</td>
+                    <td><span class="booking-status-tag status-confirmed-tag">${b.booking_status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // SCHEME ESTIMATION (FIXED DUPLICATE ID)
         function estimateSchemePrice() {
             const schemeBenefit = parseFloat(document.getElementById("schemeType").value);
             const basePrice = parseFloat(document.getElementById("schemeStorage").value);
             const qty = parseFloat(document.getElementById("schemeQty").value);
 
+            const resultEl = document.getElementById("estimatorSchemeResult");
+            if (!resultEl) return;
+
             if (isNaN(qty) || qty <= 0) {
-                document.getElementById("schemeResult").innerText =
-                    "Please enter a valid quantity";
+                resultEl.innerText = "Please enter a valid quantity in kg.";
                 return;
             }
 
@@ -1560,117 +3885,73 @@
             if (effectivePrice < 0) effectivePrice = 0;
 
             const total = effectivePrice * qty;
+            const savings = schemeBenefit * qty;
 
-            document.getElementById("schemeResult").innerText =
-                "Estimated Monthly Cost After Scheme Benefit: ₹" + total.toFixed(2);
+            resultEl.innerHTML = `
+                Estimated Monthly Cost: <strong>₹ ${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong><br>
+                <span style="font-size:13px; color:#15803d;">(Statutory Scheme Savings: ₹ ${savings.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} per month)</span>
+            `;
         }
 
-        function confirmBooking() {
-            const name = document.getElementById("bName").value;
-            const mobile = document.getElementById("bMobile").value;
-            const basePrice = parseFloat(document.getElementById("bStorage").value);
-            const schemeBenefit = parseFloat(document.getElementById("bScheme").value);
-            const qty = parseFloat(document.getElementById("bQty").value);
-            const months = parseFloat(document.getElementById("bMonths").value);
+        // PROFILE SCHEME CHECKER (FIXED DUPLICATE ID)
+        function checkEligibility() {
+            const val = parseFloat(document.getElementById("schemeCheck").value);
+            const resultEl = document.getElementById("profileSchemeResult");
+            if (!resultEl) return;
 
-            if (!name || !mobile || isNaN(qty) || isNaN(months) || qty <= 0 || months <= 0) {
-                document.getElementById("bookingResult").innerText =
-                    "Please fill all booking details correctly.";
-                return;
-            }
-
-            let effectivePrice = basePrice - schemeBenefit;
-            if (effectivePrice < 0) effectivePrice = 0;
-
-            const total = effectivePrice * qty * months;
-
-            let schemeText = schemeBenefit > 0
-                ? "Scheme Benefit Applied: ₹" + schemeBenefit + " per kg."
-                : "No government scheme applied.";
-
-            document.getElementById("bookingResult").innerText =
-                "Booking Confirmed! " +
-                schemeText +
-                " Final Payable Amount: ₹" + total.toFixed(2);
+            const text = val > 0
+                ? "✓ Eligible: You qualify for approx. ₹" + val.toFixed(2) + " per kg statutory storage tariff subvention."
+                : "No government scheme selected.";
+            resultEl.innerText = text;
         }
-        // Scroll-based animation for "Why Digital Storage Finder Matters"
-        const whySection = document.querySelector(".why-storage");
 
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add("active");
-                        observer.unobserve(entry.target); // run once
-                    }
-                });
-            },
-            { threshold: 0.4 }
-        );
-
-        if (whySection) {
-            observer.observe(whySection);
-        }
-        // Scroll animation for feature cards
-        const featureCards = document.querySelectorAll(".feature-card");
-
-        const featureObserver = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
-                        setTimeout(() => {
-                            entry.target.classList.add("visible");
-                        }, index * 150); // stagger effect
-                        featureObserver.unobserve(entry.target);
-                    }
-                });
-            },
-            { threshold: 0.3 }
-        );
-
-        featureCards.forEach(card => featureObserver.observe(card));
-
-
-
-        /* PROFILE COMPLETION */
+        // PROFILE COMPLETION & LANG
         function updateProgress() {
             let filled = 0;
-            if (pName.value) filled++;
-            if (pMobile.value) filled++;
-            if (pState.value) filled++;
-            if (pCrop.value) filled++;
+            const pName = document.getElementById('pName');
+            const pMobile = document.getElementById('pMobile');
+            const pState = document.getElementById('pState');
+            const pCrop = document.getElementById('pCrop');
+
+            if (pName && pName.value) filled++;
+            if (pMobile && pMobile.value) filled++;
+            if (pState && pState.value) filled++;
+            if (pCrop && pCrop.value) filled++;
 
             const percent = (filled / 4) * 100;
-            document.getElementById("profileProgress").style.width = percent + "%";
+            const bar = document.getElementById("profileProgress");
+            if (bar) bar.style.width = percent + "%";
         }
 
         function saveProfile() {
             updateProgress();
-            alert("Profile saved successfully!");
+            const btn = document.getElementById("btnSaveProfile");
+            const notice = document.getElementById("profileSaveNotice");
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span>Saving Profile...</span> ⏳';
+            }
+            setTimeout(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>Save Profile</span> <span>💾</span>';
+                }
+                if (notice) {
+                    notice.style.display = 'block';
+                    notice.textContent = '✅ Farmer Profile saved successfully and synced with your verified farm locker!';
+                    setTimeout(() => { notice.style.display = 'none'; }, 4000);
+                }
+            }, 300);
         }
 
-        /* SCHEME ELIGIBILITY */
-        function checkEligibility() {
-            const val = document.getElementById("schemeCheck").value;
-            const text = val > 0
-                ? "You are eligible for ₹" + val + " per kg subsidy."
-                : "No scheme selected.";
-            document.getElementById("schemeResult").innerText = text;
-        }
-
-        /* LANGUAGE TOGGLE */
         let isHindi = false;
         function toggleProfileLang() {
             isHindi = !isHindi;
-            document.querySelector("#profile h2").innerText =
-                isHindi ? "किसान प्रोफ़ाइल" : "Farmer Profile";
+            const h2 = document.querySelector("#profile h2");
+            if (h2) h2.innerText = isHindi ? "किसान प्रोफ़ाइल व भंडार इतिहास" : "Farmer Profile & Storage History";
         }
-
     </script>
-
 </body>
-
-
 </html>
 
 

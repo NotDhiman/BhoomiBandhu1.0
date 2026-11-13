@@ -1,48 +1,1014 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Status Tracking | BhoomiBandhu</title>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMFBY Application & Claim Status Tracking | BhoomiBandhu 2.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <script src="auth-nav.js" defer></script>
+
+  <style>
+    :root {
+      --c-forest-dark: #0f2d1e;
+      --c-forest-mid: #1b4332;
+      --c-leaf-green: #2d6a4f;
+      --c-leaf-bright: #40916c;
+      --c-sunlight: #f39c12;
+      --c-bg-cream: #fbf9f4;
+      --c-border: #e4decb;
+      --c-text-main: #1d2d24;
+      --c-text-muted: #4f6356;
+    }
+
+    body {
+      background-color: var(--c-bg-cream);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      color: var(--c-text-main);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Hero Banner */
+    .track-hero {
+      background: linear-gradient(135deg, #0a2318 0%, #16402f 60%, #1f573f 100%);
+      color: #ffffff;
+      padding: 2.75rem 1.5rem 3.5rem;
+      border-radius: 0 0 32px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .track-hero-box {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .breadcrumb-trail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #b7dfc6;
+      margin-bottom: 1rem;
+    }
+    .breadcrumb-trail a {
+      color: #b7dfc6;
+      text-decoration: none;
+    }
+    .breadcrumb-trail a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Search Box Floating */
+    .search-card-float {
+      max-width: 980px;
+      margin: -2.4rem auto 2.5rem;
+      background: #ffffff;
+      border: 1.5px solid var(--c-border);
+      border-radius: 20px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 12px 36px rgba(10, 35, 24, 0.08);
+      position: relative;
+      z-index: 5;
+    }
+    .search-input-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .search-input {
+      flex: 2;
+      min-width: 280px;
+      height: 52px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 14px;
+      padding: 0 18px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--c-text-main);
+      background: #ffffff;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .verify-input {
+      flex: 1;
+      min-width: 200px;
+      height: 52px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 14px;
+      padding: 0 16px;
+      font-size: 0.92rem;
+      font-family: inherit;
+      color: var(--c-text-main);
+      background: #ffffff;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+    .search-input:focus, .verify-input:focus {
+      outline: none;
+      border-color: var(--c-leaf-green);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
+    }
+    .quick-chips-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+      font-size: 0.84rem;
+      color: var(--c-text-muted);
+    }
+    .chip-btn {
+      background: #f4efe4;
+      border: 1px solid #dcd4c3;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: #1b4332;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip-btn:hover {
+      background: #e6dfce;
+      border-color: #b8ac95;
+    }
+
+    /* Results Layout */
+    .results-shell {
+      max-width: 1080px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+    .record-card {
+      background: #ffffff;
+      border: 1.5px solid var(--c-border);
+      border-radius: 20px;
+      padding: 2rem 2.25rem;
+      box-shadow: 0 8px 24px rgba(10, 31, 22, 0.04);
+      margin-bottom: 2.25rem;
+      position: relative;
+    }
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1.5px solid #eef2ef;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .status-enrolled { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+    .status-review { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .status-claim-open { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+    .status-claim-approved { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+
+    /* Stepper Timeline (5-Stage) */
+    .timeline-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 2.25rem 0 1.75rem;
+    }
+    .timeline-stepper::before {
+      content: "";
+      position: absolute;
+      top: 19px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .t-step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 20%;
+    }
+    .t-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 3px solid #cbd5e1;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+    .t-step.done .t-circle {
+      background: #2d6a4f;
+      border-color: #2d6a4f;
+      color: #ffffff;
+    }
+    .t-step.claim-done .t-circle {
+      background: #dc2626;
+      border-color: #dc2626;
+      color: #ffffff;
+    }
+    .t-step.active .t-circle {
+      background: #ffffff;
+      border-color: #f39c12;
+      color: #f39c12;
+      box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.2);
+    }
+    .t-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--c-forest-dark);
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+    .t-date {
+      font-size: 0.72rem;
+      color: #15803d;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .t-desc {
+      font-size: 0.72rem;
+      color: var(--c-text-muted);
+      line-height: 1.35;
+      max-width: 160px;
+    }
+
+    @media (max-width: 768px) {
+      .timeline-stepper { flex-direction: column; gap: 18px; margin: 1.5rem 0; }
+      .timeline-stepper::before { display: none; }
+      .t-step { flex-direction: row; width: 100%; text-align: left; gap: 14px; }
+      .t-circle { flex-shrink: 0; margin-bottom: 0; }
+      .t-desc { max-width: 100%; }
+    }
+
+    /* Data Grids */
+    .data-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      background: #faf8f5;
+      border: 1px solid #e7dfcb;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .data-grid-4 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Sub-panels for payment & survey */
+    .section-subpanel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+    }
+    .subpanel-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--c-forest-dark);
+      margin: 0 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Missing Document Alert Box */
+    .missing-doc-alert {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 1.25rem 0;
+      color: #92400e;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .missing-doc-alert h4 {
+      margin: 0 0 4px 0;
+      font-size: 0.95rem;
+      color: #b45309;
+    }
+    .missing-doc-alert p {
+      margin: 0 0 6px 0;
+      font-size: 0.85rem;
+      line-height: 1.45;
+    }
+
+    /* Verification Unlock Prompt */
+    .verify-unlock-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .empty-state-box {
+      text-align: center;
+      background: #ffffff;
+      border: 1.5px dashed var(--c-border);
+      border-radius: 20px;
+      padding: 3.5rem 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn-portal-redirect {
+      background: #1b4332;
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .btn-portal-redirect:hover {
+      background: #2d6a4f;
+    }
+
+    @media print {
+      header, footer, .track-hero, .search-card-float, button, .btn-portal-redirect {
+        display: none !important;
+      }
+      .record-card {
+        border: 1.5px solid #000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
   <div class="container header-flex">
     <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
-      <span>BhoomiBandhu</span>
+      <a href="index.html">
+        <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu Logo">
+        <span>BhoomiBandhu <span class="logo-brand-tag">2.0</span></span>
+      </a>
     </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="insurance.html">Insurance</a>
+      <a href="insurance.html">Insurance Hub</a>
+      <a href="pmfby-enrollment.html">Enrollment</a>
+      <a href="claim-filing.html">Report Loss</a>
+      <a href="status-tracking.html" class="active">Track Status</a>
     </nav>
   </div>
 </header>
 
-<section class="hero">
-  <h1>Claim Status Tracking</h1>
-  <p>Track your insurance claim and resolve issues faster</p>
-</section>
-
-<section class="section container">
-  <h2>What We Track</h2>
-  <div class="grid">
-    <div class="card">Application status</div>
-    <div class="card">Survey updates</div>
-    <div class="card">Approval progress</div>
-    <div class="card">Payment release</div>
+<!-- Hero Section -->
+<section class="track-hero">
+  <div class="track-hero-box">
+    <div class="breadcrumb-trail">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="insurance.html">Insurance Hub</a>
+      <span>›</span>
+      <span>Live Application & Claim Tracker</span>
+    </div>
+    <h1 style="font-size:2.2rem; font-weight:800; margin:0 0 0.5rem; line-height:1.2;">
+      PMFBY Lifecycle & Claim Status Tracking
+    </h1>
+    <p style="font-size:1.02rem; color:#d2ecde; max-width:840px; margin:0; line-height:1.6;">
+      Track policy issuance, bank subsidy debits, joint surveyor inspections, DBT payouts, and missing document requirements with government verification.
+    </p>
   </div>
 </section>
 
-<section class="section container">
-  <h2>Support in Case of Delay</h2>
-  <p style="max-width:900px;margin:auto;color:#4f6f57">
-    We assist farmers in understanding delays and guide them on the
-    correct steps to resolve issues with authorities.
-  </p>
-</section>
+<!-- Floating Search Bar -->
+<div class="search-card-float">
+  <form id="trackForm" onsubmit="handleSearch(event)">
+    <div style="margin-bottom:10px;">
+      <label for="trackInput" style="font-size:0.92rem; font-weight:700; color:var(--c-forest-dark);">
+        Enter Application ID, Claim ID, or 10-Digit Mobile: *
+      </label>
+      <span style="font-size:0.8rem; color:#64748b; margin-left:8px;">(e.g. BB-ENR-2026-48291, BB-CLM-2026-19342, or 9823456789)</span>
+    </div>
 
-<footer>© 2025 BhoomiBandhu</footer>
-<script src="script.js"></script>
+    <div class="search-input-group">
+      <input type="text" id="trackInput" class="search-input" placeholder="Application / Claim ID or Mobile..." required>
+      <input type="text" id="verifyInput" class="verify-input" placeholder="Mobile / Aadhaar Last-4 (Optional)">
+      <button type="submit" class="btn-primary" style="height:52px; padding:0 24px;">
+        <span>Track Records</span>
+        <span>🔍</span>
+      </button>
+    </div>
+
+    <div style="font-size:0.78rem; color:#64748b; margin-top:8px;">
+      🔒 <strong>Security Note:</strong> Providing your registered mobile number or last 4 digits of Aadhaar unlocks unmasked bank accounts, transaction UTR numbers, and direct surveyor contacts.
+    </div>
+  </form>
+
+  <div class="quick-chips-row">
+    <span>Try Demo Records:</span>
+    <button type="button" class="chip-btn" onclick="quickFill('BB-ENR-2026-48291', '7412')">Policy: BB-ENR-2026-48291 (Ramesh)</button>
+    <button type="button" class="chip-btn" onclick="quickFill('BB-CLM-2026-19342', '9823456789')">Claim: BB-CLM-2026-19342 (Hailstorm)</button>
+    <button type="button" class="chip-btn" onclick="quickFill('9823456789', '')">Mobile: 9823456789</button>
+  </div>
+</div>
+
+<!-- Main Results Shell -->
+<main class="results-shell">
+  <div id="loadingIndicator" style="display:none; text-align:center; padding:3rem 1rem; color:var(--c-forest-dark);">
+    <div style="font-size:2rem; margin-bottom:10px;">⏳</div>
+    <div style="font-size:1.1rem; font-weight:700;">Querying Agriculture Insurance & Revenue Database...</div>
+  </div>
+
+  <div id="resultsContainer"></div>
+
+  <!-- Initial / Empty Guidance State -->
+  <div class="empty-state-box" id="emptyStateBox">
+    <div style="font-size:3rem; margin-bottom:12px;">📋</div>
+    <h3 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 6px;">Search Your Insurance Records</h3>
+    <p style="font-size:0.92rem; color:var(--c-text-muted); max-width:580px; margin:0 auto 1.5rem; line-height:1.5;">
+      You can track the verification status of any PMFBY enrollment application or emergency crop loss intimation filed via BhoomiBandhu or verified via the National Crop Insurance Portal.
+    </p>
+    <div style="display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <a href="pmfby-enrollment.html" class="btn-primary" style="text-decoration:none;">New PMFBY Enrollment</a>
+      <a href="claim-filing.html" class="btn-secondary" style="text-decoration:none; color:#dc2626; border-color:#fca5a5;">Report 72-Hr Loss</a>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="text-decoration:none;">National PMFBY Portal ↗</a>
+    </div>
+  </div>
+
+  <!-- Official Portals Direct Help Section -->
+  <section style="background:#ffffff; border:1px solid var(--c-border); border-radius:18px; padding:24px; margin-top:2.5rem;">
+    <h3 style="margin-top:0; color:var(--c-forest-dark); font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+      <span>🏛️</span> Official Government Portals & Grievance Desks
+    </h3>
+    <p style="font-size:0.88rem; color:#475569; margin-bottom:16px; line-height:1.5;">
+      BhoomiBandhu syncs with state revenue data and the National Crop Insurance Portal (NCIP). If you require formal dispute resolution or wish to verify your application directly on the central registry:
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px;">
+        <strong style="color:#0f2d1e; font-size:0.92rem;">Ministry of Agriculture (PMFBY)</strong>
+        <p style="font-size:0.82rem; color:#64748b; margin:4px 0 8px;">Direct Central Application Tracking</p>
+        <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" class="btn-portal-redirect">
+          Visit pmfby.gov.in ↗
+        </a>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px;">
+        <strong style="color:#0f2d1e; font-size:0.92rem;">Central PMFBY Helpline</strong>
+        <p style="font-size:0.82rem; color:#64748b; margin:4px 0 8px;">24×7 Toll-Free Claim Grievance Desk</p>
+        <a href="tel:14447" style="color:#1b4332; font-weight:800; text-decoration:none; font-size:1.05rem;">
+          📞 14447 / 1800-180-1551
+        </a>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px;">
+        <strong style="color:#0f2d1e; font-size:0.92rem;">CSC Village Locator</strong>
+        <p style="font-size:0.82rem; color:#64748b; margin:4px 0 8px;">Offline assisted document submission</p>
+        <a href="https://locator.csccloud.in" target="_blank" rel="noopener noreferrer" class="btn-portal-redirect" style="background:#475569;">
+          Find Nearest CSC ↗
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.86rem; color:#597463;">
+    <div>© 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Welfare Mission</div>
+    <div style="display:flex; gap:18px;">
+      <a href="insurance.html" style="color:#597463; text-decoration:none;">Insurance Hub</a>
+      <a href="pmfby-enrollment.html" style="color:#597463; text-decoration:none;">Enrollment</a>
+      <a href="claim-filing.html" style="color:#597463; text-decoration:none;">Report Loss</a>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" style="color:#597463; text-decoration:none;">PMFBY Portal ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let lastSearchedQuery = '';
+  let lastSearchedVerify = '';
+
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('id') || params.get('mobile') || params.get('query');
+    const verify = params.get('verify') || '';
+    if (query) {
+      document.getElementById('trackInput').value = query;
+      if (verify) document.getElementById('verifyInput').value = verify;
+      fetchTrackingData(query, verify);
+    } else {
+      // If farmer is logged in, offer to search with farmer's mobile
+      const userRaw = localStorage.getItem('bb_user');
+      if (userRaw) {
+        try {
+          const u = JSON.parse(userRaw);
+          if (u.mobile) {
+            document.getElementById('trackInput').value = u.mobile;
+            fetchTrackingData(u.mobile, '');
+          }
+        } catch (e) {}
+      }
+    }
+  });
+
+  function quickFill(val, verifyVal) {
+    document.getElementById('trackInput').value = val;
+    document.getElementById('verifyInput').value = verifyVal || '';
+    fetchTrackingData(val, verifyVal || '');
+  }
+
+  function handleSearch(e) {
+    e.preventDefault();
+    const val = document.getElementById('trackInput').value.trim();
+    const verifyVal = document.getElementById('verifyInput').value.trim();
+    if (val) fetchTrackingData(val, verifyVal);
+  }
+
+  async function fetchTrackingData(query, verifyCode = '') {
+    const loading = document.getElementById('loadingIndicator');
+    const container = document.getElementById('resultsContainer');
+    const emptyBox = document.getElementById('emptyStateBox');
+
+    lastSearchedQuery = query;
+    lastSearchedVerify = verifyCode;
+
+    loading.style.display = 'block';
+    container.innerHTML = '';
+    emptyBox.style.display = 'none';
+
+    try {
+      let url = '/api/insurance/track/' + encodeURIComponent(query);
+      if (verifyCode) url += '?verify=' + encodeURIComponent(verifyCode);
+
+      const res = await fetch(url);
+      const data = await res.json();
+      loading.style.display = 'none';
+
+      if (!data.success) {
+        renderNoResults(query);
+        return;
+      }
+
+      const enrollments = data.enrollments || [];
+      const claims = data.claims || [];
+
+      if (enrollments.length === 0 && claims.length === 0) {
+        renderNoResults(query);
+        return;
+      }
+
+      let html = '';
+
+      // Render Enrollments
+      enrollments.forEach(enr => {
+        html += renderEnrollmentCard(enr, data.verified || enr.is_verified);
+      });
+
+      // Render Claims
+      claims.forEach(clm => {
+        html += renderClaimCard(clm, data.verified || clm.is_verified);
+      });
+
+      container.innerHTML = html;
+    } catch (err) {
+      loading.style.display = 'none';
+      container.innerHTML = `
+        <div style="background:#fee2e2; border:1px solid #fecaca; padding:1.5rem; border-radius:16px; color:#991b1b; text-align:center;">
+          <strong>Error searching records:</strong> ${escapeHtml(err.message)}. Please check your network connection or try again.
+        </div>
+      `;
+    }
+  }
+
+  function unlockDetailsInline(queryId) {
+    const code = prompt(`Enter registered 10-digit mobile number or last 4 digits of Aadhaar for ${queryId}:`);
+    if (code && code.trim()) {
+      document.getElementById('verifyInput').value = code.trim();
+      fetchTrackingData(queryId, code.trim());
+    }
+  }
+
+  function renderEnrollmentCard(enr, isVerified) {
+    const createdDate = enr.created_at ? new Date(enr.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Season 2026';
+    const sumInsured = Number(enr.sum_insured || 0).toLocaleString('en-IN');
+    const farmerPremium = Number(enr.farmer_premium || 0).toLocaleString('en-IN');
+    const status = enr.status || 'UNDER_VERIFICATION';
+
+    const isBondIssued = status.toUpperCase().includes('POLICY') || status.toUpperCase().includes('ISSUED') || status.toUpperCase().includes('ACTIVE');
+
+    const timeline = enr.timeline || [
+      { step: 1, title: 'Application Logged', desc: 'Digital submission logged on portal', date: createdDate, status: 'done' },
+      { step: 2, title: 'Land Records Match', desc: 'Khasra verified with Patwari', date: createdDate, status: 'done' },
+      { step: 3, title: 'Premium Debit', desc: `₹${farmerPremium} subsidized share debited`, date: createdDate, status: isBondIssued ? 'done' : 'active' },
+      { step: 4, title: 'Govt Co-Subsidy Contribution', desc: 'State & Central premium share mapped', date: createdDate, status: isBondIssued ? 'done' : 'pending' },
+      { step: 5, title: 'Policy Certificate Active', desc: isBondIssued ? 'Coverage Active' : 'Queued for issuance', date: isBondIssued ? 'Active' : 'Pending', status: isBondIssued ? 'done' : 'pending' }
+    ];
+
+    const missingDocs = enr.missing_documents || [];
+    const payment = enr.payment_updates || {};
+
+    return `
+      <div class="record-card">
+        <div class="record-header">
+          <div>
+            <span style="font-size:0.78rem; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; text-transform:uppercase;">
+              🌾 PMFBY Policy Enrollment
+            </span>
+            <h2 style="font-size:1.5rem; font-weight:800; color:var(--c-forest-dark); margin:6px 0 2px;">
+              ${escapeHtml(enr.crop_name)} (${escapeHtml(enr.season)})
+            </h2>
+            <div style="font-size:0.86rem; color:var(--c-text-muted);">
+              Application ID: <strong style="color:var(--c-forest-dark); font-family:monospace; font-size:0.95rem;">${escapeHtml(enr.application_id)}</strong> • Submitted: ${escapeHtml(createdDate)}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span class="status-badge ${isBondIssued ? 'status-enrolled' : 'status-review'}">
+              ${isBondIssued ? '✔ Policy Bond Issued (Active)' : '⏳ Under Revenue Verification'}
+            </span>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">
+              ${isVerified ? '🔒 Identity Verified' : '🔓 Public View (Sensitive details masked)'}
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Stage Status Timeline -->
+        <div class="timeline-stepper">
+          ${timeline.map(st => `
+            <div class="t-step ${st.status}">
+              <div class="t-circle">${st.status === 'done' ? '✓' : st.step}</div>
+              <div class="t-title">${escapeHtml(st.title)}</div>
+              ${st.date ? `<div class="t-date">${escapeHtml(st.date)}</div>` : ''}
+              <div class="t-desc">${escapeHtml(st.desc)}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Missing Document Notice -->
+        ${missingDocs.length > 0 ? `
+          <div class="missing-doc-alert">
+            <span style="font-size:1.6rem; line-height:1;">⚠️</span>
+            <div style="flex:1;">
+              <h4>Action Required: Missing / Deficient Document Notice</h4>
+              <p>Our revenue verification auditor flagged document requirements for this application. Please upload or submit at your nearest Common Service Centre (CSC) to avoid claim rejection:</p>
+              <ul style="margin:4px 0 8px 18px; padding:0; font-size:0.84rem;">
+                ${missingDocs.map(md => `<li><strong>${escapeHtml(md.name)}:</strong> ${escapeHtml(md.reason)}</li>`).join('')}
+              </ul>
+              <a href="https://locator.csccloud.in" target="_blank" rel="noopener noreferrer" style="font-size:0.82rem; font-weight:700; color:#b45309; text-decoration:underline;">
+                Locate Nearest CSC Centre to Submit Physical Copies ↗
+              </a>
+            </div>
+          </div>
+        ` : `
+          <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:10px 14px; margin:1rem 0; font-size:0.84rem; color:#166534; display:flex; align-items:center; gap:8px;">
+            <span>✔</span>
+            <span>All required statutory land ownership and sowing certificates have been successfully validated.</span>
+          </div>
+        `}
+
+        <!-- Data Grid -->
+        <div class="data-grid-4">
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Farmer Name</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">${escapeHtml(enr.farmer_name)}</div>
+            <div style="font-size:0.8rem; color:#4b5563;">${escapeHtml(enr.mobile)}</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Land Holding</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">${escapeHtml(enr.area_acres)} Acres</div>
+            <div style="font-size:0.8rem; color:#4b5563;">${escapeHtml(enr.land_khasra || 'Khasra Verified')}</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Total Sum Insured</div>
+            <div style="font-weight:800; color:#1b4332; font-size:1.1rem;">₹${sumInsured}</div>
+            <div style="font-size:0.78rem; color:#15803d; font-weight:700;">Farmer Paid: ₹${farmerPremium}</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Location & Nodal Bank</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">${escapeHtml(enr.district)}, ${escapeHtml(enr.state)}</div>
+            <div style="font-size:0.8rem; color:#4b5563;">Village: ${escapeHtml(enr.village || 'Bilkisganj')}</div>
+          </div>
+        </div>
+
+        <!-- Payment & Subsidy Updates Sub-Panel -->
+        <div class="section-subpanel">
+          <div class="subpanel-title">
+            <span>💰</span>
+            <span>Premium Payment & Government Co-Subsidy Accounting</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.86rem; color:#334155;">
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Farmer Subsidized Share:</div>
+              <strong style="color:#15803d; font-size:1.05rem;">₹${Number(payment.farmer_premium || enr.farmer_premium || 0).toLocaleString('en-IN')}</strong>
+              <div style="font-size:0.72rem; color:#64748b;">(Statutory PMFBY Rate)</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">State Government Subsidy:</div>
+              <strong style="color:#0369a1;">₹${Number(payment.state_subsidy || 9450).toLocaleString('en-IN')}</strong>
+              <div style="font-size:0.72rem; color:#64748b;">(50% of Actuarial Pool)</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Central Government Subsidy:</div>
+              <strong style="color:#0369a1;">₹${Number(payment.central_subsidy || 9450).toLocaleString('en-IN')}</strong>
+              <div style="font-size:0.72rem; color:#64748b;">(50% of Actuarial Pool)</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Bank Debit Ref / IFSC:</div>
+              <div style="font-weight:700; color:#1e293b;">${escapeHtml(payment.payment_ref || 'PMFBY-TXN-482910')}</div>
+              <div style="font-size:0.78rem; color:#475569;">${escapeHtml(payment.bank_account_masked || 'XXXX-XXXX-4892')} (${escapeHtml(enr.ifsc || 'SBIN0001244')})</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Unlock Prompt if unverified -->
+        ${!isVerified ? `
+          <div class="verify-unlock-box">
+            <div>
+              <strong style="color:#166534; font-size:0.9rem;">🔒 Want to view unmasked bank details & full policy panchnama?</strong>
+              <div style="font-size:0.8rem; color:#374151;">Authenticate with your registered mobile or Aadhaar last 4 digits.</div>
+            </div>
+            <button onclick="unlockDetailsInline('${escapeHtml(enr.application_id)}')" style="background:#15803d; color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:700; font-size:0.85rem; cursor:pointer;">
+              Verify & Unlock Details 🔑
+            </button>
+          </div>
+        ` : ''}
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:1.5rem; padding-top:1rem; border-top:1px solid #eef2ef;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="https://pmfby.gov.in/farmer/trackApplication" target="_blank" rel="noopener noreferrer" class="btn-portal-redirect">
+              <span>Verify on Official PMFBY Portal (pmfby.gov.in)</span>
+              <span>↗</span>
+            </a>
+            <button type="button" class="btn-secondary" onclick="window.print()" style="font-size:0.85rem; padding:8px 14px;">
+              <span>🖨️ Print Policy Receipt</span>
+            </button>
+          </div>
+          <a href="claim-filing.html" class="btn-primary" style="background:#dc2626; text-decoration:none; padding:8px 18px; font-size:0.88rem;">
+            <span>Report Loss under Policy</span>
+            <span>🚨</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderClaimCard(clm, isVerified) {
+    const createdDate = clm.created_at ? new Date(clm.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Recent';
+    const status = clm.status || 'SURVEY_PENDING';
+    const damage = clm.damage_percentage || 50;
+
+    const isSettled = status.toUpperCase().includes('APPROVED') || status.toUpperCase().includes('SETTLED') || status.toUpperCase().includes('CREDITED');
+
+    const timeline = clm.timeline || [
+      { step: 1, title: 'Loss Intimated', desc: clm.intimation_window_status || 'Logged within 72h window', date: createdDate, status: 'claim-done' },
+      { step: 2, title: 'Surveyor Assigned', desc: 'Joint team appointed for field audit', date: createdDate, status: 'claim-done' },
+      { step: 3, title: 'Joint Field Assessment', desc: `GPS damage assessment (${damage}%)`, date: createdDate, status: isSettled ? 'claim-done' : 'active' },
+      { step: 4, title: 'DGC Committee Review', desc: isSettled ? 'Settlement sanctioned' : 'Review underway', date: isSettled ? createdDate : 'Underway', status: isSettled ? 'claim-done' : 'pending' },
+      { step: 5, title: 'DBT Compensation Payout', desc: isSettled ? 'Credited to Bank Account' : 'Direct benefit release queued', date: isSettled ? 'Completed' : 'Pending', status: isSettled ? 'claim-done' : 'pending' }
+    ];
+
+    const survey = clm.survey_updates || {};
+    const payment = clm.payment_updates || {};
+    const missingDocs = clm.missing_documents || [];
+
+    return `
+      <div class="record-card" style="border-top:6px solid #dc2626;">
+        <div class="record-header">
+          <div>
+            <span style="font-size:0.78rem; font-weight:800; background:#fee2e2; color:#b91c1c; padding:3px 10px; border-radius:12px; text-transform:uppercase;">
+              🚨 72-Hour Calamity Claim Intimation
+            </span>
+            <h2 style="font-size:1.5rem; font-weight:800; color:var(--c-forest-dark); margin:6px 0 2px;">
+              ${escapeHtml(clm.calamity_type)} — ${escapeHtml(clm.crop_name)}
+            </h2>
+            <div style="font-size:0.86rem; color:var(--c-text-muted);">
+              Claim ID: <strong style="color:#b91c1c; font-family:monospace; font-size:0.95rem;">${escapeHtml(clm.claim_id)}</strong> • Intimated: ${escapeHtml(createdDate)}
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <span class="status-badge ${isSettled ? 'status-claim-approved' : 'status-claim-open'}">
+              ${isSettled ? '✔ ' + escapeHtml(clm.status) : '🔍 Surveyor Inspection Assigned'}
+            </span>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">
+              ${isVerified ? '🔒 Identity Verified' : '🔓 Public View (Sensitive details masked)'}
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Stage Claim Stepper -->
+        <div class="timeline-stepper">
+          ${timeline.map(st => `
+            <div class="t-step ${st.status}">
+              <div class="t-circle">${st.status === 'claim-done' ? '✓' : st.step}</div>
+              <div class="t-title">${escapeHtml(st.title)}</div>
+              ${st.date ? `<div class="t-date" style="color:#b91c1c;">${escapeHtml(st.date)}</div>` : ''}
+              <div class="t-desc">${escapeHtml(st.desc)}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Missing Document Notice -->
+        ${missingDocs.length > 0 ? `
+          <div class="missing-doc-alert">
+            <span style="font-size:1.6rem; line-height:1;">⚠️</span>
+            <div style="flex:1;">
+              <h4>Action Required: Missing Claim Evidence</h4>
+              <p>To finalize the District Grievance Committee (DGC) assessment, please provide the following evidence:</p>
+              <ul style="margin:4px 0 8px 18px; padding:0; font-size:0.84rem;">
+                ${missingDocs.map(md => `<li><strong>${escapeHtml(md.name)}:</strong> ${escapeHtml(md.reason)}</li>`).join('')}
+              </ul>
+              <div style="font-size:0.82rem; color:#92400e;">
+                You can hand physical signed copies directly to the Joint Loss Assessor during the field visit.
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Data Grid -->
+        <div class="data-grid-4">
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Farmer & Contact</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">${escapeHtml(clm.farmer_name)}</div>
+            <div style="font-size:0.8rem; color:#4b5563;">${escapeHtml(clm.mobile)}</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Affected Acreage</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">${escapeHtml(clm.affected_area_acres)} Acres</div>
+            <div style="font-size:0.8rem; color:#dc2626; font-weight:700;">Reported Damage: ${damage}%</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Intimation Window</div>
+            <div style="font-weight:700; color:#15803d; font-size:0.88rem;">${escapeHtml(clm.intimation_window_status || 'Within 72 Hours')}</div>
+            <div style="font-size:0.78rem; color:#6b7280;">Loss Date: ${clm.loss_date ? new Date(clm.loss_date).toLocaleDateString('en-IN') : 'Recent'}</div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem; color:#6b7280; text-transform:uppercase; font-weight:700;">Field Inspection</div>
+            <div style="font-weight:700; color:var(--c-forest-dark); font-size:0.95rem;">Joint Patwari & Assessor</div>
+            <div style="font-size:0.8rem; color:#4b5563;">Toll-Free Desk: 14447</div>
+          </div>
+        </div>
+
+        <!-- Joint Survey Updates Sub-Panel -->
+        <div class="section-subpanel" style="background:#fefefe; border-left:4px solid #dc2626;">
+          <div class="subpanel-title">
+            <span>🔍</span>
+            <span>Joint Field Loss Assessment & Panchnama Details</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; font-size:0.86rem; color:#334155;">
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Empaneled Loss Assessor:</div>
+              <strong>${escapeHtml(survey.surveyor_name || 'Er. Sudhir Sharma (Lic. #LA-4892)')}</strong>
+              <div style="font-size:0.78rem; color:#166534;">
+                ${isVerified && survey.surveyor_phone ? `📞 <a href="tel:${survey.surveyor_phone}" style="color:#166534; font-weight:700;">${survey.surveyor_phone}</a>` : '📞 ' + escapeHtml(survey.surveyor_phone || '+91 94250 ***** (Verify to view)')}
+              </div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Revenue Halqa Patwari:</div>
+              <strong>${escapeHtml(survey.joint_patwari || 'R. K. Verma (Halqa Patwari)')}</strong>
+              <div style="font-size:0.75rem; color:#64748b;">Bilkisganj Circle</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Inspection Date & GPS Audit:</div>
+              <div>${escapeHtml(survey.survey_date || '2026-09-20')}</div>
+              <div style="font-size:0.75rem; color:#475569;">📍 ${escapeHtml(survey.gps_coordinates || '23.1982° N, 77.0821° E')}</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">NCIP Panchnama Status:</div>
+              <span style="background:#ecfdf5; color:#065f46; font-size:0.75rem; font-weight:700; padding:2px 8px; border-radius:10px;">
+                ✔ ${escapeHtml(survey.panchnama_status || 'Signed & Uploaded to NCIP')}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actual Payment / DBT Compensation Sub-Panel -->
+        <div class="section-subpanel" style="background:#f0fdf4; border:1px solid #bbf7d0;">
+          <div class="subpanel-title" style="color:#166534;">
+            <span>💵</span>
+            <span>Direct Benefit Transfer (DBT) Compensation & Settlement</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.86rem;">
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">Final Approved Compensation:</div>
+              <strong style="color:#15803d; font-size:1.15rem;">₹${Number(payment.assessed_claim_amount || 38000).toLocaleString('en-IN')}</strong>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">25% On-Account Interim Relief:</div>
+              <strong style="color:#0369a1; font-size:1rem;">₹${Number(payment.on_account_interim_25pct || 9500).toLocaleString('en-IN')}</strong>
+              <div style="font-size:0.72rem; color:#64748b;">(Mandatory Immediate Relief)</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">DBT Settlement Status:</div>
+              <strong style="color:#166534;">${escapeHtml(payment.dbt_status || 'Credited to Bank Account (DBT Success)')}</strong>
+              <div style="font-size:0.75rem; color:#475569;">${escapeHtml(payment.settlement_date || '2026-10-15')}</div>
+            </div>
+            <div>
+              <div style="color:#64748b; font-size:0.75rem; font-weight:700;">PFMS / Bank UTR Reference:</div>
+              <div style="font-family:monospace; font-weight:700; color:#1e293b;">${escapeHtml(payment.pfms_utr_ref || 'PFMS20268491024')}</div>
+              <div style="font-size:0.75rem; color:#475569;">${escapeHtml(payment.credited_bank_masked || 'A/C ****4892')}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verification Unlock Prompt if unverified -->
+        ${!isVerified ? `
+          <div class="verify-unlock-box">
+            <div>
+              <strong style="color:#166534; font-size:0.9rem;">🔒 Want to view direct surveyor phone & full bank account details?</strong>
+              <div style="font-size:0.8rem; color:#374151;">Authenticate with your registered mobile or Aadhaar last 4 digits.</div>
+            </div>
+            <button onclick="unlockDetailsInline('${escapeHtml(clm.claim_id)}')" style="background:#15803d; color:white; border:none; padding:8px 16px; border-radius:8px; font-weight:700; font-size:0.85rem; cursor:pointer;">
+              Verify & Unlock Details 🔑
+            </button>
+          </div>
+        ` : ''}
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:1.5rem; padding-top:1rem; border-top:1px solid #eef2ef;">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="https://pmfby.gov.in/farmer/trackClaim" target="_blank" rel="noopener noreferrer" class="btn-portal-redirect">
+              <span>Verify on Official PMFBY Portal (pmfby.gov.in)</span>
+              <span>↗</span>
+            </a>
+            <button type="button" class="btn-secondary" onclick="window.print()" style="font-size:0.85rem; padding:8px 14px;">
+              <span>🖨️ Print Claim Assessment Slip</span>
+            </button>
+          </div>
+          <div style="font-size:0.84rem; color:var(--c-text-muted);">
+            📞 Need urgent inspection coordination? Call PMFBY Grievance Desk: <strong>1800-180-1551</strong>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderNoResults(query) {
+    const container = document.getElementById('resultsContainer');
+    container.innerHTML = `
+      <div class="empty-state-box">
+        <div style="font-size:2.8rem; margin-bottom:10px;">🔍</div>
+        <h3 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 6px;">No Records Found for "${escapeHtml(query)}"</h3>
+        <p style="font-size:0.92rem; color:var(--c-text-muted); max-width:540px; margin:0 auto 1.5rem; line-height:1.5;">
+          We couldn't find an active enrollment or claim matching this ID or mobile. Please double-check your application receipt or enter the 10-digit mobile number used during registration.
+        </p>
+        <div style="display:inline-flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a href="pmfby-enrollment.html" class="btn-primary" style="text-decoration:none;">Apply for PMFBY</a>
+          <a href="claim-filing.html" class="btn-secondary" style="text-decoration:none; color:#dc2626;">File Emergency Claim</a>
+          <a href="https://pmfby.gov.in/farmer/trackApplication" target="_blank" rel="noopener noreferrer" class="btn-portal-redirect">
+            Track on National Portal (pmfby.gov.in) ↗
+          </a>
+        </div>
+      </div>
+    `;
+  }
+</script>
+
 </body>
 </html>

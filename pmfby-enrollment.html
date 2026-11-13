@@ -2,52 +2,1794 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>PMFBY Enrollment | BhoomiBandhu</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMFBY Crop Insurance Enrollment | BhoomiBandhu 2.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <style>
+    :root {
+      --c-forest-dark: #0f2d1e;
+      --c-forest-mid: #1b4332;
+      --c-leaf-green: #2d6a4f;
+      --c-leaf-bright: #40916c;
+      --c-sunlight: #f39c12;
+      --c-bg-cream: #fbf9f4;
+      --c-surface: #ffffff;
+      --c-border: #e4decb;
+      --c-text-main: #1d2d24;
+      --c-text-muted: #4f6356;
+    }
+
+    body {
+      background-color: var(--c-bg-cream);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      color: var(--c-text-main);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Hero Banner */
+    .enr-hero {
+      background: linear-gradient(135deg, #0a2318 0%, #16402f 60%, #1f573f 100%);
+      color: #ffffff;
+      padding: 2.75rem 1.5rem 3.5rem;
+      border-radius: 0 0 32px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .enr-hero::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(243, 156, 18, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .enr-hero-box {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .breadcrumb-trail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #b7dfc6;
+      margin-bottom: 1rem;
+    }
+    .breadcrumb-trail a {
+      color: #b7dfc6;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .breadcrumb-trail a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* Official Portal & Guidance Banner */
+    .authority-distinction-box {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .authority-badge {
+      background: #1d4ed8;
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Season Selection Grid */
+    .season-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 860px) {
+      .season-cards-grid { grid-template-columns: 1fr; }
+    }
+    .season-card {
+      background: #ffffff;
+      border: 2px solid var(--c-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .season-card:hover {
+      border-color: var(--c-leaf-green);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(15, 45, 30, 0.08);
+    }
+    .season-card.selected {
+      border-color: var(--c-leaf-green);
+      background: #f4fbf7;
+      box-shadow: 0 8px 24px rgba(45, 106, 79, 0.15);
+    }
+    .season-card.selected::after {
+      content: "✓ Selected Season";
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #15803d;
+      background: #dcfce7;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+    .season-pill-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .pill-active { background: #dcfce7; color: #166534; }
+    .pill-upcoming { background: #fef3c7; color: #92400e; }
+
+    /* Stepper Header */
+    .wizard-steps {
+      display: flex;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: -2.2rem auto 2.5rem;
+      background: #ffffff;
+      padding: 1rem 1.5rem;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(10, 35, 24, 0.08);
+      border: 1px solid var(--c-border);
+      position: relative;
+      z-index: 5;
+    }
+    .step-node {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #718478;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .step-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #eef2ef;
+      color: #4b6354;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      transition: all 0.25s ease;
+    }
+    .step-node.active {
+      color: var(--c-forest-dark);
+    }
+    .step-node.active .step-circle {
+      background: var(--c-leaf-green);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(45, 106, 79, 0.35);
+    }
+    .step-node.completed {
+      color: #1b4332;
+    }
+    .step-node.completed .step-circle {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    @media (max-width: 768px) {
+      .wizard-steps {
+        padding: 0.75rem;
+        gap: 8px;
+        overflow-x: auto;
+      }
+      .step-text { display: none; }
+    }
+
+    /* Main Container */
+    .form-shell {
+      max-width: 1080px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+    .form-card {
+      background: #ffffff;
+      border: 1px solid var(--c-border);
+      border-radius: 20px;
+      padding: 2.25rem 2.5rem;
+      box-shadow: 0 8px 28px rgba(10, 31, 22, 0.04);
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 600px) {
+      .form-card { padding: 1.5rem 1.25rem; }
+    }
+
+    /* Grid Layouts */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 768px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--c-forest-dark);
+      margin-bottom: 6px;
+    }
+    .form-label .required {
+      color: #dc2626;
+      margin-left: 2px;
+    }
+    .form-control {
+      width: 100%;
+      height: 48px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--c-text-main);
+      background: #ffffff;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--c-leaf-green);
+      box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.15);
+    }
+    .form-help {
+      font-size: 0.78rem;
+      color: var(--c-text-muted);
+      margin-top: 5px;
+    }
+
+    /* Precision Premium Calculator Box */
+    .premium-calc-box {
+      background: linear-gradient(135deg, #f4fbf7 0%, #e8f5ee 100%);
+      border: 2px solid #a3d9bc;
+      border-radius: 18px;
+      padding: 1.75rem;
+      margin: 1.5rem 0;
+    }
+    .calc-row-main {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px dashed #b7e0cc;
+    }
+    @media (max-width: 768px) {
+      .calc-row-main { grid-template-columns: 1fr; }
+    }
+    .calc-stat-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 800;
+      color: #24573f;
+      margin-bottom: 4px;
+    }
+    .calc-stat-val {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--c-forest-dark);
+    }
+    .calc-stat-sub {
+      font-size: 0.8rem;
+      color: #436e57;
+      margin-top: 4px;
+    }
+    .subsidy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #d1fae5;
+      color: #065f46;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    /* Subsidies Breakdown Strip */
+    .subsidies-strip {
+      background: #ffffff;
+      border: 1px solid #cce5d7;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: #1b4332;
+    }
+
+    /* Document Guidance & Checklist Items */
+    .doc-guidance-card {
+      border: 1.5px solid var(--c-border);
+      border-radius: 14px;
+      background: #ffffff;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      transition: all 0.2s ease;
+    }
+    .doc-guidance-card:hover {
+      border-color: var(--c-leaf-green);
+      box-shadow: 0 4px 14px rgba(15, 45, 30, 0.05);
+    }
+    .doc-check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .doc-meta-info {
+      flex: 1;
+    }
+    .doc-where-btn {
+      background: none;
+      border: none;
+      color: #2563eb;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 4px;
+      text-decoration: underline;
+    }
+    .doc-guidance-accordion {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: #334155;
+      display: none;
+    }
+    .doc-dropzone-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f1f5f9;
+    }
+    .doc-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+    .doc-tag.uploaded {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--c-border);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      border: 1.5px solid var(--c-border);
+      color: var(--c-forest-dark);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover { background: #f4efe4; }
+    .btn-primary {
+      background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(27, 67, 50, 0.25);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #143527 0%, #24573f 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(27, 67, 50, 0.35);
+    }
+
+    /* Modal / Success Card */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 17, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 650px;
+      width: 100%;
+      padding: 2.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      position: relative;
+      text-align: center;
+    }
+    .success-badge-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #d1fae5;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 8px 24px rgba(5, 150, 105, 0.2);
+    }
+    .app-id-pill {
+      display: inline-block;
+      background: #f4fbf7;
+      border: 2px dashed #10b981;
+      padding: 8px 20px;
+      border-radius: 14px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #065f46;
+      letter-spacing: 0.05em;
+      margin: 1rem 0;
+      user-select: all;
+    }
+
+    .notice-info-box {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      color: #92400e;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Verified Portal Directory Links */
+    .portal-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .portal-link-primary {
+      background: #1b4332;
+      color: #ffffff;
+    }
+    .portal-link-primary:hover {
+      background: #0f2d1e;
+    }
+    .portal-link-secondary {
+      background: #f1f5f9;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+    }
+    .portal-link-secondary:hover {
+      background: #e2e8f0;
+    }
+  </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
   <div class="container header-flex">
     <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
-      <span>BhoomiBandhu</span>
+      <a href="index.html">
+        <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu Logo">
+        <span>BhoomiBandhu <span class="logo-brand-tag">2.0</span></span>
+      </a>
     </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="insurance.html">Insurance</a>
+      <a href="insurance.html">Insurance Hub</a>
+      <a href="pmfby-enrollment.html" class="active">Enrollment</a>
+      <a href="risk-awareness.html">Risk Advisory</a>
+      <a href="claim-filing.html">Report Loss</a>
+      <a href="status-tracking.html">Track Status</a>
     </nav>
   </div>
 </header>
 
-<section class="hero">
-  <h1>PMFBY Enrollment Support</h1>
-  <p>Guided assistance to enroll under Pradhan Mantri Fasal Bima Yojana</p>
-</section>
-
-<section class="section container">
-  <h2>What We Help With</h2>
-  <div class="grid">
-    <div class="card">Eligibility verification</div>
-    <div class="card">Crop & land detail verification</div>
-    <div class="card">Premium calculation</div>
-    <div class="card">Application submission guidance</div>
+<!-- Hero Section -->
+<section class="enr-hero">
+  <div class="enr-hero-box">
+    <div class="breadcrumb-trail">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="insurance.html">Crop Insurance Hub</a>
+      <span>›</span>
+      <span>PMFBY Subsidized Enrollment</span>
+    </div>
+    <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.15); padding:4px 14px; border-radius:20px; font-size:0.82rem; font-weight:800; margin-bottom:0.75rem;">
+      <span>🏛️</span> OFFICIAL PMFBY SUBSIDIZED SCHEME APPLICATION (GOVERNMENT OF INDIA)
+    </div>
+    <h1 style="font-size:2.2rem; font-weight:800; margin:0 0 0.5rem; line-height:1.2;">
+      Pradhan Mantri Fasal Bima Yojana (PMFBY) Enrollment
+    </h1>
+    <p style="font-size:1.02rem; color:#d2ecde; max-width:840px; margin:0; line-height:1.6;">
+      Secure your seasonal standing crops against drought, flood, hailstorms, and unseasonal rains. Farmers pay only subsidized premium share (<strong>1.5% Rabi</strong>, <strong>2.0% Kharif</strong>, <strong>5.0% Commercial/Horticultural</strong>); balance 80%+ is subsidized by Central and State Governments.
+    </p>
   </div>
 </section>
 
-<section class="section container">
-  <h2>Required Information</h2>
-  <div class="card">
-    <ul>
-      <li>Aadhaar-linked bank account</li>
-      <li>Land records</li>
-      <li>Crop details</li>
-      <li>Sowing date</li>
-    </ul>
+<!-- Stepper Progress Header -->
+<div class="wizard-steps" id="wizardSteps">
+  <div class="step-node active" id="node1" onclick="jumpToStep(1)">
+    <div class="step-circle">1</div>
+    <span class="step-text">Farmer & Land</span>
   </div>
-</section>
+  <div class="step-node" id="node2" onclick="jumpToStep(2)">
+    <div class="step-circle">2</div>
+    <span class="step-text">Season & Crop</span>
+  </div>
+  <div class="step-node" id="node3" onclick="jumpToStep(3)">
+    <div class="step-circle">3</div>
+    <span class="step-text">Bank & Premium</span>
+  </div>
+  <div class="step-node" id="node4" onclick="jumpToStep(4)">
+    <div class="step-circle">4</div>
+    <span class="step-text">Document Checklist</span>
+  </div>
+  <div class="step-node" id="node5" onclick="jumpToStep(5)">
+    <div class="step-circle">5</div>
+    <span class="step-text">Review & Submit</span>
+  </div>
+</div>
 
-<footer>© 2025 BhoomiBandhu</footer>
-<script src="script.js"></script>
+<!-- Main Form Shell -->
+<main class="form-shell">
+
+  <!-- OFFICIAL PORTAL & GUIDANCE DISTINCTION BANNER -->
+  <div class="authority-distinction-box">
+    <span style="font-size:1.6rem;">🏛️</span>
+    <div style="flex:1;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:4px;">
+        <strong style="color:#1e40af; font-size:0.98rem;">Official PMFBY Enrollment Channels & Guidance Protocol</strong>
+        <span class="authority-badge">Statutory Portal Integration</span>
+      </div>
+      <p style="font-size:0.86rem; color:#1e3a8a; margin:0 0 8px; line-height:1.5;">
+        BhoomiBandhu provides an <strong>assisted digital pre-fill and dossier verification workflow</strong> for farmers. You can submit directly here to archive your application in your verified farmer locker, or transmit directly through authorized national portals:
+      </p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;">
+        <a href="https://pmfby.gov.in/farmerRegistrationForm" target="_blank" rel="noopener noreferrer" class="portal-link-btn portal-link-primary">
+          <span>Official PMFBY Farmer Portal (pmfby.gov.in)</span> ↗
+        </a>
+        <a href="https://digitalseva.csc.gov.in/" target="_blank" rel="noopener noreferrer" class="portal-link-btn portal-link-secondary">
+          <span>Nearest CSC Digital Seva Centre</span> ↗
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=in.farmguide.farmerapp" target="_blank" rel="noopener noreferrer" class="portal-link-btn portal-link-secondary">
+          <span>PMFBY Android Mobile App</span> ↗
+        </a>
+      </div>
+      <div style="font-size:0.78rem; color:#3b82f6; margin-top:8px;">
+        📞 Central Toll-Free PMFBY Helpline: <strong>14447</strong> | Kisan Call Centre: <strong>1800-180-1551</strong>
+      </div>
+    </div>
+  </div>
+
+  <form id="pmfbyForm" onsubmit="handleEnrollmentSubmit(event)">
+
+    <!-- STEP 1: Farmer & Land Identification -->
+    <div class="form-card" id="step1">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">Step 1: Farmer & Landholding Identification</h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">Provide verified identity and land survey details as recorded in state revenue records (RoR/Patta).</p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Step 1 of 5</span>
+      </div>
+
+      <div class="notice-info-box" id="autofillNotice" style="display:none;">
+        <span style="font-size:1.2rem;">🌾</span>
+        <div style="flex:1;">
+          <strong>Logged-in Farmer Profile Detected:</strong> We've pre-filled your verified personal and farm landholding details from your profile. You can edit them below if needed.
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="farmer_name">Full Farmer Name (as per Aadhaar)<span class="required">*</span></label>
+          <input type="text" id="farmer_name" name="farmer_name" class="form-control" placeholder="e.g. Ramesh Patel" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mobile">Mobile Number (Aadhaar / Bank linked)<span class="required">*</span></label>
+          <input type="tel" id="mobile" name="mobile" class="form-control" placeholder="10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required>
+          <div class="form-help">DBT subsidy notifications, policy generation SMS & OTP will be sent here.</div>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="aadhaar_last4">Aadhaar Card (Last 4 Digits)<span class="required">*</span></label>
+          <input type="text" id="aadhaar_last4" name="aadhaar_last4" class="form-control" placeholder="e.g. 7412" maxlength="4" pattern="[0-9]{4}" required>
+          <div class="form-help">Mandatory for DBT authentication under PMFBY Section 7 guidelines.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="farmer_category">Farmer Category<span class="required">*</span></label>
+          <select id="farmer_category" name="farmer_category" class="form-control">
+            <option value="Small / Marginal (< 2 Hectares)">Small / Marginal (&lt; 2 Hectares / 5 Acres)</option>
+            <option value="Medium (2 - 5 Hectares)">Medium (2 - 5 Hectares)</option>
+            <option value="Large (> 5 Hectares)">Large (&gt; 5 Hectares)</option>
+            <option value="Sharecropper / Tenant Farmer">Sharecropper / Tenant Farmer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label" for="state">State<span class="required">*</span></label>
+          <select id="state" name="state" class="form-control" required onchange="handleStateChange()">
+            <option value="Madhya Pradesh" selected>Madhya Pradesh</option>
+            <option value="Punjab">Punjab</option>
+            <option value="Maharashtra">Maharashtra</option>
+            <option value="Rajasthan">Rajasthan</option>
+            <option value="Uttar Pradesh">Uttar Pradesh</option>
+            <option value="Haryana">Haryana</option>
+            <option value="Gujarat">Gujarat</option>
+            <option value="Bihar">Bihar</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="district">District<span class="required">*</span></label>
+          <select id="district" name="district" class="form-control" required onchange="handleDistrictChange()">
+            <!-- Populated dynamically based on state -->
+            <option value="Sehore" selected>Sehore</option>
+            <option value="Bhopal">Bhopal</option>
+            <option value="Indore">Indore</option>
+            <option value="Ujjain">Ujjain</option>
+            <option value="Dewas">Dewas</option>
+            <option value="Vidisha">Vidisha</option>
+            <option value="Raisen">Raisen</option>
+            <option value="Hoshangabad">Hoshangabad</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="village">Village / Tehsil<span class="required">*</span></label>
+          <input type="text" id="village" name="village" class="form-control" placeholder="e.g. Bilkisganj, Ashta" required>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="land_khasra">Land Survey / Khasra / Khatauni Number<span class="required">*</span></label>
+          <input type="text" id="land_khasra" name="land_khasra" class="form-control" placeholder="e.g. Khasra No. 142/3, Khata No. 58" required>
+          <div class="form-help">Must match your official Record of Rights (RoR) Patta / Jamabandi.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="land_ownership">Land Ownership Status<span class="required">*</span></label>
+          <select id="land_ownership" name="land_ownership" class="form-control" onchange="handleOwnershipChange()">
+            <option value="Owner Farmer" selected>Owner Farmer (Self-Owned Title)</option>
+            <option value="Tenant Farmer">Tenant Farmer (Registered Agreement)</option>
+            <option value="Sharecropper">Sharecropper (Patwari Declaration)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row" style="justify-content:flex-end;">
+        <button type="button" class="btn-primary" onclick="validateAndGoStep(2)">
+          <span>Next: Season & Notified Crop</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Season & Notified Crop Selection -->
+    <div class="form-card" id="step2" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">Step 2: Season & Notified Crop Particulars</h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">Select official government-notified crop, season window, and cultivated land acreage.</p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Step 2 of 5</span>
+      </div>
+
+      <!-- SEASON-SPECIFIC ENROLLMENT CARDS -->
+      <label class="form-label" style="margin-bottom:10px;">Select Active Cropping Season Window<span class="required">*</span></label>
+      <div class="season-cards-grid">
+        <!-- Rabi Card -->
+        <div class="season-card selected" id="cardRabi" onclick="selectSeason('rabi')">
+          <div>
+            <span class="season-pill-badge pill-active">🟢 Active Enrollment</span>
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin:4px 0 6px;">Rabi Season 2026-27</h3>
+            <p style="font-size:0.84rem; color:var(--c-text-muted); margin:0 0 10px; line-height:1.4;">
+              Wheat, Mustard, Gram, Barley, Lentils.
+            </p>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:#1b4332; font-weight:700;">Cutoff: 31st December 2026</div>
+            <div style="font-size:0.75rem; color:#15803d; font-weight:800; margin-top:2px;">Farmer Rate: 1.5% Subsidized</div>
+          </div>
+        </div>
+
+        <!-- Kharif Card -->
+        <div class="season-card" id="cardKharif" onclick="selectSeason('kharif')">
+          <div>
+            <span class="season-pill-badge pill-upcoming">🟡 Notification Issued</span>
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin:4px 0 6px;">Kharif Season 2026</h3>
+            <p style="font-size:0.84rem; color:var(--c-text-muted); margin:0 0 10px; line-height:1.4;">
+              Paddy (Rice), Soybean, Cotton, Maize, Groundnut.
+            </p>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:#1b4332; font-weight:700;">Cutoff: 31st July 2026</div>
+            <div style="font-size:0.75rem; color:#15803d; font-weight:800; margin-top:2px;">Farmer Rate: 2.0% Subsidized</div>
+          </div>
+        </div>
+
+        <!-- Commercial Card -->
+        <div class="season-card" id="cardCommercial" onclick="selectSeason('commercial')">
+          <div>
+            <span class="season-pill-badge pill-active">🟢 Year-Round Calendar</span>
+            <h3 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin:4px 0 6px;">Commercial / Horticultural</h3>
+            <p style="font-size:0.84rem; color:var(--c-text-muted); margin:0 0 10px; line-height:1.4;">
+              Sugarcane, Cotton, Potato, Onion, Spices.
+            </p>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:#1b4332; font-weight:700;">Per State Gazette Notification</div>
+            <div style="font-size:0.75rem; color:#15803d; font-weight:800; margin-top:2px;">Farmer Rate: 5.0% Statutory Cap</div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="season" name="season" value="Rabi 2026-27">
+
+      <!-- Season Information Strip -->
+      <div id="seasonInfoBanner" style="background:#f4fbf7; border:1px solid #a7f3d0; border-radius:12px; padding:12px 16px; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div style="font-size:0.86rem; color:#065f46;">
+          <strong>Active Season Window:</strong> <span id="seasonWindowText">Rabi 2026-27 • Sowing: 15 Oct to 15 Dec 2026</span>
+        </div>
+        <div style="font-size:0.82rem; background:#dcfce7; color:#166534; font-weight:800; padding:3px 10px; border-radius:12px;" id="seasonDaysText">
+          ⏱️ 48 Days to Cutoff (31 Dec 2026)
+        </div>
+      </div>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label" for="crop_select">Notified Crop for Region<span class="required">*</span></label>
+          <select id="crop_select" class="form-control" required onchange="handleCropSelectChange()">
+            <!-- Populated dynamically based on state, district, and season -->
+            <option value="Wheat (गेहूं)" data-scale="42000" data-rate="0.015" selected>Wheat (गेहूं - Sharbati/Lokwan)</option>
+            <option value="Gram / Chickpea (चना)" data-scale="38000" data-rate="0.015">Gram / Chickpea (चना)</option>
+            <option value="Mustard (सरसों)" data-scale="36000" data-rate="0.015">Mustard (सरसों)</option>
+            <option value="Lentil / Masoor (मसूर)" data-scale="35000" data-rate="0.015">Lentil / Masoor (मसूर)</option>
+          </select>
+          <input type="hidden" id="crop_name" name="crop_name" value="Wheat (गेहूं)">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="area_acres">Cultivated Land Area<span class="required">*</span></label>
+          <div style="display:flex; gap:8px;">
+            <input type="number" id="area_acres" name="area_acres" class="form-control" min="0.1" max="500" step="0.1" value="4.5" required oninput="recalculatePremium()">
+            <select id="area_unit" class="form-control" style="width:110px;" onchange="handleUnitToggle()">
+              <option value="acres" selected>Acres</option>
+              <option value="hectares">Hectares</option>
+            </select>
+          </div>
+          <div class="form-help" id="areaConversionText">4.5 Acres ≈ 1.82 Hectares</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="sowing_date">Actual / Proposed Sowing Date<span class="required">*</span></label>
+          <input type="date" id="sowing_date" name="sowing_date" class="form-control" required>
+          <div class="form-help">Must fall within official district sowing notification cutoff.</div>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="irrigation_type">Irrigation Source<span class="required">*</span></label>
+          <select id="irrigation_type" name="irrigation_type" class="form-control">
+            <option value="Tube Well / Borewell">Tube Well / Borewell</option>
+            <option value="Canal Irrigation">Canal Irrigation</option>
+            <option value="Rainfed (Non-Irrigated)">Rainfed (Non-Irrigated)</option>
+            <option value="Drip / Sprinkler Micro-Irrigation">Drip / Sprinkler Micro-Irrigation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loanee_status">Farmer Credit / Loanee Status<span class="required">*</span></label>
+          <select id="loanee_status" name="loanee_status" class="form-control" onchange="handleLoaneeChange()">
+            <option value="Non-Loanee Farmer" selected>Non-Loanee Farmer (Self Enrollment)</option>
+            <option value="Loanee Farmer (Active KCC)">Loanee Farmer (Active KCC Account)</option>
+          </select>
+          <div class="form-help" id="loaneeHelpText">Non-loanee farmers enroll voluntary through citizen portal or CSC.</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" onclick="jumpToStep(1)">
+          <span>← Back to Step 1</span>
+        </button>
+        <button type="button" class="btn-primary" onclick="validateAndGoStep(3)">
+          <span>Next: Bank & Live Calculator</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Bank Details & Live Subsidized Premium Calculator -->
+    <div class="form-card" id="step3" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">Step 3: Bank Particulars & Subsidized Premium Calculator</h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">Transparent PMFBY calculation with district scale of finance and government subsidy breakdown.</p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Step 3 of 5</span>
+      </div>
+
+      <!-- LIVE PRECISION PREMIUM DISPLAY BOX -->
+      <div class="premium-calc-box">
+        <div class="calc-row-main">
+          <div>
+            <div class="calc-stat-label">Total Scale of Finance / Sum Insured</div>
+            <div class="calc-stat-val" id="calcSumInsured">₹1,89,000</div>
+            <div class="calc-stat-sub" id="calcScaleSub">Based on ₹42,000 / Acre notified limit for Wheat</div>
+          </div>
+          <div>
+            <div class="calc-stat-label">Farmer Premium Share Rate</div>
+            <div style="font-size:1.75rem; font-weight:800; color:#15803d;" id="calcRate">1.5%</div>
+            <div class="calc-stat-sub" id="calcRateLabel">Subsidized statutory cap for Rabi crops</div>
+          </div>
+          <div>
+            <div class="calc-stat-label">Net Farmer Payable Premium</div>
+            <div style="font-size:2.2rem; font-weight:900; color:#0f2d1e;" id="calcFarmerPayable">₹2,835</div>
+            <span class="subsidy-badge" id="calcGovtSubsidyPill">Govt Pays: ₹19,845 (~87%)</span>
+          </div>
+        </div>
+
+        <!-- Subsidies Breakdown Strip -->
+        <div class="subsidies-strip">
+          <div>
+            🏢 Assigned Regional Insurer: <strong id="calcInsurerTag">Agriculture Insurance Company of India (AIC)</strong>
+          </div>
+          <div>
+            🏛️ Central Share: <strong id="calcCenterShare">₹9,922</strong> | State Share: <strong id="calcStateShare">₹9,922</strong>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:1.05rem; font-weight:800; color:var(--c-forest-dark); margin:1.5rem 0 1rem;">Direct Benefit Transfer (DBT) Bank Account Details</h3>
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label" for="bank_name">Bank Name<span class="required">*</span></label>
+          <input type="text" id="bank_name" name="bank_name" class="form-control" placeholder="e.g. State Bank of India" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="bank_account_last4">Account Number (or Last 4 Digits)<span class="required">*</span></label>
+          <input type="text" id="bank_account_last4" name="bank_account_last4" class="form-control" placeholder="e.g. 4892" required>
+          <div class="form-help">Must be Aadhaar-seeded for DBT claim compensation credits.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ifsc">IFSC Code<span class="required">*</span></label>
+          <input type="text" id="ifsc" name="ifsc" class="form-control" placeholder="e.g. SBIN0001244" maxlength="11" style="text-transform:uppercase;" required>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" onclick="jumpToStep(2)">
+          <span>← Back to Step 2</span>
+        </button>
+        <button type="button" class="btn-primary" onclick="validateAndGoStep(4)">
+          <span>Next: Document Checklist & Uploads</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Mandatory Document Checklist & Documentation Guidance -->
+    <div class="form-card" id="step4" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">Step 4: Mandatory Document Checklist & Guidance</h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">Verify statutory land, sowing, and identity records. Upload scanned copies or photos (PDF, JPG, PNG up to 5MB).</p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Step 4 of 5</span>
+      </div>
+
+      <!-- Checklist Progress Tracker -->
+      <div style="background:#faf8f5; border:1px solid #e7dfcb; border-radius:12px; padding:12px 16px; margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:0.88rem; font-weight:700; color:#1b4332;">Statutory Document Readiness:</span>
+        <span style="font-size:0.88rem; font-weight:800; color:#15803d;" id="checklistProgressText">0 of 4 Documents Verified</span>
+      </div>
+
+      <!-- Document 1: Land RoR -->
+      <div class="doc-guidance-card" id="docCard1">
+        <div class="doc-check-row">
+          <input type="checkbox" id="chkDoc1" onchange="updateDocProgress()" style="width:20px; height:20px; accent-color:var(--c-leaf-green); margin-top:2px;">
+          <div class="doc-meta-info">
+            <div style="font-weight:800; font-size:0.95rem; color:var(--c-forest-dark);">
+              1. Land Record / RoR (Khasra-Khatauni / Patta / 7/12 Extract) <span class="required">*</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--c-text-muted);">
+              Current digital revenue copy bearing surveyor seal or QR code verifying landownership or cultivation rights.
+            </div>
+            <button type="button" class="doc-where-btn" onclick="toggleGuidance(1)">
+              📍 Where do I get my digital land record?
+            </button>
+            <div class="doc-guidance-accordion" id="guideAccordion1">
+              Download your official digital Khasra/Khatauni online:
+              <ul style="margin:4px 0 0; padding-left:18px;">
+                <li><strong>MP Bhulekh:</strong> <a href="https://mpbhulekh.gov.in" target="_blank" rel="noopener">mpbhulekh.gov.in</a></li>
+                <li><strong>UP Bhulekh:</strong> <a href="https://upbhulekh.gov.in" target="_blank" rel="noopener">upbhulekh.gov.in</a></li>
+                <li><strong>MahaBhulekh (7/12):</strong> <a href="https://bhulekh.mahabhumi.gov.in" target="_blank" rel="noopener">bhulekh.mahabhumi.gov.in</a></li>
+                <li><strong>Jamabandi Punjab:</strong> <a href="https://jamabandi.punjab.gov.in" target="_blank" rel="noopener">jamabandi.punjab.gov.in</a></li>
+              </ul>
+            </div>
+            <div class="doc-dropzone-row">
+              <span class="doc-tag" id="badgeDoc1">Pending Upload</span>
+              <label style="background:var(--c-leaf-green); color:#ffffff; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">
+                Attach File <input type="file" id="docInput1" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDocUpload(1, this)">
+              </label>
+              <button type="button" id="removeDoc1" onclick="removeDoc(1)" style="display:none; background:none; border:none; color:#dc2626; font-size:0.78rem; cursor:pointer; font-weight:700;">Remove</button>
+              <span id="fileName1" style="font-size:0.8rem; color:#475569;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document 2: Sowing Certificate -->
+      <div class="doc-guidance-card" id="docCard2">
+        <div class="doc-check-row">
+          <input type="checkbox" id="chkDoc2" onchange="updateDocProgress()" style="width:20px; height:20px; accent-color:var(--c-leaf-green); margin-top:2px;">
+          <div class="doc-meta-info">
+            <div style="font-weight:800; font-size:0.95rem; color:var(--c-forest-dark);">
+              2. Sowing Certificate / Patwari Panchnama / Self-Declaration <span class="required">*</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--c-text-muted);">
+              Certification confirming the crop variety sown, date of sowing, and acreage. Non-loanee farmers may upload Patwari Panchnama or verified Gram Sevak certificate.
+            </div>
+            <button type="button" class="doc-where-btn" onclick="toggleGuidance(2)">
+              📍 How do I obtain a Sowing Certificate?
+            </button>
+            <div class="doc-guidance-accordion" id="guideAccordion2">
+              Visit your local Village Patwari or Gram Sevak, or use the pre-formatted self-declaration template countersigned by the Village Agriculture Officer / Gram Panchayat Secretary.
+            </div>
+            <div class="doc-dropzone-row">
+              <span class="doc-tag" id="badgeDoc2">Pending Upload</span>
+              <label style="background:var(--c-leaf-green); color:#ffffff; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">
+                Attach File <input type="file" id="docInput2" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDocUpload(2, this)">
+              </label>
+              <button type="button" id="removeDoc2" onclick="removeDoc(2)" style="display:none; background:none; border:none; color:#dc2626; font-size:0.78rem; cursor:pointer; font-weight:700;">Remove</button>
+              <span id="fileName2" style="font-size:0.8rem; color:#475569;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document 3: Bank Passbook -->
+      <div class="doc-guidance-card" id="docCard3">
+        <div class="doc-check-row">
+          <input type="checkbox" id="chkDoc3" onchange="updateDocProgress()" style="width:20px; height:20px; accent-color:var(--c-leaf-green); margin-top:2px;">
+          <div class="doc-meta-info">
+            <div style="font-weight:800; font-size:0.95rem; color:var(--c-forest-dark);">
+              3. Bank Passbook / Cancelled Cheque Leaf <span class="required">*</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--c-text-muted);">
+              Legible scan of front passbook page showing Account Holder Name, Bank Account Number, and IFSC clearly.
+            </div>
+            <button type="button" class="doc-where-btn" onclick="toggleGuidance(3)">
+              📍 Bank Account Guidelines
+            </button>
+            <div class="doc-guidance-accordion" id="guideAccordion3">
+              Must be an active Savings Bank Account in an RBI-scheduled Commercial Bank, RRB, or DCCB with Aadhaar DBT seeding completed.
+            </div>
+            <div class="doc-dropzone-row">
+              <span class="doc-tag" id="badgeDoc3">Pending Upload</span>
+              <label style="background:var(--c-leaf-green); color:#ffffff; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">
+                Attach File <input type="file" id="docInput3" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDocUpload(3, this)">
+              </label>
+              <button type="button" id="removeDoc3" onclick="removeDoc(3)" style="display:none; background:none; border:none; color:#dc2626; font-size:0.78rem; cursor:pointer; font-weight:700;">Remove</button>
+              <span id="fileName3" style="font-size:0.8rem; color:#475569;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document 4: Aadhaar Card -->
+      <div class="doc-guidance-card" id="docCard4">
+        <div class="doc-check-row">
+          <input type="checkbox" id="chkDoc4" onchange="updateDocProgress()" style="width:20px; height:20px; accent-color:var(--c-leaf-green); margin-top:2px;">
+          <div class="doc-meta-info">
+            <div style="font-weight:800; font-size:0.95rem; color:var(--c-forest-dark);">
+              4. Aadhaar Card (Farmer Identity & Residence) <span class="required">*</span>
+            </div>
+            <div style="font-size:0.82rem; color:var(--c-text-muted);">
+              Scanned front & back of Aadhaar card. Name must match land title records.
+            </div>
+            <div class="doc-dropzone-row">
+              <span class="doc-tag" id="badgeDoc4">Pending Upload</span>
+              <label style="background:var(--c-leaf-green); color:#ffffff; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">
+                Attach File <input type="file" id="docInput4" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDocUpload(4, this)">
+              </label>
+              <button type="button" id="removeDoc4" onclick="removeDoc(4)" style="display:none; background:none; border:none; color:#dc2626; font-size:0.78rem; cursor:pointer; font-weight:700;">Remove</button>
+              <span id="fileName4" style="font-size:0.8rem; color:#475569;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Document 5: Tenant Agreement (Conditional) -->
+      <div class="doc-guidance-card" id="docCard5" style="display:none;">
+        <div class="doc-check-row">
+          <input type="checkbox" id="chkDoc5" onchange="updateDocProgress()" style="width:20px; height:20px; accent-color:var(--c-leaf-green); margin-top:2px;">
+          <div class="doc-meta-info">
+            <div style="font-weight:800; font-size:0.95rem; color:var(--c-forest-dark);">
+              5. Land Lease / Sharecropper Agreement (Mandatory for Tenant Farmers)
+            </div>
+            <div style="font-size:0.82rem; color:var(--c-text-muted);">
+              Registered lease deed, notarial agreement, or Gram Panchayat resolution confirming cultivation rights.
+            </div>
+            <div class="doc-dropzone-row">
+              <span class="doc-tag" id="badgeDoc5">Pending Upload</span>
+              <label style="background:var(--c-leaf-green); color:#ffffff; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; cursor:pointer;">
+                Attach File <input type="file" id="docInput5" style="display:none;" accept=".pdf,.jpg,.jpeg,.png" onchange="handleDocUpload(5, this)">
+              </label>
+              <button type="button" id="removeDoc5" onclick="removeDoc(5)" style="display:none; background:none; border:none; color:#dc2626; font-size:0.78rem; cursor:pointer; font-weight:700;">Remove</button>
+              <span id="fileName5" style="font-size:0.8rem; color:#475569;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notice-info-box" style="margin-top:1.25rem;">
+        <span>🔒</span>
+        <span>All uploaded documents are encrypted under your digital BhoomiBandhu locker and made available for instant verification by the district joint survey team.</span>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" onclick="jumpToStep(3)">
+          <span>← Back to Step 3</span>
+        </button>
+        <button type="button" class="btn-primary" onclick="prepareReviewAndGoStep(5)">
+          <span>Next: Review & Submit</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 5: Review & Digital Declaration -->
+    <div class="form-card" id="step5" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">Step 5: Review Application & Statutory Declaration</h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">Please double check all particulars before transmitting your PMFBY enrollment application.</p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Step 5 of 5</span>
+      </div>
+
+      <!-- Application Summary Grid -->
+      <div style="background:#faf8f5; border:1.5px solid #e7dfcb; border-radius:16px; padding:1.5rem; margin-bottom:1.5rem;">
+        <h4 style="font-size:0.95rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 1rem; text-transform:uppercase; letter-spacing:0.04em;">Application Summary</h4>
+        <div class="form-grid-2" style="font-size:0.9rem; row-gap:10px;">
+          <div><span style="color:#667b6e;">Farmer Name:</span> <strong id="revFarmer">-</strong></div>
+          <div><span style="color:#667b6e;">Mobile:</span> <strong id="revMobile">-</strong></div>
+          <div><span style="color:#667b6e;">Location:</span> <strong id="revLocation">-</strong></div>
+          <div><span style="color:#667b6e;">Khasra / Survey No:</span> <strong id="revKhasra">-</strong></div>
+          <div><span style="color:#667b6e;">Notified Crop & Season:</span> <strong id="revCrop">-</strong></div>
+          <div><span style="color:#667b6e;">Cultivated Area:</span> <strong id="revArea">-</strong></div>
+          <div><span style="color:#667b6e;">Sum Insured:</span> <strong id="revSumInsured" style="color:#1b4332;">-</strong></div>
+          <div><span style="color:#667b6e;">Farmer Subsidized Premium:</span> <strong id="revPremium" style="color:#15803d; font-size:1.05rem;">-</strong></div>
+          <div><span style="color:#667b6e;">Bank & IFSC:</span> <strong id="revBank">-</strong></div>
+          <div><span style="color:#667b6e;">Uploaded Documents:</span> <strong id="revDocsCount">Verified</strong></div>
+        </div>
+      </div>
+
+      <!-- Statutory Declaration Checkbox -->
+      <div style="background:#ffffff; border:1px solid #dcd4c5; border-radius:12px; padding:1.25rem; margin-bottom:1.5rem;">
+        <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
+          <input type="checkbox" id="statutoryDeclaration" required style="margin-top:4px; width:20px; height:20px; accent-color:var(--c-leaf-green);">
+          <span style="font-size:0.86rem; color:#2e4d3f; line-height:1.5;">
+            I hereby solemnly declare that the landholding records, sowing dates, and bank particulars furnished above are true, complete, and accurate as recorded in state revenue books. I understand that duplicate intimation or false declaration will disqualify PMFBY coverage and DBT claim settlement under Section 19 of the Operational Guidelines.
+          </span>
+        </label>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn-secondary" onclick="jumpToStep(4)">
+          <span>← Back to Step 4</span>
+        </button>
+        <button type="submit" class="btn-primary" id="submitEnrollBtn" style="padding:14px 34px; font-size:1.05rem;">
+          <span>Submit PMFBY Application</span>
+          <span>✓</span>
+        </button>
+      </div>
+    </div>
+
+  </form>
+</main>
+
+<!-- Success Modal / Acknowledgement Receipt -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-card">
+    <div class="success-badge-icon">✓</div>
+    <h2 style="font-size:1.6rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 0.5rem;">PMFBY Enrollment Submitted!</h2>
+    <p style="font-size:0.92rem; color:var(--c-text-muted); margin:0 0 1rem;">
+      Your application has been registered with the State Department of Agriculture and queued for official policy generation.
+    </p>
+
+    <div style="font-size:0.85rem; font-weight:700; color:#547061;">OFFICIAL APPLICATION ID</div>
+    <div class="app-id-pill" id="displayAppId">BB-ENR-2026-XXXXX</div>
+
+    <div style="background:#faf8f5; border:1px solid #e7dfcb; border-radius:14px; padding:1rem 1.25rem; text-align:left; font-size:0.88rem; margin-bottom:1.5rem;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Farmer:</span>
+        <strong id="modalFarmerName">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Notified Crop & Season:</span>
+        <strong id="modalCrop">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Sum Insured:</span>
+        <strong id="modalSumInsured" style="color:#1b4332;">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:#667b6e;">Farmer Subsidized Premium:</span>
+        <strong id="modalPremium" style="color:#15803d;">-</strong>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div style="display:flex; gap:10px;">
+        <button type="button" class="btn-secondary" style="flex:1; justify-content:center;" onclick="window.print()">
+          <span>🖨️ Print Receipt</span>
+        </button>
+        <button type="button" class="btn-primary" style="flex:1; justify-content:center;" id="modalTrackBtn">
+          <span>🔍 Track Live Status</span>
+        </button>
+      </div>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" style="font-size:0.85rem; color:#2d6a4f; text-decoration:none; font-weight:700; margin-top:6px;">
+        Verify Directly on Official National PMFBY Portal (pmfby.gov.in) →
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.86rem; color:#597463;">
+    <div>© 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Welfare Mission</div>
+    <div style="display:flex; gap:18px;">
+      <a href="insurance.html" style="color:#597463; text-decoration:none;">Insurance Hub</a>
+      <a href="risk-awareness.html" style="color:#597463; text-decoration:none;">Risk Awareness</a>
+      <a href="claim-filing.html" style="color:#597463; text-decoration:none;">72-Hr Claim Filing</a>
+      <a href="status-tracking.html" style="color:#597463; text-decoration:none;">Status Tracking</a>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" style="color:#597463; text-decoration:none;">PMFBY Portal ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script src="auth-nav.js"></script>
+<script>
+  let currentStep = 1;
+  let activeSeason = 'rabi';
+  const uploadedDocs = { 1: null, 2: null, 3: null, 4: null, 5: null };
+
+  // Static Offline-First Directory of Notified Crops & Districts
+  const NOTIFIED_DIRECTORY = {
+    "Madhya Pradesh": {
+      insurer: "Agriculture Insurance Company of India (AIC)",
+      districts: ["Sehore", "Bhopal", "Indore", "Ujjain", "Dewas", "Vidisha", "Raisen", "Hoshangabad"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं - Sharbati/Lokwan)", scale: 42000, rate: 0.015 },
+          { crop: "Gram / Chickpea (चना)", scale: 38000, rate: 0.015 },
+          { crop: "Mustard (सरसों)", scale: 36000, rate: 0.015 },
+          { crop: "Lentil / Masoor (मसूर)", scale: 35000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Soybean (सोयाबीन)", scale: 39000, rate: 0.02 },
+          { crop: "Paddy / Rice (धान)", scale: 46000, rate: 0.02 },
+          { crop: "Maize (मक्का)", scale: 34000, rate: 0.02 },
+          { crop: "Pigeon Pea / Tur (अरहर)", scale: 38000, rate: 0.02 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (गन्ना)", scale: 75000, rate: 0.05 },
+          { crop: "Cotton (कपास)", scale: 52000, rate: 0.05 },
+          { crop: "Onion / Garlic (प्याज/लहसुन)", scale: 65000, rate: 0.05 }
+        ]
+      }
+    },
+    "Punjab": {
+      insurer: "SBI General Insurance",
+      districts: ["Ludhiana", "Bathinda", "Patiala", "Sangrur", "Amritsar", "Jalandhar"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं - PBW 550)", scale: 45000, rate: 0.015 },
+          { crop: "Mustard / Raya (सरसों)", scale: 37000, rate: 0.015 },
+          { crop: "Barley (जौ)", scale: 34000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Paddy / Rice (धान - PR 126)", scale: 50000, rate: 0.02 },
+          { crop: "Basmati Paddy (बासमती धान)", scale: 54000, rate: 0.02 },
+          { crop: "Cotton / Narma (नरमा कपास)", scale: 54000, rate: 0.05 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (गन्ना)", scale: 80000, rate: 0.05 },
+          { crop: "Potato (आलू)", scale: 70000, rate: 0.05 }
+        ]
+      }
+    },
+    "Maharashtra": {
+      insurer: "HDFC ERGO General Insurance",
+      districts: ["Yavatmal", "Nagpur", "Pune", "Nashik", "Amravati", "Ahmednagar"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं)", scale: 40000, rate: 0.015 },
+          { crop: "Gram / Harbara (हरभरा)", scale: 36000, rate: 0.015 },
+          { crop: "Rabi Jowar (ज्वारी)", scale: 32000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Soybean (सोयाबीन)", scale: 40000, rate: 0.02 },
+          { crop: "Cotton (कापूस)", scale: 52000, rate: 0.05 },
+          { crop: "Tur / Arhar (तूर)", scale: 38000, rate: 0.02 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (ऊस)", scale: 85000, rate: 0.05 },
+          { crop: "Onion (कांदा)", scale: 62000, rate: 0.05 }
+        ]
+      }
+    },
+    "Rajasthan": {
+      insurer: "Bajaj Allianz General Insurance",
+      districts: ["Jaipur", "Kota", "Jodhpur", "Alwar", "Sri Ganganagar"],
+      crops: {
+        rabi: [
+          { crop: "Mustard (सरसों)", scale: 38000, rate: 0.015 },
+          { crop: "Wheat (गेहूं)", scale: 41000, rate: 0.015 },
+          { crop: "Gram (चना)", scale: 36000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Bajra (बाजरा)", scale: 30000, rate: 0.02 },
+          { crop: "Soybean (सोयाबीन)", scale: 38000, rate: 0.02 },
+          { crop: "Guar Seed (ग्वार)", scale: 28000, rate: 0.02 }
+        ],
+        commercial: [
+          { crop: "Cotton (कपास)", scale: 50000, rate: 0.05 },
+          { crop: "Cumin / Jeera (जीरा)", scale: 55000, rate: 0.05 }
+        ]
+      }
+    },
+    "Uttar Pradesh": {
+      insurer: "AIC / Universal Sompo GIC",
+      districts: ["Varanasi", "Lucknow", "Prayagraj", "Bareilly", "Meerut", "Agra"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं)", scale: 42000, rate: 0.015 },
+          { crop: "Mustard (सरसों)", scale: 36000, rate: 0.015 },
+          { crop: "Gram (चना)", scale: 37000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Paddy / Rice (धान)", scale: 46000, rate: 0.02 },
+          { crop: "Maize (मक्का)", scale: 33000, rate: 0.02 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (गन्ना)", scale: 78000, rate: 0.05 },
+          { crop: "Potato (आलू)", scale: 68000, rate: 0.05 }
+        ]
+      }
+    },
+    "Haryana": {
+      insurer: "Reliance General Insurance",
+      districts: ["Karnal", "Rewari", "Hisar", "Rohtak", "Sirsa"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं)", scale: 44000, rate: 0.015 },
+          { crop: "Mustard (सरसों)", scale: 37000, rate: 0.015 },
+          { crop: "Barley (जौ)", scale: 33000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Paddy / Rice (धान)", scale: 49000, rate: 0.02 },
+          { crop: "Cotton (कपास)", scale: 53000, rate: 0.05 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (गन्ना)", scale: 80000, rate: 0.05 }
+        ]
+      }
+    },
+    "Gujarat": {
+      insurer: "ICICI Lombard General Insurance",
+      districts: ["Rajkot", "Ahmedabad", "Surat", "Vadodara", "Junagadh"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (ઘઉં)", scale: 42000, rate: 0.015 },
+          { crop: "Gram / Chana (ચણા)", scale: 37000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Groundnut (મગફળી)", scale: 45000, rate: 0.02 },
+          { crop: "Cotton (કપાસ)", scale: 54000, rate: 0.05 }
+        ],
+        commercial: [
+          { crop: "Cumin / Jeera (જીરું)", scale: 58000, rate: 0.05 }
+        ]
+      }
+    },
+    "Bihar": {
+      insurer: "AIC / National Insurance",
+      districts: ["Patna", "Muzaffarpur", "Gaya", "Bhagalpur"],
+      crops: {
+        rabi: [
+          { crop: "Wheat (गेहूं)", scale: 40000, rate: 0.015 },
+          { crop: "Maize / Makka (मक्का)", scale: 36000, rate: 0.015 }
+        ],
+        kharif: [
+          { crop: "Paddy / Rice (धान)", scale: 44000, rate: 0.02 }
+        ],
+        commercial: [
+          { crop: "Sugarcane (गन्ना)", scale: 72000, rate: 0.05 }
+        ]
+      }
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Auto-fill farmer profile if logged in
+    const userRaw = localStorage.getItem('bb_user');
+    if (userRaw) {
+      try {
+        const u = JSON.parse(userRaw);
+        if (u.full_name) document.getElementById('farmer_name').value = u.full_name;
+        if (u.mobile) document.getElementById('mobile').value = u.mobile;
+        if (u.state && NOTIFIED_DIRECTORY[u.state]) {
+          document.getElementById('state').value = u.state;
+          handleStateChange();
+        }
+        if (u.district) {
+          const distSelect = document.getElementById('district');
+          for (let opt of distSelect.options) {
+            if (opt.value.toLowerCase() === u.district.toLowerCase()) {
+              distSelect.value = opt.value;
+              break;
+            }
+          }
+          handleDistrictChange();
+        }
+        if (u.village) document.getElementById('village').value = u.village;
+        if (u.landholding_size) {
+          const acres = parseFloat(u.landholding_size);
+          if (!isNaN(acres) && acres > 0) document.getElementById('area_acres').value = acres;
+        }
+        document.getElementById('autofillNotice').style.display = 'flex';
+      } catch (e) {
+        console.warn('Profile parse error', e);
+      }
+    }
+
+    // Set default sowing date to 12 days ago
+    const d = new Date();
+    d.setDate(d.getDate() - 12);
+    document.getElementById('sowing_date').value = d.toISOString().split('T')[0];
+
+    // Initialize crops and premium calculation
+    updateNotifiedCropsDropdown();
+    recalculatePremium();
+  });
+
+  // Season Selection Handler
+  function selectSeason(seasonKey) {
+    activeSeason = seasonKey;
+    document.getElementById('cardRabi').classList.toggle('selected', seasonKey === 'rabi');
+    document.getElementById('cardKharif').classList.toggle('selected', seasonKey === 'kharif');
+    document.getElementById('cardCommercial').classList.toggle('selected', seasonKey === 'commercial');
+
+    const seasonNames = {
+      rabi: 'Rabi 2026-27',
+      kharif: 'Kharif 2026',
+      commercial: 'Commercial / Horticultural'
+    };
+    document.getElementById('season').value = seasonNames[seasonKey] || 'Rabi 2026-27';
+
+    if (seasonKey === 'rabi') {
+      document.getElementById('seasonWindowText').textContent = 'Rabi 2026-27 • Sowing: 15 Oct to 15 Dec 2026';
+      document.getElementById('seasonDaysText').textContent = '⏱️ 48 Days to Cutoff (31 Dec 2026)';
+    } else if (seasonKey === 'kharif') {
+      document.getElementById('seasonWindowText').textContent = 'Kharif 2026 • Sowing: 01 June to 31 July 2026';
+      document.getElementById('seasonDaysText').textContent = '⏱️ Cutoff: 31st July 2026';
+    } else {
+      document.getElementById('seasonWindowText').textContent = 'Annual Commercial / Horticultural Crops';
+      document.getElementById('seasonDaysText').textContent = '⏱️ State Gazette Notification Cutoff';
+    }
+
+    updateNotifiedCropsDropdown();
+    recalculatePremium();
+  }
+
+  // State Change Handler
+  function handleStateChange() {
+    const state = document.getElementById('state').value;
+    const distSelect = document.getElementById('district');
+    const stateData = NOTIFIED_DIRECTORY[state] || NOTIFIED_DIRECTORY["Madhya Pradesh"];
+
+    distSelect.innerHTML = stateData.districts.map(d => `<option value="${d}">${d}</option>`).join('');
+    updateNotifiedCropsDropdown();
+    recalculatePremium();
+  }
+
+  function handleDistrictChange() {
+    updateNotifiedCropsDropdown();
+    recalculatePremium();
+  }
+
+  // Populates Notified Crops Dropdown
+  function updateNotifiedCropsDropdown() {
+    const state = document.getElementById('state').value;
+    const stateData = NOTIFIED_DIRECTORY[state] || NOTIFIED_DIRECTORY["Madhya Pradesh"];
+    const cropSelect = document.getElementById('crop_select');
+
+    const cropsList = (stateData.crops && stateData.crops[activeSeason]) 
+      ? stateData.crops[activeSeason] 
+      : (stateData.crops.rabi || []);
+
+    cropSelect.innerHTML = cropsList.map((c, idx) => `
+      <option value="${c.crop}" data-scale="${c.scale}" data-rate="${c.rate}" ${idx === 0 ? 'selected' : ''}>
+        ${c.crop} • Scale: ₹${c.scale.toLocaleString('en-IN')}/Acre (${(c.rate * 100).toFixed(1)}%)
+      </option>
+    `).join('');
+
+    handleCropSelectChange();
+  }
+
+  function handleCropSelectChange() {
+    const cropSelect = document.getElementById('crop_select');
+    const selectedOption = cropSelect.options[cropSelect.selectedIndex];
+    if (selectedOption) {
+      document.getElementById('crop_name').value = selectedOption.value;
+    }
+    recalculatePremium();
+  }
+
+  // Unit Toggle (Acres <-> Hectares)
+  function handleUnitToggle() {
+    const unit = document.getElementById('area_unit').value;
+    const areaInput = document.getElementById('area_acres');
+    let val = parseFloat(areaInput.value) || 1.0;
+
+    if (unit === 'hectares') {
+      const acres = (val * 2.471).toFixed(2);
+      document.getElementById('areaConversionText').textContent = `${val} Hectares ≈ ${acres} Acres`;
+    } else {
+      const hec = (val / 2.471).toFixed(2);
+      document.getElementById('areaConversionText').textContent = `${val} Acres ≈ ${hec} Hectares`;
+    }
+    recalculatePremium();
+  }
+
+  // Ownership Change (Shows/Hides Tenancy Agreement)
+  function handleOwnershipChange() {
+    const own = document.getElementById('land_ownership').value;
+    const docCard5 = document.getElementById('docCard5');
+    if (docCard5) {
+      docCard5.style.display = (own.includes('Tenant') || own.includes('Sharecropper')) ? 'block' : 'none';
+    }
+  }
+
+  function handleLoaneeChange() {
+    const loanee = document.getElementById('loanee_status').value;
+    const help = document.getElementById('loaneeHelpText');
+    if (loanee.includes('Loanee')) {
+      help.textContent = 'Note: KCC loanee farmers are auto-debited by bank unless an opt-out declaration is filed 7 days prior to cutoff.';
+    } else {
+      help.textContent = 'Non-loanee farmers enroll voluntary through citizen portal or CSC.';
+    }
+  }
+
+  // Precision Premium Calculation
+  function recalculatePremium() {
+    const areaUnit = document.getElementById('area_unit').value;
+    let inputArea = parseFloat(document.getElementById('area_acres').value) || 1.0;
+    const acres = areaUnit === 'hectares' ? (inputArea * 2.471) : inputArea;
+
+    const cropSelect = document.getElementById('crop_select');
+    const selectedOpt = cropSelect.options[cropSelect.selectedIndex];
+    const state = document.getElementById('state').value;
+    const stateData = NOTIFIED_DIRECTORY[state] || NOTIFIED_DIRECTORY["Madhya Pradesh"];
+
+    let scalePerAcre = 42000;
+    let rate = 0.015;
+
+    if (selectedOpt) {
+      scalePerAcre = parseFloat(selectedOpt.getAttribute('data-scale')) || 42000;
+      rate = parseFloat(selectedOpt.getAttribute('data-rate')) || (activeSeason === 'rabi' ? 0.015 : (activeSeason === 'kharif' ? 0.02 : 0.05));
+    }
+
+    const sumInsured = Math.round(acres * scalePerAcre);
+    const farmerPayable = Math.round(sumInsured * rate);
+
+    // Actuarial standard gross rate (~12%)
+    const grossActuarial = Math.round(sumInsured * 0.12);
+    const totalSubsidy = Math.max(0, grossActuarial - farmerPayable);
+    const centerShare = Math.round(totalSubsidy / 2);
+    const stateShare = totalSubsidy - centerShare;
+
+    document.getElementById('calcSumInsured').textContent = '₹' + sumInsured.toLocaleString('en-IN');
+    document.getElementById('calcScaleSub').textContent = `Based on ₹${scalePerAcre.toLocaleString('en-IN')} / Acre notified limit`;
+    document.getElementById('calcRate').textContent = (rate * 100).toFixed(1) + '%';
+    
+    let rateLabel = "Subsidized statutory cap for Rabi food grains (1.5%)";
+    if (rate === 0.02) rateLabel = "Subsidized statutory cap for Kharif crops (2.0%)";
+    else if (rate >= 0.05) rateLabel = "Statutory cap for Commercial / Horticultural crops (5.0%)";
+    document.getElementById('calcRateLabel').textContent = rateLabel;
+
+    document.getElementById('calcFarmerPayable').textContent = '₹' + farmerPayable.toLocaleString('en-IN');
+    document.getElementById('calcGovtSubsidyPill').textContent = `Govt Pays: ₹${totalSubsidy.toLocaleString('en-IN')} (~88%)`;
+
+    document.getElementById('calcInsurerTag').textContent = stateData.insurer || "Agriculture Insurance Company of India (AIC)";
+    document.getElementById('calcCenterShare').textContent = '₹' + centerShare.toLocaleString('en-IN');
+    document.getElementById('calcStateShare').textContent = '₹' + stateShare.toLocaleString('en-IN');
+
+    return { acres, sumInsured, rate, farmerPayable, scalePerAcre };
+  }
+
+  // Document Guidance Toggle
+  function toggleGuidance(slot) {
+    const acc = document.getElementById('guideAccordion' + slot);
+    if (acc) {
+      acc.style.display = (acc.style.display === 'block') ? 'none' : 'block';
+    }
+  }
+
+  // Document Upload & Checklist Handlers
+  function handleDocUpload(slot, input) {
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      uploadedDocs[slot] = file.name;
+
+      const badge = document.getElementById('badgeDoc' + slot);
+      badge.textContent = '✓ Attached';
+      badge.className = 'doc-tag uploaded';
+
+      document.getElementById('fileName' + slot).textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+      document.getElementById('removeDoc' + slot).style.display = 'inline';
+
+      const chk = document.getElementById('chkDoc' + slot);
+      if (chk) chk.checked = true;
+
+      updateDocProgress();
+    }
+  }
+
+  function removeDoc(slot) {
+    uploadedDocs[slot] = null;
+    document.getElementById('docInput' + slot).value = '';
+    const badge = document.getElementById('badgeDoc' + slot);
+    badge.textContent = 'Pending Upload';
+    badge.className = 'doc-tag';
+    document.getElementById('fileName' + slot).textContent = '';
+    document.getElementById('removeDoc' + slot).style.display = 'none';
+
+    const chk = document.getElementById('chkDoc' + slot);
+    if (chk) chk.checked = false;
+
+    updateDocProgress();
+  }
+
+  function updateDocProgress() {
+    let checkedCount = 0;
+    for (let i = 1; i <= 4; i++) {
+      if (document.getElementById('chkDoc' + i)?.checked) checkedCount++;
+    }
+    document.getElementById('checklistProgressText').textContent = `${checkedCount} of 4 Documents Verified`;
+  }
+
+  // Step Navigation
+  function jumpToStep(target) {
+    for (let i = 1; i <= 5; i++) {
+      const el = document.getElementById('step' + i);
+      const node = document.getElementById('node' + i);
+      if (el) el.style.display = (i === target) ? 'block' : 'none';
+      if (node) {
+        node.classList.remove('active');
+        if (i < target) node.classList.add('completed');
+        else node.classList.remove('completed');
+        if (i === target) node.classList.add('active');
+      }
+    }
+    currentStep = target;
+    window.scrollTo({ top: 120, behavior: 'smooth' });
+  }
+
+  function validateAndGoStep(target) {
+    if (target === 2) {
+      const name = document.getElementById('farmer_name').value.trim();
+      const mobile = document.getElementById('mobile').value.trim();
+      const khasra = document.getElementById('land_khasra').value.trim();
+      if (!name || mobile.length !== 10 || !khasra) {
+        alert('Please provide Farmer Full Name, valid 10-digit Mobile number, and Land Khasra / Survey number.');
+        return;
+      }
+    }
+    if (target === 3) {
+      const acres = parseFloat(document.getElementById('area_acres').value);
+      if (!acres || acres <= 0) {
+        alert('Please specify a valid cultivated land area.');
+        return;
+      }
+      recalculatePremium();
+    }
+    if (target === 4) {
+      const bank = document.getElementById('bank_name').value.trim();
+      const acc = document.getElementById('bank_account_last4').value.trim();
+      const ifsc = document.getElementById('ifsc').value.trim();
+      if (!bank || !acc || ifsc.length < 5) {
+        alert('Please provide valid Bank Name, Account Number, and IFSC code for DBT subsidy transfer.');
+        return;
+      }
+    }
+    jumpToStep(target);
+  }
+
+  function prepareReviewAndGoStep(target) {
+    const calc = recalculatePremium();
+    document.getElementById('revFarmer').textContent = document.getElementById('farmer_name').value || '-';
+    document.getElementById('revMobile').textContent = document.getElementById('mobile').value || '-';
+    document.getElementById('revLocation').textContent = `${document.getElementById('village').value || ''}, ${document.getElementById('district').value || ''} (${document.getElementById('state').value || ''})`;
+    document.getElementById('revKhasra').textContent = document.getElementById('land_khasra').value || '-';
+    document.getElementById('revCrop').textContent = `${document.getElementById('crop_name').value || ''} • ${document.getElementById('season').value || ''}`;
+    document.getElementById('revArea').textContent = `${calc.acres.toFixed(2)} Acres`;
+    document.getElementById('revSumInsured').textContent = '₹' + calc.sumInsured.toLocaleString('en-IN');
+    document.getElementById('revPremium').textContent = '₹' + calc.farmerPayable.toLocaleString('en-IN') + ` (${(calc.rate * 100).toFixed(1)}%)`;
+    document.getElementById('revBank').textContent = `${document.getElementById('bank_name').value || ''} (A/C: ...${document.getElementById('bank_account_last4').value || ''})`;
+
+    let count = 0;
+    for (let k in uploadedDocs) if (uploadedDocs[k]) count++;
+    document.getElementById('revDocsCount').textContent = count > 0 ? `${count} document(s) attached` : 'Self-declaration under verification';
+
+    jumpToStep(target);
+  }
+
+  // Application Submission
+  async function handleEnrollmentSubmit(e) {
+    e.preventDefault();
+    const decl = document.getElementById('statutoryDeclaration');
+    if (!decl.checked) {
+      alert('You must accept the statutory declaration before submitting.');
+      return;
+    }
+
+    const submitBtn = document.getElementById('submitEnrollBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span>Transmitting PMFBY Application...</span> ⏳';
+
+    const calc = recalculatePremium();
+
+    const payload = {
+      farmer_name: document.getElementById('farmer_name').value.trim(),
+      mobile: document.getElementById('mobile').value.trim(),
+      aadhaar_last4: document.getElementById('aadhaar_last4').value.trim(),
+      state: document.getElementById('state').value,
+      district: document.getElementById('district').value,
+      village: document.getElementById('village').value.trim(),
+      season: document.getElementById('season').value,
+      crop_name: document.getElementById('crop_name').value.trim(),
+      area_acres: calc.acres,
+      sum_insured: calc.sumInsured,
+      farmer_premium: calc.farmerPayable,
+      bank_account_last4: document.getElementById('bank_account_last4').value.trim(),
+      ifsc: document.getElementById('ifsc').value.trim().toUpperCase(),
+      sowing_date: document.getElementById('sowing_date').value,
+      land_khasra: document.getElementById('land_khasra').value.trim(),
+      documents: Object.values(uploadedDocs).filter(Boolean)
+    };
+
+    try {
+      const res = await fetch('/api/insurance/enroll', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.success && data.record) {
+        document.getElementById('displayAppId').textContent = data.record.application_id;
+        document.getElementById('modalFarmerName').textContent = data.record.farmer_name;
+        document.getElementById('modalCrop').textContent = data.record.crop_name + ' (' + data.record.season + ')';
+        document.getElementById('modalSumInsured').textContent = '₹' + Number(data.record.sum_insured).toLocaleString('en-IN');
+        document.getElementById('modalPremium').textContent = '₹' + Number(data.record.farmer_premium).toLocaleString('en-IN');
+
+        document.getElementById('modalTrackBtn').onclick = function() {
+          window.location.href = 'status-tracking.html?id=' + encodeURIComponent(data.record.application_id);
+        };
+
+        document.getElementById('successModal').style.display = 'flex';
+      } else {
+        alert('Submission error: ' + (data.message || 'Unable to process enrollment'));
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Submit PMFBY Application</span> <span>✓</span>';
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Network error communicating with insurance portal: ' + err.message);
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Submit PMFBY Application</span> <span>✓</span>';
+    }
+  }
+</script>
+
 </body>
 </html>

@@ -5,6 +5,9 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Service Provider Dashboard | BhoomiBandhu 2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="auth-style.css">
   <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
   <style>
@@ -121,6 +124,7 @@
           <div class="brand-name" style="font-size:1.15rem;">BhoomiBandhu <span class="brand-version" style="background:#f59e0b; color:#111;">PRO</span></div>
         </a>
         <a href="index.html" class="back-link">Portal Home</a>
+        <a href="storage.html#provider" class="back-link" style="background:#fef3c7; border-color:#fde68a; color:#92400e;">🏬 Storage Facility Portal</a>
       </div>
 
       <div style="display:flex; align-items:center; gap:14px;">
@@ -180,14 +184,17 @@
       
       <!-- Booking Requests Management -->
       <div class="dash-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-          <h2 style="font-size:1.2rem; color:var(--c-forest-dark); font-weight:700;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:10px;">
+          <h2 style="font-size:1.2rem; color:var(--c-forest-dark); font-weight:700; margin:0;">
             Incoming Farmer Booking Requests
           </h2>
-          <span style="font-size:0.8rem; background:var(--c-cream-card); padding:4px 10px; border-radius:6px; font-weight:600;">Live Dispatch Queue</span>
+          <div style="display:flex; gap:8px;">
+            <button onclick="switchTab('machinery')" id="btnTabMachinery" style="padding:4px 12px; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer; background:#2d6a4f; color:#fff; border:none;">🚜 Machinery</button>
+            <button onclick="switchTab('storage')" id="btnTabStorage" style="padding:4px 12px; border-radius:6px; font-size:0.8rem; font-weight:700; cursor:pointer; background:#f1f5f9; color:#475569; border:1px solid #cbd5e1;">🏬 Cold Storage</button>
+          </div>
         </div>
 
-        <div class="table-container">
+        <div class="table-container" id="machineryTableContainer">
           <table>
             <thead>
               <tr>
@@ -224,6 +231,24 @@
                 <td><span class="status-badge status-completed">Completed</span></td>
                 <td><span style="font-size:0.75rem; color:#16a34a; font-weight:600;">₹ 7,200 Paid</span></td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-container" id="storageTableContainer" style="display:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Farmer</th>
+                <th>Crop & Quantity</th>
+                <th>Intake Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="providerStorageTbody">
+              <!-- Dynamically populated via fetch -->
             </tbody>
           </table>
         </div>
@@ -301,6 +326,80 @@
 
       } catch (e) {
         window.location.href = 'login.html';
+      }
+    }
+
+    function switchTab(tab) {
+      const machBtn = document.getElementById('btnTabMachinery');
+      const stgBtn = document.getElementById('btnTabStorage');
+      const machCont = document.getElementById('machineryTableContainer');
+      const stgCont = document.getElementById('storageTableContainer');
+
+      if (tab === 'machinery') {
+        machBtn.style.background = '#2d6a4f';
+        machBtn.style.color = '#fff';
+        stgBtn.style.background = '#f1f5f9';
+        stgBtn.style.color = '#475569';
+        machCont.style.display = 'block';
+        stgCont.style.display = 'none';
+      } else {
+        stgBtn.style.background = '#2d6a4f';
+        stgBtn.style.color = '#fff';
+        machBtn.style.background = '#f1f5f9';
+        machBtn.style.color = '#475569';
+        machCont.style.display = 'none';
+        stgCont.style.display = 'block';
+        loadStorageBookings();
+      }
+    }
+
+    async function loadStorageBookings() {
+      const tbody = document.getElementById('providerStorageTbody');
+      if (!tbody) return;
+
+      try {
+        const res = await fetch('/api/storage/provider/bookings?facility_id=STG-FAC-001');
+        const data = await res.json();
+        if (data.success && data.bookings && data.bookings.length > 0) {
+          tbody.innerHTML = data.bookings.map(b => `
+            <tr>
+              <td><strong>${b.booking_id}</strong><br><span style="font-size:0.75rem; color:#666;">${b.facility_name}</span></td>
+              <td><strong>${b.farmer_name}</strong><br><span style="font-size:0.75rem; color:#666;">${b.mobile}</span></td>
+              <td>${b.crop_name}<br><span style="font-size:0.75rem; color:#15803d; font-weight:600;">${b.quantity_quintals} Qtl (${b.quantity_kg} kg)</span></td>
+              <td>${b.intake_date}<br><span style="font-size:0.75rem; color:#666;">${b.duration_months} mo</span></td>
+              <td><span class="status-badge status-confirmed">${b.booking_status}</span></td>
+              <td>
+                <button onclick="confirmStorageBooking('${b.booking_id}')" style="padding:4px 8px; background:#2d6a4f; color:#fff; border:none; border-radius:4px; font-size:0.75rem; cursor:pointer;">Confirm</button>
+              </td>
+            </tr>
+          `).join('');
+          return;
+        }
+      } catch (e) {}
+
+      tbody.innerHTML = `
+        <tr>
+          <td><strong>STG-2026-10214</strong></td>
+          <td><strong>Ramesh Patel</strong><br><span style="font-size:0.75rem; color:#666;">9823456789</span></td>
+          <td>Potato (50 Qtl)</td>
+          <td>20 Nov 2026</td>
+          <td><span class="status-badge status-confirmed">Confirmed</span></td>
+          <td><button onclick="alert('Gate Pass verified for Ramesh Patel')" style="padding:4px 8px; border:1px solid #ccc; border-radius:4px; font-size:0.75rem; cursor:pointer;">View Pass</button></td>
+        </tr>
+      `;
+    }
+
+    async function confirmStorageBooking(id) {
+      try {
+        await fetch(`/api/storage/provider/bookings/${encodeURIComponent(id)}/status`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'Confirmed - Space Allocated', provider_notes: 'Approved via provider portal.' })
+        });
+        alert('Booking ' + id + ' confirmed!');
+        loadStorageBookings();
+      } catch (e) {
+        alert('Booking ' + id + ' confirmed in session.');
       }
     }
 

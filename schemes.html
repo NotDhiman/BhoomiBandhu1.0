@@ -2,34 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Government Schemes | BhoomiBandhu</title>
+  <title>Government Schemes & Eligibility Verification | BhoomiBandhu 2.0</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
 </head>
 <body>
 
 <!-- ===== HEADER ===== -->
 <header>
   <div class="container header-flex">
-
     <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
-      <span>BhoomiBandhu</span>
+      <a href="index.html">
+        <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+        <span>BhoomiBandhu <span class="logo-brand-tag">2.0</span></span>
+      </a>
     </div>
 
     <nav>
       <a href="index.html">Home</a>
+      <a href="insurance.html">Insurance Hub</a>
+      <a href="schemes.html" class="active">Govt Schemes</a>
+      <a href="financial.html">Financial Support</a>
       <a href="storage.html">Storage</a>
-      <a href="insurance.html">Insurance</a>
-      <a href="schemes.html">Schemes</a>
-      <a href="financial.html">Financial</a>
-      <a href="ai-crop-predictor.html">AI Crop</a>
-      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
-      <a href="gemini-advisor.html">💬 AI Chat</a>
-      <a href="mental-health.html">Mental Health</a>
-      <a href="#" onclick="toggleTheme()">🌙</a>
+      <a href="ai-crop-predictor.html">Crop Suitability</a>
+      <a href="mental-health.html">Wellness</a>
+      <a href="#" onclick="toggleTheme()" title="Toggle Theme" style="padding:6px 10px;">🌙</a>
     </nav>
-
   </div>
 </header>
 
@@ -126,48 +128,114 @@
   <h2>Check Your Scheme Eligibility</h2>
 
   <div class="eligibility-card">
-    <form id="eligibilityForm">
+    <div style="margin-bottom:1.5rem; border-bottom:1.5px solid rgba(15,45,30,0.08); padding-bottom:1rem;">
+      <h3 style="font-size:1.4rem; font-weight:800; color:var(--text); margin-bottom:4px;">
+        🏛️ Government Scheme Eligibility Screener
+      </h3>
+      <p style="font-size:0.9rem; color:var(--text-muted); margin:0;">
+        Complete all required statutory criteria below to check your entitlement for direct income support, subsidized credit, and crop protection.
+      </p>
+    </div>
 
-      <div class="form-grid">
-        <select id="scheme" required>
-          <option value="">Select Scheme</option>
-          <option value="pmkisan">PM-KISAN</option>
-          <option value="pmfby">PM Fasal Bima Yojana</option>
-          <option value="kcc">Kisan Credit Card</option>
-        </select>
+    <form id="eligibilityForm" novalidate onsubmit="handleEligibilityCheck(event)">
 
-        <select id="category" required>
-          <option value="">Farmer Category</option>
-          <option value="small">Small / Marginal</option>
-          <option value="large">Large Farmer</option>
-        </select>
+      <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+        
+        <!-- Scheme Selection -->
+        <div class="form-group">
+          <label for="scheme" class="form-label">
+            Target Government Scheme <span class="required" aria-hidden="true">*</span>
+          </label>
+          <select id="scheme" class="form-control" required onchange="validateField(this)">
+            <option value="" disabled selected>Select a welfare scheme</option>
+            <option value="pmkisan">PM-KISAN (Income Support - ₹6,000/yr)</option>
+            <option value="pmfby">PM Fasal Bima Yojana (Crop Insurance)</option>
+            <option value="kcc">Kisan Credit Card (Subsidized Credit @ 4%)</option>
+          </select>
+          <span class="form-help">Select the statutory welfare program to evaluate.</span>
+          <span class="invalid-feedback" id="scheme-error" style="display:none;">Please choose a government scheme.</span>
+        </div>
 
-        <input type="number" id="land" placeholder="Landholding (in hectares)" required>
+        <!-- Farmer Category -->
+        <div class="form-group">
+          <label for="category" class="form-label">
+            Farmer Operational Category <span class="required" aria-hidden="true">*</span>
+          </label>
+          <select id="category" class="form-control" required onchange="validateField(this)">
+            <option value="" disabled selected>Select landholding class</option>
+            <option value="small">Small / Marginal Farmer (&lt; 2 Hectares / 5 Acres)</option>
+            <option value="large">Medium / Large Farmer (&gt; 2 Hectares)</option>
+          </select>
+          <span class="form-help">Small & marginal cultivators receive 100% targeted DBT benefits.</span>
+          <span class="invalid-feedback" id="category-error" style="display:none;">Please specify your farmer category.</span>
+        </div>
 
-        <select id="season" required>
-          <option value="">Crop Season</option>
-          <option>Kharif</option>
-          <option>Rabi</option>
-          <option>Zaid</option>
-        </select>
+        <!-- Landholding -->
+        <div class="form-group">
+          <label for="land" class="form-label">
+            Cultivated Landholding (in Hectares) <span class="required" aria-hidden="true">*</span>
+          </label>
+          <input type="number" id="land" class="form-control" placeholder="e.g. 1.8" min="0.1" max="100" step="0.1" required oninput="validateField(this)">
+          <span class="form-help">Total operational cultivable area as recorded in state RoR Patta.</span>
+          <span class="invalid-feedback" id="land-error" style="display:none;">Enter a valid landholding size greater than 0.</span>
+        </div>
 
-        <select id="aadhaar" required>
-          <option value="">Aadhaar Linked?</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
+        <!-- Cropping Season -->
+        <div class="form-group">
+          <label for="season" class="form-label">
+            Active Cropping Season <span class="required" aria-hidden="true">*</span>
+          </label>
+          <select id="season" class="form-control" required onchange="validateField(this)">
+            <option value="" disabled selected>Select cropping season</option>
+            <option value="Kharif">Kharif (Monsoon: Paddy, Soybean, Cotton)</option>
+            <option value="Rabi">Rabi (Winter: Wheat, Mustard, Gram)</option>
+            <option value="Zaid">Zaid (Summer Crops)</option>
+          </select>
+          <span class="form-help">Determines seasonal sowing window and insurance coverage deadlines.</span>
+          <span class="invalid-feedback" id="season-error" style="display:none;">Please select an active cropping season.</span>
+        </div>
 
-        <select id="bank" required>
-          <option value="">Bank Account Linked?</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
+        <!-- Aadhaar Seeding -->
+        <div class="form-group">
+          <label for="aadhaar" class="form-label">
+            Aadhaar Number Linked with Land / Mobile <span class="required" aria-hidden="true">*</span>
+          </label>
+          <select id="aadhaar" class="form-control" required onchange="validateField(this)">
+            <option value="" disabled selected>Is Aadhaar seeded?</option>
+            <option value="yes">Yes — Aadhaar Linked</option>
+            <option value="no">No — Not Yet Linked</option>
+          </select>
+          <span class="form-help">Mandatory for DBT Direct Benefit Transfer authentication.</span>
+          <span class="invalid-feedback" id="aadhaar-error" style="display:none;">Please indicate Aadhaar linkage status.</span>
+        </div>
+
+        <!-- Bank Seeding -->
+        <div class="form-group">
+          <label for="bank" class="form-label">
+            DBT-Enabled Bank Account Available <span class="required" aria-hidden="true">*</span>
+          </label>
+          <select id="bank" class="form-control" required onchange="validateField(this)">
+            <option value="" disabled selected>Is Bank Account active?</option>
+            <option value="yes">Yes — Active DBT Savings Account</option>
+            <option value="no">No — Inactive / Unlinked</option>
+          </select>
+          <span class="form-help">Direct central and state subsidy funds will be transferred here.</span>
+          <span class="invalid-feedback" id="bank-error" style="display:none;">Please indicate bank account status.</span>
+        </div>
       </div>
 
-      <button type="submit" class="btn">Check Eligibility</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:1.5rem; padding-top:1.25rem; border-top:1.5px solid rgba(15,45,30,0.08);">
+        <span style="font-size:0.84rem; color:var(--text-muted);">
+          Fields marked with <span class="required" aria-hidden="true">*</span> are required by statutory guidelines.
+        </span>
+        <button type="submit" id="btnCheckEligibility" class="btn" style="margin-top:0; min-width:220px; display:inline-flex; align-items:center; justify-content:center; gap:8px;">
+          <span>Check Eligibility Now</span>
+          <span>🔍</span>
+        </button>
+      </div>
     </form>
 
-    <div id="eligibilityResult" class="result-box hidden"></div>
+    <div id="eligibilityResult" class="result-box hidden" role="alert" aria-live="polite" style="margin-top:1.75rem;"></div>
   </div>
 </section>
 
@@ -235,60 +303,153 @@
   function toggleCard(card) {
     card.classList.toggle("active");
   }
-document.getElementById("eligibilityForm").addEventListener("submit", function(e) {
-  e.preventDefault();
 
-  const scheme = document.getElementById("scheme").value;
-  const category = document.getElementById("category").value;
-  const land = parseFloat(document.getElementById("land").value);
-  const aadhaar = document.getElementById("aadhaar").value;
-  const bank = document.getElementById("bank").value;
+  function validateField(el) {
+    const errSpan = document.getElementById(el.id + '-error');
+    let isValid = true;
 
-  const resultBox = document.getElementById("eligibilityResult");
-  resultBox.classList.remove("hidden", "success", "error");
-
-  // Common checks
-  if (aadhaar !== "yes" || bank !== "yes") {
-    resultBox.classList.add("error");
-    resultBox.innerHTML =
-      "❌ <b>Not Eligible</b><br>Aadhaar-linked bank account is mandatory.";
-    return;
-  }
-
-  // PM-KISAN
-  if (scheme === "pmkisan") {
-    if (category === "small" && land <= 2) {
-      resultBox.classList.add("success");
-      resultBox.innerHTML =
-        "✅ <b>Eligible for PM-KISAN</b><br>You may receive ₹6000 annual income support.";
+    if (el.type === 'number') {
+      const val = parseFloat(el.value);
+      isValid = !isNaN(val) && val > 0;
     } else {
-      resultBox.classList.add("error");
-      resultBox.innerHTML =
-        "❌ <b>Not Eligible</b><br>PM-KISAN is for small & marginal farmers only.";
+      isValid = el.value && el.value.trim().length > 0;
     }
-  }
 
-  // PMFBY
-  else if (scheme === "pmfby") {
-    resultBox.classList.add("success");
-    resultBox.innerHTML =
-      "✅ <b>Eligible for PMFBY</b><br>You can apply for crop insurance this season.";
-  }
-
-  // KCC
-  else if (scheme === "kcc") {
-    if (land > 0) {
-      resultBox.classList.add("success");
-      resultBox.innerHTML =
-        "✅ <b>Eligible for Kisan Credit Card</b><br>You can apply for agricultural credit.";
+    if (!isValid) {
+      el.classList.add('is-invalid');
+      el.classList.remove('is-valid');
+      if (errSpan) errSpan.style.display = 'flex';
     } else {
-      resultBox.classList.add("error");
-      resultBox.innerHTML =
-        "❌ <b>Not Eligible</b><br>Valid landholding is required for KCC.";
+      el.classList.remove('is-invalid');
+      el.classList.add('is-valid');
+      if (errSpan) errSpan.style.display = 'none';
     }
+    return isValid;
   }
-});
 
+  function handleEligibilityCheck(e) {
+    e.preventDefault();
+
+    const fields = ['scheme', 'category', 'land', 'season', 'aadhaar', 'bank'];
+    let allValid = true;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !validateField(el)) allValid = false;
+    });
+
+    const resultBox = document.getElementById("eligibilityResult");
+
+    if (!allValid) {
+      resultBox.className = "alert-accessible alert-error";
+      resultBox.innerHTML = "<strong>❌ Action Required:</strong> Please complete all required fields highlighted above before proceeding.";
+      resultBox.classList.remove("hidden");
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      return;
+    }
+
+    const scheme = document.getElementById("scheme").value;
+    const category = document.getElementById("category").value;
+    const land = parseFloat(document.getElementById("land").value);
+    const aadhaar = document.getElementById("aadhaar").value;
+    const bank = document.getElementById("bank").value;
+
+    const btn = document.getElementById("btnCheckEligibility");
+    btn.disabled = true;
+    btn.classList.add("btn-loading");
+    btn.innerHTML = '<span>Verifying Statutory Guidelines...</span>';
+
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove("btn-loading");
+      btn.innerHTML = '<span>Check Eligibility Now</span> <span>🔍</span>';
+
+      resultBox.classList.remove("hidden", "alert-success", "alert-error", "alert-warning");
+
+      // 1. Mandatory Identity Checks
+      if (aadhaar !== "yes" || bank !== "yes") {
+        resultBox.className = "alert-accessible alert-error";
+        resultBox.innerHTML = `
+          <div style="font-size:1.5rem;">❌</div>
+          <div>
+            <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Ineligible: Mandatory DBT Linkage Required</strong>
+            An Aadhaar-seeded, active bank account is compulsory under Government of India DBT directives. Please visit your nearest bank branch or Post Office to complete Aadhaar NPCI mapper seeding.
+          </div>
+        `;
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        return;
+      }
+
+      // 2. PM-KISAN
+      if (scheme === "pmkisan") {
+        if (category === "small" && land <= 2) {
+          resultBox.className = "alert-accessible alert-success";
+          resultBox.innerHTML = `
+            <div style="font-size:1.5rem;">✅</div>
+            <div>
+              <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Eligible for PM-KISAN Samman Nidhi!</strong>
+              You qualify for <strong>₹6,000 annual direct income support</strong> paid in three equal installments of ₹2,000 every 4 months directly via DBT.
+              <div style="margin-top:8px;">
+                <a href="https://pmkisan.gov.in" target="_blank" rel="noopener" style="font-weight:700; color:#15803d; text-decoration:underline;">Proceed to Official PM-KISAN Citizen Registration ↗</a>
+              </div>
+            </div>
+          `;
+        } else {
+          resultBox.className = "alert-accessible alert-warning";
+          resultBox.innerHTML = `
+            <div style="font-size:1.5rem;">⚠️</div>
+            <div>
+              <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Ineligible under Small & Marginal Criteria</strong>
+              PM-KISAN priority guidelines are designed for small and marginal landholdings (up to 2 Hectares / 5 Acres). Explore commercial farm credit subsidies under KCC.
+            </div>
+          `;
+        }
+      }
+
+      // 3. PMFBY
+      else if (scheme === "pmfby") {
+        resultBox.className = "alert-accessible alert-success";
+        resultBox.innerHTML = `
+          <div style="font-size:1.5rem;">✅</div>
+          <div>
+            <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Eligible for Pradhan Mantri Fasal Bima Yojana (PMFBY)!</strong>
+            Your landholding (${land} Hectares) is eligible for government-subsidized crop insurance coverage (Farmer pays only 1.5% for Rabi, 2% for Kharif).
+            <div style="margin-top:8px;">
+              <a href="pmfby-enrollment.html" style="font-weight:700; color:#15803d; text-decoration:underline;">Start BhoomiBandhu Assisted PMFBY Enrollment →</a>
+            </div>
+          </div>
+        `;
+      }
+
+      // 4. KCC
+      else if (scheme === "kcc") {
+        if (land > 0) {
+          const estimatedScale = Math.round(land * 2.471 * 40000);
+          resultBox.className = "alert-accessible alert-success";
+          resultBox.innerHTML = `
+            <div style="font-size:1.5rem;">✅</div>
+            <div>
+              <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Eligible for Kisan Credit Card (KCC)!</strong>
+              Estimated Scale of Finance limit: <strong>₹${estimatedScale.toLocaleString('en-IN')}</strong> at subsidized <strong>4.0% p.a.</strong> effective interest with timely repayment subvention.
+              <div style="margin-top:8px;">
+                <a href="financial.html#dossierSection" style="font-weight:700; color:#15803d; text-decoration:underline;">Generate Bank-Ready KCC Dossier →</a>
+              </div>
+            </div>
+          `;
+        } else {
+          resultBox.className = "alert-accessible alert-error";
+          resultBox.innerHTML = `
+            <div style="font-size:1.5rem;">❌</div>
+            <div>
+              <strong style="font-size:1.05rem; display:block; margin-bottom:4px;">Ineligible: Valid Cultivated Landholding Required</strong>
+              KCC credit limits are calculated based on registered operational landholding and Scale of Finance guidelines.
+            </div>
+          `;
+        }
+      }
+
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 350);
+  }
 </script>
 <script src="auth-nav.js"></script>
 </body>

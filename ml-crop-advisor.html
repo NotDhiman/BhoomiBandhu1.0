@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ML Crop Advisor – BhoomiBandhu</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
     /* ── Local page styles ─────────────────────────────── */
@@ -249,7 +250,7 @@
       <a href="insurance.html">Insurance</a>
       <a href="schemes.html">Schemes</a>
       <a href="financial.html">Financial</a>
-      <a href="ai-crop-predictor.html">AI Crop</a>
+      <a href="ai-crop-predictor.html">Crop Suitability</a>
       <a href="ml-crop-advisor.html" style="color:var(--green);font-weight:700;">🤖 ML Advisor</a>
       <a href="gemini-advisor.html">💬 AI Chat</a>
       <a href="mental-health.html">Mental Health</a>
@@ -302,11 +303,19 @@
     <h3>🌦 Live Weather Auto-Fill</h3>
     <p class="sub">Enter your city — rainfall &amp; temperature will be fetched from OpenWeatherMap and auto-filled below.</p>
 
-    <div class="city-row">
+    <div class="form-group" style="margin-bottom:12px;">
+      <label for="cityInput" class="form-label" style="font-size:0.88rem; font-weight:600; color:var(--text); margin-bottom:6px; display:block;">
+        Location / District Name <span class="required" aria-hidden="true">*</span>
+      </label>
+      <div class="city-row">
       <input type="text" id="cityInput" placeholder="Enter city name (e.g. Delhi, Pune, Nagpur)"
              onkeydown="if(event.key==='Enter') fetchWeather()">
       <button class="city-btn" onclick="fetchWeather()" id="weatherBtn">🌦 Fetch Weather</button>
       <button class="city-btn" style="background:linear-gradient(135deg,#e65100,#ff9f1c);" onclick="fillManual()">✏️ Fill Manually</button>
+      </div>
+      <span class="helper-text" style="font-size:0.8rem; color:var(--text-muted); display:block; margin-top:6px;">
+        Auto-fetches current live temperature and humidity metrics from regional weather monitoring stations.
+      </span>
     </div>
 
     <!-- Weather display strip (hidden until fetched) -->
@@ -335,40 +344,45 @@
 
     <div class="ml-input-grid">
       <div class="ml-input-group">
-        <label>🌧 Rainfall (mm/month est.)</label>
-        <input type="number" id="ml_rainfall" placeholder="e.g. 250" min="50" max="600">
+        <label for="ml_rainfall">🌧 Rainfall (mm/month est.) <span class="required" aria-hidden="true">*</span></label>
+        <input type="number" id="ml_rainfall" placeholder="e.g. 250" min="50" max="600" required>
+        <span class="helper-text" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">Expected monthly precipitation</span>
       </div>
       <div class="ml-input-group">
-        <label>🌡 Temperature (°C)</label>
-        <input type="number" id="ml_temp" placeholder="e.g. 25" min="5" max="45">
+        <label for="ml_temp">🌡 Temperature (°C) <span class="required" aria-hidden="true">*</span></label>
+        <input type="number" id="ml_temp" placeholder="e.g. 25" min="5" max="45" required>
+        <span class="helper-text" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">Mean seasonal temperature</span>
       </div>
       <div class="ml-input-group">
-        <label>🪨 Soil Type</label>
-        <select id="ml_soil">
+        <label for="ml_soil">🪨 Soil Type <span class="required" aria-hidden="true">*</span></label>
+        <select id="ml_soil" required>
           <option value="loamy">Loamy</option>
           <option value="clay">Clay</option>
           <option value="sandy">Sandy</option>
           <option value="red">Red / Laterite</option>
           <option value="black">Black (Regur)</option>
         </select>
+        <span class="helper-text" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">Field soil texture</span>
       </div>
     </div>
     <div class="ml-input-grid-2">
       <div class="ml-input-group">
-        <label>☀️ Season</label>
-        <select id="ml_season">
+        <label for="ml_season">☀️ Season <span class="required" aria-hidden="true">*</span></label>
+        <select id="ml_season" required>
           <option value="kharif">Kharif (June–Oct)</option>
           <option value="rabi">Rabi (Oct–Mar)</option>
           <option value="zaid">Zaid (Mar–Jun)</option>
         </select>
+        <span class="helper-text" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">Sowing window</span>
       </div>
       <div class="ml-input-group">
-        <label>💧 Irrigation</label>
-        <select id="ml_irr">
+        <label for="ml_irr">💧 Irrigation <span class="required" aria-hidden="true">*</span></label>
+        <select id="ml_irr" required>
           <option value="irrigated">Irrigated</option>
           <option value="rainfed">Rain-fed</option>
           <option value="partial">Partial Irrigation</option>
         </select>
+        <span class="helper-text" style="font-size:0.75rem; color:var(--text-muted); display:block; margin-top:3px;">Water availability source</span>
       </div>
     </div>
 

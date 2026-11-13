@@ -2,160 +2,545 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crop Insurance | BhoomiBandhu</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Insurance Hub (PMFBY) | BhoomiBandhu 2.0</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <style>
+    .insurance-hero-wrap {
+      background: linear-gradient(135deg, #0a2318 0%, #174230 60%, #1f573f 100%);
+      color: #ffffff;
+      padding: 3.5rem 1.5rem;
+      border-radius: 0 0 32px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2.5rem;
+    }
+    .hero-decor-leaf {
+      position: absolute;
+      right: -20px;
+      bottom: -30px;
+      width: 240px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .hero-max-box {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Distinct Dual Gateway Cards */
+    .dual-gateway-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 860px) {
+      .dual-gateway-grid { grid-template-columns: 1fr; }
+    }
+    .gateway-card {
+      background: #ffffff;
+      border: 2px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 8px 24px rgba(10, 31, 22, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .gateway-card.enroll-theme {
+      border-top: 6px solid #16a34a;
+    }
+    .gateway-card.claim-theme {
+      border-top: 6px solid #dc2626;
+    }
+    .gateway-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(10, 31, 22, 0.12);
+    }
+    .gateway-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+    }
+    .badge-enroll { background: #dcfce7; color: #15803d; }
+    .badge-claim { background: #fee2e2; color: #b91c1c; }
+
+    .gateway-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--c-forest-dark);
+      margin-bottom: 0.5rem;
+    }
+    .gateway-desc {
+      font-size: 0.94rem;
+      color: var(--c-text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .checklist-preview {
+      background: #faf8f5;
+      border: 1px dashed #dcd4c5;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      color: #2e4d3f;
+    }
+    .checklist-preview ul {
+      list-style: none;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Live Status Tracker Box */
+    .live-tracker-section {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2.25rem;
+      box-shadow: 0 6px 20px rgba(10, 31, 22, 0.04);
+      margin-bottom: 3rem;
+    }
+    .tracker-input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .tracker-input {
+      flex: 1;
+      min-width: 260px;
+      height: 52px;
+      padding: 0 16px;
+      font-size: 0.98rem;
+      font-family: inherit;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 12px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .tracker-input:focus {
+      border-color: #2d6a4f;
+      box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.12);
+    }
+
+    /* Premium Calculation Table */
+    .rates-table-wrap {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow-x: auto;
+      margin-bottom: 3rem;
+    }
+    table.rates-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    table.rates-table th {
+      background: #f4f0e6;
+      padding: 14px 18px;
+      font-weight: 800;
+      color: var(--c-forest-dark);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    table.rates-table td {
+      padding: 12px 18px;
+      border-bottom: 1px solid #f2eee4;
+      color: var(--c-text-main);
+    }
+  </style>
 </head>
-<body>
+<body style="background-color: var(--surface-cream);">
 
-<!-- ===== HEADER ===== -->
-<header>
-  <div class="container header-flex">
-
-    <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
-      <span>BhoomiBandhu</span>
-    </div>
-
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="storage.html">Storage</a>
-      <a href="insurance.html">Insurance</a>
-      <a href="schemes.html">Schemes</a>
-      <a href="financial.html">Financial</a>
-      <a href="ai-crop-predictor.html">AI Crop</a>
-      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
-      <a href="gemini-advisor.html">💬 AI Chat</a>
-      <a href="mental-health.html">Mental Health</a>
-      <a href="#" onclick="toggleTheme()">🌙</a>
-    </nav>
-
-  </div>
-</header>
-
-<!-- ===== HERO ===== -->
-<section class="hero-secondary animate-hero insurance-hero">
-  <h1>Crop Insurance<br>Support</h1>
-
-  <p class="hero-tagline">
-    Protect your crops against natural risks with government-backed insurance and guided claim support.
-  </p>
-</section>
-
-
-<!-- ===== INTRO ===== -->
-<section class="section container">
-  <h2>Why Crop Insurance Matters</h2>
-  <p style="max-width:900px;margin:auto;color:#4f6f57;line-height:1.8">
-    Crop losses due to droughts, floods, pests, and unpredictable weather
-    can severely impact farmers’ income. Crop insurance provides financial
-    protection and stability by covering losses and ensuring farmers can
-    recover and continue farming without falling into debt.
-  </p>
-</section>
-
-<!-- ===== INSURANCE SERVICES ===== -->
-<section class="section container">
-  <h2>Our Insurance Support Services</h2>
-
-  <div class="grid">
-
-    <div class="card">
-      <a href="pmfby-enrollment.html" class="card"><h3>PMFBY Enrollment</h3></a>
-      <p>
-        Assistance in enrolling under Pradhan Mantri Fasal Bima Yojana (PMFBY)
-        with correct crop and land details.
-      </p>
-    </div>
-
-    <div class="card">
-      <a href="risk-awareness.html" class="card"><h3>Risk Awareness</h3></a>
-      <p>
-        Information on weather-related risks and how insurance coverage
-        protects against them.
-      </p>
-    </div>
-
-    <div class="card">
-      <a href="claim-filing.html" class="card"><h3>Claim Filing Support</h3></a>
-      <p>
-        Step-by-step guidance to file insurance claims accurately and on time.
-      </p>
-    </div>
-
-    <div class="card">
-      <a href="status-tracking.html" class="card"><h3>Status Tracking</h3></a>
-      <p>
-        Help in tracking claim status and resolving delays or issues.
-      </p>
-    </div>
-
-  </div>
-</section>
-
-<!-- ===== APPLY / CLAIM FORM ===== -->
-<section class="section container">
-  <h2>Apply for Crop Insurance / Claim Support</h2>
-
-  <div class="card">
-    <form id="insuranceForm">
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <input type="text" id="farmerName" placeholder="Farmer Name" required>
-        <input type="text" id="district" placeholder="District / Location" required>
+  <!-- Global Header -->
+  <header>
+    <div class="container header-flex">
+      <div class="logo">
+        <a href="index.html">
+          <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
+          <span>BhoomiBandhu <span class="logo-brand-tag">2.0</span></span>
+        </a>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
-        <input type="text" id="crop" placeholder="Crop Name" required>
-        <select id="requestType" required>
-          <option value="">Select Request Type</option>
-          <option>New Insurance Enrollment</option>
-          <option>Crop Loss Claim</option>
-        </select>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="insurance.html" class="active">Insurance Hub</a>
+        <a href="pmfby-enrollment.html">Enrollment</a>
+        <a href="claim-filing.html">Report Loss</a>
+        <a href="status-tracking.html">Track Status</a>
+        <a href="schemes.html">Schemes</a>
+        <a href="#" onclick="toggleTheme()" title="Toggle Dark/Light Mode" style="padding:6px 10px;">🌙</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner with Direct Actions -->
+  <section class="insurance-hero-wrap">
+    <div class="hero-max-box">
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.15); padding:6px 16px; border-radius:30px; font-size:0.84rem; font-weight:700; margin-bottom:1rem;">
+        <span>🛡️</span>
+        <span>Pradhan Mantri Fasal Bima Yojana (PMFBY) Partner Portal</span>
+      </div>
+      <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 0.75rem;">
+        Comprehensive Crop Insurance & Rapid Claims
+      </h1>
+      <p style="font-size: 1.1rem; opacity: 0.92; max-width: 760px; line-height: 1.6; margin-bottom: 1.75rem;">
+        Protect your harvest against droughts, unseasonal rain, hailstorms, floods, and pest epidemics. Enroll with subsidized farmer premiums (1.5% - 2%) or intimate crop damage within 72 hours for prompt claim settlement.
+      </p>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="pmfby-enrollment.html" class="btn" style="background:#16a34a; color:#fff; font-weight:700; padding:12px 24px; border-radius:30px; text-decoration:none;">
+          🌾 Apply for New PMFBY Enrollment →
+        </a>
+        <a href="claim-filing.html" class="btn" style="background:#dc2626; color:#fff; font-weight:700; padding:12px 24px; border-radius:30px; text-decoration:none;">
+          🚨 Intimate Crop Loss (72-Hr Window) →
+        </a>
+        <a href="status-tracking.html" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; font-weight:700; padding:12px 20px; border-radius:30px; text-decoration:none; border:1px solid rgba(255,255,255,0.4);">
+          🔍 Track Claim / Application Status
+        </a>
+      </div>
+    </div>
+    <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" class="hero-decor-leaf" alt="Decor">
+  </section>
+
+  <main class="container">
+
+    <!-- =========================================================
+         CLEAR DISTINCTION: INDIVIDUAL DEDICATED WORKFLOWS
+         ========================================================= -->
+    <h2 style="font-size:1.85rem; font-weight:800; color:var(--c-forest-dark); margin-bottom:0.5rem; text-align:center;">
+      Choose Your Insurance Service Workflow
+    </h2>
+    <p style="text-align:center; color:var(--c-text-muted); margin-bottom:2.25rem;">
+      Please select whether you need new seasonal coverage or need to file an emergency crop damage claim.
+    </p>
+
+    <div class="dual-gateway-grid">
+      
+      <!-- WORKFLOW 1: NEW ENROLLMENT -->
+      <div class="gateway-card enroll-theme">
+        <div>
+          <span class="gateway-badge badge-enroll">Workflow 1 • New Policy</span>
+          <h3 class="gateway-title">PMFBY Policy Enrollment</h3>
+          <p class="gateway-desc">
+            Enroll your land and crops under Pradhan Mantri Fasal Bima Yojana before seasonal cut-off dates. Benefit from government subsidized premium rates (only 1.5% for Rabi, 2% for Kharif).
+          </p>
+
+          <div class="checklist-preview">
+            <strong>📋 Mandatory Documents Checklist:</strong>
+            <ul>
+              <li>✓ Land Record (RoR / Khasra-Khatauni number)</li>
+              <li>✓ Sowing Declaration / Certificate from Patwari/Gram Sevak</li>
+              <li>✓ Bank Passbook Copy (Aadhaar linked for DBT)</li>
+              <li>✓ Valid Identity Proof (Aadhaar Card)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <a href="pmfby-enrollment.html" class="btn" style="background:#15803d; color:#ffffff; width:100%; text-align:center; display:block; padding:14px; border-radius:12px; font-weight:700; text-decoration:none;">
+            Start New Enrollment Application →
+          </a>
+          <div style="font-size:0.78rem; text-align:center; color:#6b7280; margin-top:8px;">
+            Official PMFBY Portal Synchronization: Supported
+          </div>
+        </div>
       </div>
 
-      <textarea
-        id="issue"
-        placeholder="Describe crop loss or insurance requirement"
-        style="margin-top:16px"
-        required></textarea>
+      <!-- WORKFLOW 2: CROP LOSS CLAIM -->
+      <div class="gateway-card claim-theme">
+        <div>
+          <span class="gateway-badge badge-claim">Workflow 2 • 72-Hour Rapid Claim</span>
+          <h3 class="gateway-title">Crop Loss Claim Filing</h3>
+          <p class="gateway-desc">
+            Has your standing or harvested crop been damaged by hailstorms, unseasonal rains, drought, flood, or pest attack? Intimate damage within <strong>72 hours</strong> to ensure official surveyor inspection.
+          </p>
 
-      <button type="submit" class="btn">Submit Request</button>
+          <div class="checklist-preview" style="border-color:#fca5a5; background:#fff5f5;">
+            <strong style="color:#b91c1c;">📸 Claim Evidence Checklist:</strong>
+            <ul style="color:#7f1d1d;">
+              <li>✓ Policy Application ID or Khasra Record number</li>
+              <li>✓ Exact Date & Time of Natural Calamity</li>
+              <li>✓ 2 Geotagged Photographs of Damaged Crop in Field</li>
+              <li>✓ Brief description of crop stage & estimated damage percentage</li>
+            </ul>
+          </div>
+        </div>
 
-      <p id="insuranceMessage" style="margin-top:16px;font-weight:500"></p>
-    </form>
-  </div>
-</section>
+        <div>
+          <a href="claim-filing.html" class="btn" style="background:#b91c1c; color:#ffffff; width:100%; text-align:center; display:block; padding:14px; border-radius:12px; font-weight:700; text-decoration:none;">
+            🚨 File Emergency Damage Intimation (72 Hrs) →
+          </a>
+          <div style="font-size:0.78rem; text-align:center; color:#991b1b; font-weight:600; margin-top:8px;">
+            ⏰ Claims filed after 72 hours require special district committee review.
+          </div>
+        </div>
+      </div>
 
-<!-- ===== FOOTER ===== -->
-<footer>
-  © 2025 BhoomiBandhu. All rights reserved.
-</footer>
+    </div>
 
-<!-- ===== JS ===== -->
-<script src="script.js"></script>
+    <!-- =========================================================
+         LIVE PERSISTED APPLICATION & CLAIM TRACKING WIDGET
+         ========================================================= -->
+    <section class="live-tracker-section">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div>
+          <h3 style="font-size:1.45rem; font-weight:800; color:var(--c-forest-dark);">
+            🔍 Live Application & Claim Status Tracking
+          </h3>
+          <p style="font-size:0.9rem; color:var(--c-text-muted); margin-top:2px;">
+            Track any real persisted enrollment or loss claim using your Application ID, Claim ID, or registered 10-digit mobile number.
+          </p>
+        </div>
+        <a href="status-tracking.html" style="font-size:0.86rem; color:#15803d; font-weight:700; text-decoration:underline;">
+          Open Dedicated Tracking Page →
+        </a>
+      </div>
 
-<script>
-  const insuranceForm = document.getElementById("insuranceForm");
-  const insuranceMessage = document.getElementById("insuranceMessage");
+      <form onsubmit="handleQuickTrack(event)">
+        <div class="tracker-input-row">
+          <input
+            type="text"
+            id="quickTrackQuery"
+            class="tracker-input"
+            placeholder="Enter Application ID (BB-ENR-...), Claim ID (BB-CLM-...), or 10-digit Mobile"
+            required
+          >
+          <button type="submit" id="btnQuickTrack" class="btn" style="background:#1b4332; color:#fff; font-weight:700; padding:0 28px; border-radius:12px; height:52px;">
+            Track Status →
+          </button>
+        </div>
+      </form>
 
-  insuranceForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+      <!-- Quick demo click helpers -->
+      <div style="margin-top:10px; font-size:0.82rem; color:#6b7280;">
+        <span>Quick Test Queries:</span>
+        <a href="#" onclick="fillQuickTrack('BB-ENR-2026-48291', event)" style="color:#1b4332; font-weight:700; text-decoration:underline; margin:0 6px;">BB-ENR-2026-48291 (Ramesh Enrollment)</a> •
+        <a href="#" onclick="fillQuickTrack('BB-CLM-2026-19342', event)" style="color:#b91c1c; font-weight:700; text-decoration:underline; margin:0 6px;">BB-CLM-2026-19342 (Hailstorm Claim)</a> •
+        <a href="#" onclick="fillQuickTrack('1234567891', event)" style="color:#15803d; font-weight:700; text-decoration:underline; margin:0 6px;">1234567891 (User uv)</a>
+      </div>
 
-    const name = document.getElementById("farmerName").value;
-    const type = document.getElementById("requestType").value;
+      <!-- Results Display Container -->
+      <div id="quickTrackResult" style="display:none; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid #e5e7eb;"></div>
+    </section>
 
-    insuranceMessage.style.color = "#1b5e20";
-    insuranceMessage.innerText =
-      "Thank you " + name +
-      ". Your request for '" + type +
-      "' has been submitted successfully. Our team will contact you soon.";
+    <!-- =========================================================
+         OFFICIAL PMFBY SUBSIDIZED PREMIUM RATES MATRIX
+         ========================================================= -->
+    <h3 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin-bottom:0.75rem;">
+      Official PMFBY Premium Guidelines & Government Subsidies
+    </h3>
+    <p style="font-size:0.9rem; color:var(--c-text-muted); margin-bottom:1.25rem;">
+      Under PMFBY, the farmer pays only a small fraction of the actuarial premium. The rest is fully co-funded by the Central and State Governments.
+    </p>
 
-    insuranceForm.reset();
-  });
-</script>
-<script src="auth-nav.js"></script>
+    <div class="rates-table-wrap">
+      <table class="rates-table">
+        <thead>
+          <tr>
+            <th>Crop Category</th>
+            <th>Applicable Season</th>
+            <th>Farmer Premium Share</th>
+            <th>Govt Subsidy Share</th>
+            <th>Perils Covered</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Food Grains, Pulses & Oilseeds</strong></td>
+            <td>Kharif (Monsoon)</td>
+            <td><strong style="color:#15803d;">2.0% of Sum Insured</strong></td>
+            <td>Balance (up to 98%) paid by Govt</td>
+            <td>Drought, Flood, Pests, Inundation</td>
+          </tr>
+          <tr>
+            <td><strong>Wheat, Mustard, Barley, Gram</strong></td>
+            <td>Rabi (Winter)</td>
+            <td><strong style="color:#15803d;">1.5% of Sum Insured</strong></td>
+            <td>Balance (up to 98.5%) paid by Govt</td>
+            <td>Frost, Hailstorm, Unseasonal Rain</td>
+          </tr>
+          <tr>
+            <td><strong>Annual Commercial & Horticultural Crops</strong></td>
+            <td>Both Kharif & Rabi</td>
+            <td><strong style="color:#b45309;">5.0% of Sum Insured</strong></td>
+            <td>Balance paid by Govt</td>
+            <td>Severe weather & localized calamities</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Additional Helpful Cards -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:3.5rem;">
+      
+      <div style="background:#ffffff; border:1px solid var(--border-subtle); border-radius:16px; padding:1.5rem;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">⚖️</div>
+        <h4 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin-bottom:6px;">Risk Awareness Shield</h4>
+        <p style="font-size:0.86rem; color:var(--c-text-muted); line-height:1.5; margin-bottom:1rem;">
+          Learn what is covered under PMFBY (prevented sowing, localized storms, post-harvest drying) and what perils are excluded.
+        </p>
+        <a href="risk-awareness.html" style="color:#15803d; font-weight:700; text-decoration:none; font-size:0.88rem;">Read Risk Guide →</a>
+      </div>
+
+      <div style="background:#ffffff; border:1px solid var(--border-subtle); border-radius:16px; padding:1.5rem;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">🏛️</div>
+        <h4 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin-bottom:6px;">Official PMFBY Portal</h4>
+        <p style="font-size:0.86rem; color:var(--c-text-muted); line-height:1.5; margin-bottom:1rem;">
+          Access the National Crop Insurance Portal directly at pmfby.gov.in for state-wise premium calculators and insurance company directory.
+        </p>
+        <a href="https://pmfby.gov.in" target="_blank" rel="noopener" style="color:#15803d; font-weight:700; text-decoration:none; font-size:0.88rem;">Open pmfby.gov.in ↗</a>
+      </div>
+
+      <div style="background:#ffffff; border:1px solid var(--border-subtle); border-radius:16px; padding:1.5rem;">
+        <div style="font-size:1.8rem; margin-bottom:8px;">📞</div>
+        <h4 style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin-bottom:6px;">Kisan 24/7 Helpline</h4>
+        <p style="font-size:0.86rem; color:var(--c-text-muted); line-height:1.5; margin-bottom:1rem;">
+          In case of bank enrollment delays or surveyor disputes, dial the national toll-free agricultural helpline for immediate intervention.
+        </p>
+        <a href="tel:18001801551" style="color:#b91c1c; font-weight:800; text-decoration:none; font-size:0.88rem;">Call 1800-180-1551 (Free)</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="text-align:center; font-size:0.88rem; color:#6b7280; padding:2rem 0;">
+      © 2026 BhoomiBandhu 2.0 • Digital Agriculture Platform • PMFBY Guided Assistance
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="auth-nav.js"></script>
+
+  <script>
+    function fillQuickTrack(val, e) {
+      if (e) e.preventDefault();
+      document.getElementById('quickTrackQuery').value = val;
+      document.getElementById('btnQuickTrack').click();
+    }
+
+    async function handleQuickTrack(e) {
+      e.preventDefault();
+      const q = document.getElementById('quickTrackQuery').value.trim();
+      const resBox = document.getElementById('quickTrackResult');
+      const btn = document.getElementById('btnQuickTrack');
+
+      if (!q) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Searching...';
+      resBox.style.display = 'block';
+      resBox.innerHTML = '<div style="text-align:center; padding:15px; color:#666;">Searching database records...</div>';
+
+      try {
+        const res = await fetch(`/api/insurance/track/${encodeURIComponent(q)}`);
+        const data = await res.json();
+
+        if (res.ok && data.success && data.totalFound > 0) {
+          let html = `<div style="font-weight:700; color:#1b4332; margin-bottom:12px;">Found ${data.totalFound} matching record(s) for query: "${q}"</div>`;
+
+          // Render Enrollments
+          if (data.enrollments && data.enrollments.length > 0) {
+            html += `<h4 style="font-size:1.05rem; color:#15803d; margin-bottom:8px;">🌾 Policy Enrollments (${data.enrollments.length}):</h4>`;
+            data.enrollments.forEach(enr => {
+              html += `
+                <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:12px; padding:14px; margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div>
+                      <strong style="font-size:1.05rem; color:#166534;">App ID: ${enr.application_id}</strong>
+                      <span style="background:#dcfce7; color:#166534; font-size:0.75rem; font-weight:700; padding:3px 8px; border-radius:6px; margin-left:8px;">${enr.status}</span>
+                    </div>
+                    <div style="font-size:0.82rem; color:#4b5563;">Date: ${new Date(enr.created_at).toLocaleDateString()}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:8px; margin-top:8px; font-size:0.86rem;">
+                    <div><strong>Farmer:</strong> ${enr.farmer_name} (${enr.mobile})</div>
+                    <div><strong>Crop & Land:</strong> ${enr.crop_name} (${enr.area_acres} Acres)</div>
+                    <div><strong>Sum Insured:</strong> ₹${Number(enr.sum_insured).toLocaleString()}</div>
+                    <div><strong>Farmer Premium:</strong> ₹${Number(enr.farmer_premium).toLocaleString()}</div>
+                    <div><strong>Location:</strong> ${enr.district}, ${enr.state}</div>
+                    <div><strong>Documents:</strong> ${(enr.documents || []).length} Verified Files</div>
+                  </div>
+                </div>
+              `;
+            });
+          }
+
+          // Render Claims
+          if (data.claims && data.claims.length > 0) {
+            html += `<h4 style="font-size:1.05rem; color:#b91c1c; margin-top:16px; margin-bottom:8px;">🚨 Crop Damage Claims (${data.claims.length}):</h4>`;
+            data.claims.forEach(clm => {
+              html += `
+                <div style="background:#fef2f2; border:1px solid #fca5a5; border-radius:12px; padding:14px; margin-bottom:10px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div>
+                      <strong style="font-size:1.05rem; color:#991b1b;">Claim ID: ${clm.claim_id}</strong>
+                      <span style="background:#fee2e2; color:#991b1b; font-size:0.75rem; font-weight:700; padding:3px 8px; border-radius:6px; margin-left:8px;">${clm.status}</span>
+                    </div>
+                    <div style="font-size:0.82rem; color:#4b5563;">Loss Date: ${clm.loss_date}</div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:8px; margin-top:8px; font-size:0.86rem;">
+                    <div><strong>Farmer:</strong> ${clm.farmer_name} (${clm.mobile})</div>
+                    <div><strong>Calamity Type:</strong> ${clm.calamity_type}</div>
+                    <div><strong>Damage %:</strong> ${clm.damage_percentage}% on ${clm.affected_area_acres} Ac</div>
+                    <div><strong>Intimation Window:</strong> <span style="color:#15803d; font-weight:700;">${clm.intimation_window_status}</span></div>
+                    <div><strong>Evidence Photos:</strong> ${(clm.documents || []).length} Attached</div>
+                    <div><strong>Description:</strong> ${clm.loss_description || 'Field surveyed'}</div>
+                  </div>
+                </div>
+              `;
+            });
+          }
+
+          html += `
+            <div style="text-align:right; margin-top:12px;">
+              <a href="status-tracking.html?id=${encodeURIComponent(q)}" style="color:#15803d; font-weight:700; text-decoration:underline; font-size:0.88rem;">
+                View Full Step-by-Step Interactive Timeline →
+              </a>
+            </div>
+          `;
+
+          resBox.innerHTML = html;
+        } else {
+          resBox.innerHTML = `
+            <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:10px; padding:14px; color:#92400e; font-size:0.9rem;">
+              ⚠️ No insurance records found matching <strong>"${q}"</strong>. Please verify your Application ID or mobile number, or submit a new enrollment above.
+            </div>
+          `;
+        }
+      } catch (err) {
+        resBox.innerHTML = `<div style="color:red; padding:10px;">Network error while tracking records. Please try again.</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Track Status →';
+      }
+    }
+  </script>
 </body>
 </html>
-

@@ -3,7 +3,7 @@
    Theme: Deep Forest Green, Fresh Leaf Green, Warm Sunlight Yellow, Natural Cream, Earthy Brown
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap');
 
 :root {
   /* Color Palette */
@@ -42,7 +42,7 @@
   --c-success-bg: #d1fae5;
 
   /* Typography */
-  --font-main: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-main: 'Poppins', 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Shadows & Radius */
   --radius-xs: 6px;
@@ -540,6 +540,47 @@ body {
 }
 .toggle-password:hover {
   color: var(--c-forest);
+}
+
+.required-indicator, .req {
+  color: #dc2626;
+  font-weight: 700;
+  margin-left: 3px;
+}
+
+.form-help, .helper-text {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--c-text-muted);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.invalid-feedback {
+  display: none;
+  font-size: 0.8rem;
+  color: #dc2626;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.form-input.is-invalid, .is-invalid {
+  border-color: #dc2626 !important;
+  background-color: #fef2f2 !important;
+}
+
+.form-input.is-invalid:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2) !important;
+}
+
+.form-input.is-valid {
+  border-color: #16a34a !important;
+  background-color: #f0fdf4 !important;
+}
+
+.form-group.has-error .invalid-feedback,
+.input-wrapper + .invalid-feedback:not(:empty) {
+  display: block;
 }
 
 /* Remember & Forgot Row */

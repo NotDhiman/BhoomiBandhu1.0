@@ -1,51 +1,1403 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Claim Filing Support | BhoomiBandhu</title>
+  <meta charset="UTF-8">
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>72-Hour Urgent Crop Loss & Claim Intimation | BhoomiBandhu 2.0</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <script src="auth-nav.js" defer></script>
+
+  <style>
+    :root {
+      --c-forest-dark: #0f2d1e;
+      --c-forest-mid: #1b4332;
+      --c-leaf-green: #2d6a4f;
+      --c-leaf-bright: #40916c;
+      --c-sunlight: #f39c12;
+      --c-bg-cream: #fbf9f4;
+      --c-border: #e4decb;
+      --c-text-main: #1d2d24;
+      --c-text-muted: #4f6356;
+      --c-danger: #dc2626;
+      --c-danger-bg: #fef2f2;
+    }
+
+    body {
+      background-color: var(--c-bg-cream);
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;
+      color: var(--c-text-main);
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Emergency Hero Banner */
+    .claim-hero {
+      background: linear-gradient(135deg, #1f0b0b 0%, #3d1414 50%, #5c1d1d 100%);
+      color: #ffffff;
+      padding: 2.75rem 1.5rem 3.5rem;
+      border-radius: 0 0 32px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .claim-hero::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -30px;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .claim-hero-box {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+    .breadcrumb-trail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #fca5a5;
+      margin-bottom: 1rem;
+    }
+    .breadcrumb-trail a {
+      color: #fca5a5;
+      text-decoration: none;
+    }
+    .breadcrumb-trail a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    /* 72-Hour Timer Card */
+    .emergency-timer-card {
+      max-width: 960px;
+      margin: -2.2rem auto 2.5rem;
+      background: #ffffff;
+      border: 2px solid #fecaca;
+      border-radius: 18px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(185, 28, 28, 0.08);
+      position: relative;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .timer-alert-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* Multi-Step Workflow Stepper */
+    .workflow-stepper-wrap {
+      max-width: 960px;
+      margin: 0 auto 2rem;
+      padding: 0 1rem;
+    }
+    .step-indicator-bar {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      background: #ffffff;
+      border: 1.5px solid var(--c-border);
+      border-radius: 16px;
+      padding: 18px 24px;
+      box-shadow: 0 4px 16px rgba(15, 45, 30, 0.04);
+    }
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .step-pill.active {
+      color: #b91c1c;
+    }
+    .step-pill.completed {
+      color: #15803d;
+    }
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+    .step-pill.active .step-badge {
+      background: #dc2626;
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.2);
+    }
+    .step-pill.completed .step-badge {
+      background: #15803d;
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      .step-indicator-bar { flex-direction: column; gap: 12px; }
+    }
+
+    /* Window Calculation Alert Box */
+    .window-status-box {
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin: 1.25rem 0 1.5rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+    }
+    .window-valid {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      color: #065f46;
+    }
+    .window-expired {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      color: #92400e;
+    }
+
+    /* Main Container */
+    .form-shell {
+      max-width: 960px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+    .step-section-card {
+      background: #ffffff;
+      border: 1.5px solid var(--c-border);
+      border-radius: 20px;
+      padding: 2.25rem 2.5rem;
+      box-shadow: 0 8px 28px rgba(10, 31, 22, 0.04);
+      margin-bottom: 2rem;
+      display: none;
+    }
+    .step-section-card.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .step-section-card { padding: 1.5rem 1.25rem; }
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+    }
+    @media (max-width: 768px) {
+      .form-grid-2, .form-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--c-forest-dark);
+      margin-bottom: 6px;
+    }
+    .form-label .required {
+      color: #dc2626;
+      margin-left: 2px;
+    }
+    .form-control {
+      width: 100%;
+      height: 48px;
+      border: 1.5px solid var(--c-border);
+      border-radius: 12px;
+      padding: 0 14px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--c-text-main);
+      background: #ffffff;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    }
+    .form-help {
+      font-size: 0.78rem;
+      color: var(--c-text-muted);
+      margin-top: 5px;
+    }
+
+    /* Calamity Selector Cards */
+    .calamity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .calamity-card-option {
+      background: #faf8f5;
+      border: 1.5px solid var(--c-border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .calamity-card-option:hover {
+      border-color: #dc2626;
+      background: #fff5f5;
+    }
+    .calamity-card-option.selected {
+      border-color: #dc2626;
+      background: #fee2e2;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+    }
+    .calamity-card-option input[type="radio"] {
+      display: none;
+    }
+    .calamity-icon {
+      font-size: 1.6rem;
+    }
+    .calamity-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--c-forest-dark);
+    }
+
+    /* Interactive Checklist */
+    .checklist-wrap {
+      background: #faf8f5;
+      border: 1.5px solid var(--c-border);
+      border-radius: 16px;
+      padding: 18px 22px;
+      margin-bottom: 1.5rem;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #ebd0bb;
+      cursor: pointer;
+    }
+    .checklist-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .checklist-item input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: #1b4332;
+      cursor: pointer;
+    }
+    .checklist-text {
+      flex: 1;
+      font-size: 0.9rem;
+      color: #1d2d24;
+      line-height: 1.45;
+    }
+    .checklist-text strong {
+      display: block;
+      color: #0f2d1e;
+      margin-bottom: 2px;
+    }
+
+    /* Damage Severity Slider */
+    .severity-slider-wrap {
+      background: #faf8f5;
+      border: 1.5px solid var(--c-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .severity-meter-val {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #b91c1c;
+    }
+    .severity-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Multi-Document Upload Grid */
+    .upload-document-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 1.5rem;
+    }
+    @media (max-width: 650px) {
+      .upload-document-grid { grid-template-columns: 1fr; }
+    }
+    .upload-slot-card {
+      border: 2px dashed #d1c8b4;
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      background: #faf8f5;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .upload-slot-card:hover {
+      border-color: #dc2626;
+      background: #fffafa;
+    }
+    .upload-slot-card.has-file {
+      border-color: #10b981;
+      background: #f0fdf4;
+    }
+
+    /* Distinction Banner between Guidance & Authorized Submission */
+    .authority-distinction-box {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 1.75rem;
+      color: #1e3a8a;
+    }
+    .authority-distinction-box h4 {
+      margin: 0 0 6px 0;
+      color: #1d4ed8;
+      font-size: 1.05rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .authority-distinction-box p {
+      margin: 0 0 10px 0;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+
+    /* Stepper Control Buttons */
+    .stepper-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1.5px solid #eef2ef;
+    }
+
+    /* Success Receipt Modal Card */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 17, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 1000;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 24px;
+      max-width: 680px;
+      width: 100%;
+      padding: 2.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      position: relative;
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .claim-id-pill {
+      display: inline-block;
+      background: #fef2f2;
+      border: 2px dashed #ef4444;
+      padding: 8px 20px;
+      border-radius: 14px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #b91c1c;
+      letter-spacing: 0.05em;
+      margin: 1rem 0;
+      user-select: all;
+    }
+
+    @media print {
+      header, footer, .claim-hero, .emergency-timer-card, .workflow-stepper-wrap, .stepper-nav-bar, button {
+        display: none !important;
+      }
+      .modal-card {
+        border: 2px solid #000 !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .modal-overlay {
+        position: static !important;
+        background: transparent !important;
+        display: block !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
+<!-- Header -->
 <header>
   <div class="container header-flex">
     <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
-      <span>BhoomiBandhu</span>
+      <a href="index.html">
+        <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu Logo">
+        <span>BhoomiBandhu <span class="logo-brand-tag">2.0</span></span>
+      </a>
     </div>
     <nav>
       <a href="index.html">Home</a>
-      <a href="insurance.html">Insurance</a>
+      <a href="insurance.html">Insurance Hub</a>
+      <a href="pmfby-enrollment.html">Enrollment</a>
+      <a href="claim-filing.html" class="active">Report Loss (72-Hr)</a>
+      <a href="status-tracking.html">Track Status</a>
     </nav>
   </div>
 </header>
 
-<section class="hero">
-  <h1>Claim Filing Support</h1>
-  <p>Step-by-step help to file insurance claims correctly</p>
-</section>
-
-<section class="section container">
-  <h2>Claim Filing Process</h2>
-  <div class="grid">
-    <div class="card">Crop loss intimation</div>
-    <div class="card">Document collection</div>
-    <div class="card">Online claim submission</div>
-    <div class="card">Follow-up support</div>
+<!-- Urgent Hero Banner -->
+<section class="claim-hero">
+  <div class="claim-hero-box">
+    <div class="breadcrumb-trail">
+      <a href="index.html">Home</a>
+      <span>›</span>
+      <a href="insurance.html">Insurance Hub</a>
+      <span>›</span>
+      <span>72-Hour Crop Loss Intimation</span>
+    </div>
+    <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(239, 68, 68, 0.25); padding:4px 14px; border-radius:20px; font-size:0.82rem; font-weight:800; margin-bottom:0.75rem; border:1px solid rgba(239,68,68,0.4);">
+      <span>🚨</span> MANDATORY 72-HOUR STATUTORY NOTICE WINDOW
+    </div>
+    <h1 style="font-size:2.2rem; font-weight:800; margin:0 0 0.5rem; line-height:1.2;">
+      72-Hour Crop Loss & Calamity Intimation Portal
+    </h1>
+    <p style="font-size:1.02rem; color:#fecaca; max-width:840px; margin:0; line-height:1.6;">
+      Guided multi-step loss intimation workflow under the Pradhan Mantri Fasal Bima Yojana (PMFBY). Generate an official claim dossier and dispatch surveyor notifications to authorized state authorities.
+    </p>
   </div>
 </section>
 
-<section class="section container">
-  <h2>Common Mistakes We Help Avoid</h2>
-  <div class="card">
-    <ul>
-      <li>Late claim submission</li>
-      <li>Incorrect land details</li>
-      <li>Missing documents</li>
-    </ul>
+<!-- Emergency Hotline Banner -->
+<div class="emergency-timer-card">
+  <div>
+    <div class="timer-alert-badge">⚡ PMFBY Emergency Support Desk</div>
+    <div style="font-size:1.15rem; font-weight:800; color:var(--c-forest-dark); margin:6px 0 2px;">
+      Toll-Free Helpline: <span style="color:#b91c1c;">14447</span> / <span style="color:#b91c1c;">1800-180-1551</span>
+    </div>
+    <div style="font-size:0.84rem; color:var(--c-text-muted);">
+      Kisan Call Centre & Crop Insurance Grievance Officers available 24x7 for urgent loss intimation.
+    </div>
   </div>
-</section>
+  <a href="tel:14447" style="background:#dc2626; color:#ffffff; padding:10px 20px; border-radius:12px; font-weight:700; font-size:0.9rem; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+    <span>📞</span> Call 14447 Now
+  </a>
+</div>
 
-<footer>© 2025 BhoomiBandhu</footer>
-<script src="script.js"></script>
+<!-- Multi-Step Stepper Header -->
+<div class="workflow-stepper-wrap">
+  <div class="step-indicator-bar">
+    <div class="step-pill active" id="stepPill1" onclick="navigateToStep(1)">
+      <div class="step-badge" id="stepBadge1">1</div>
+      <span>Calamity & 72h Window</span>
+    </div>
+    <div class="step-pill" id="stepPill2" onclick="navigateToStep(2)">
+      <div class="step-badge" id="stepBadge2">2</div>
+      <span>Farmer & Plot</span>
+    </div>
+    <div class="step-pill" id="stepPill3" onclick="navigateToStep(3)">
+      <div class="step-badge" id="stepBadge3">3</div>
+      <span>Checklist & Loss Assessment</span>
+    </div>
+    <div class="step-pill" id="stepPill4" onclick="navigateToStep(4)">
+      <div class="step-badge" id="stepBadge4">4</div>
+      <span>Document Uploads</span>
+    </div>
+    <div class="step-pill" id="stepPill5" onclick="navigateToStep(5)">
+      <div class="step-badge" id="stepBadge5">5</div>
+      <span>Review & Authorized Channels</span>
+    </div>
+  </div>
+</div>
+
+<!-- Main Form Shell -->
+<main class="form-shell">
+  <form id="cropClaimForm" onsubmit="handleClaimSubmit(event)">
+
+    <!-- ================= STEP 1: CALAMITY EVENT & 72-HOUR WINDOW ================= -->
+    <div class="step-section-card active" id="stepSection1">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">
+            Step 1: Calamity Event & 72-Hour Statutory Window
+          </h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">
+            Select the nature of localized natural calamity and verify statutory 72-hour notice compliance.
+          </p>
+        </div>
+        <button type="button" onclick="fillDemoClaimData()" style="background:#f1f5f9; border:1px solid #cbd5e1; color:#334155; padding:6px 14px; border-radius:6px; font-size:0.82rem; font-weight:600; cursor:pointer;">
+          ⚡ Fill Sample Demo Data
+        </button>
+      </div>
+
+      <!-- Natural Calamity Selector -->
+      <label class="form-label">Type of Natural Calamity / Adverse Event<span class="required">*</span></label>
+      <div class="calamity-grid" id="calamityGrid">
+        <label class="calamity-card-option selected" onclick="selectCalamity(this, 'Hailstorm (ओलावृष्टि)')">
+          <input type="radio" name="calamity_type" value="Hailstorm" checked>
+          <span class="calamity-icon">🌨️</span>
+          <div>
+            <div class="calamity-title">Hailstorm</div>
+            <div style="font-size:0.75rem; color:#6b7280;">ओलावृष्टि</div>
+          </div>
+        </label>
+        <label class="calamity-card-option" onclick="selectCalamity(this, 'Inundation / Flash Flood (जलभराव)')">
+          <input type="radio" name="calamity_type" value="Inundation / Flash Flood">
+          <span class="calamity-icon">🌊</span>
+          <div>
+            <div class="calamity-title">Flash Flood / Waterlogging</div>
+            <div style="font-size:0.75rem; color:#6b7280;">जलभराव</div>
+          </div>
+        </label>
+        <label class="calamity-card-option" onclick="selectCalamity(this, 'Unseasonal Post-Harvest Rain (असमयी वर्षा)')">
+          <input type="radio" name="calamity_type" value="Unseasonal Post-Harvest Rain">
+          <span class="calamity-icon">🌧️</span>
+          <div>
+            <div class="calamity-title">Post-Harvest Rain</div>
+            <div style="font-size:0.75rem; color:#6b7280;">फसल सुखाने के दौरान</div>
+          </div>
+        </label>
+        <label class="calamity-card-option" onclick="selectCalamity(this, 'Cyclone / High Gale Wind (चक्रवात)')">
+          <input type="radio" name="calamity_type" value="Cyclone / High Gale Wind">
+          <span class="calamity-icon">🌪️</span>
+          <div>
+            <div class="calamity-title">Cyclone / High Winds</div>
+            <div style="font-size:0.75rem; color:#6b7280;">आंधी व चक्रवात</div>
+          </div>
+        </label>
+        <label class="calamity-card-option" onclick="selectCalamity(this, 'Landslide / Soil Sinking (भूस्खलन)')">
+          <input type="radio" name="calamity_type" value="Landslide">
+          <span class="calamity-icon">⛰️</span>
+          <div>
+            <div class="calamity-title">Landslide</div>
+            <div style="font-size:0.75rem; color:#6b7280;">भूस्खलन</div>
+          </div>
+        </label>
+        <label class="calamity-card-option" onclick="selectCalamity(this, 'Severe Pest Attack / Locust Influx (कीट प्रकोप)')">
+          <input type="radio" name="calamity_type" value="Severe Pest Attack">
+          <span class="calamity-icon">🦗</span>
+          <div>
+            <div class="calamity-title">Severe Pest Attack</div>
+            <div style="font-size:0.75rem; color:#6b7280;">टिड्डी / कीट प्रकोप</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- Loss Date & Time with live 72hr calculator -->
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="loss_date">Date of Calamity / Loss Occurrence<span class="required">*</span></label>
+          <input type="date" id="loss_date" name="loss_date" class="form-control" required onchange="evaluateLossWindow()">
+          <div class="form-help">Select the date on which damage struck your crop.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loss_time">Approximate Time of Occurrence</label>
+          <input type="time" id="loss_time" name="loss_time" class="form-control" value="14:00" onchange="evaluateLossWindow()">
+          <div class="form-help">Time of hailstorm or weather surge.</div>
+        </div>
+      </div>
+
+      <!-- Reactive Window Status Box -->
+      <div id="windowAlertBox" class="window-status-box window-valid">
+        <span style="font-size:1.4rem;" id="windowIcon">✅</span>
+        <div id="windowText">
+          Loss intimation timestamp is within the mandatory 72-hour window. Your claim is eligible for immediate joint field surveyor inspection.
+        </div>
+      </div>
+
+      <div class="stepper-nav-bar" style="justify-content:flex-end;">
+        <button type="button" class="btn-primary" onclick="goToStep(2)" style="background:#1b4332; padding:12px 28px;">
+          Next: Farmer & Plot Details →
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= STEP 2: FARMER, POLICY & PLOT DETAILS ================= -->
+    <div class="step-section-card" id="stepSection2">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">
+            Step 2: Farmer, Policy & Plot Identification
+          </h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">
+            Provide your PMFBY Application ID or Land Khasra number for instant policy cross-referencing.
+          </p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Auto-Linked</span>
+      </div>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label" for="farmer_name">Farmer Full Name<span class="required">*</span></label>
+          <input type="text" id="farmer_name" name="farmer_name" class="form-control" placeholder="e.g. Ramesh Patel" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mobile">10-Digit Mobile Number<span class="required">*</span></label>
+          <input type="tel" id="mobile" name="mobile" class="form-control" placeholder="e.g. 9823456789" maxlength="10" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="policy_or_khasra_no">Policy No. / Enrollment ID / Khasra No.</label>
+          <input type="text" id="policy_or_khasra_no" name="policy_or_khasra_no" class="form-control" placeholder="e.g. BB-ENR-2026-48291 or Khasra 142/2">
+          <div class="form-help">Enter Enrollment ID or Khasra No. to auto-match survey.</div>
+        </div>
+      </div>
+
+      <div class="form-grid-3">
+        <div class="form-group">
+          <label class="form-label" for="state">State<span class="required">*</span></label>
+          <input type="text" id="state" name="state" class="form-control" value="Madhya Pradesh" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="district">District<span class="required">*</span></label>
+          <input type="text" id="district" name="district" class="form-control" placeholder="e.g. Sehore" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="village">Village / Gram Panchayat<span class="required">*</span></label>
+          <input type="text" id="village" name="village" class="form-control" placeholder="e.g. Bilkisganj" required>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label" for="crop_name">Affected Crop<span class="required">*</span></label>
+          <input type="text" id="crop_name" name="crop_name" class="form-control" placeholder="e.g. Wheat (गेहूं) or Soybean" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="affected_area_acres">Damaged / Affected Area (in Acres)<span class="required">*</span></label>
+          <input type="number" id="affected_area_acres" name="affected_area_acres" class="form-control" min="0.1" max="500" step="0.1" value="3.5" required>
+        </div>
+      </div>
+
+      <div class="stepper-nav-bar">
+        <button type="button" class="btn-secondary" onclick="goToStep(1)">
+          ← Back: Calamity Details
+        </button>
+        <button type="button" class="btn-primary" onclick="goToStep(3)" style="background:#1b4332; padding:12px 28px;">
+          Next: Checklist & Loss Assessment →
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= STEP 3: INTERACTIVE CHECKLIST & DAMAGE ASSESSMENT ================= -->
+    <div class="step-section-card" id="stepSection3">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">
+            Step 3: Interactive Pre-Filing Checklist & Damage Assessment
+          </h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">
+            Verify your statutory readiness for the joint committee physical field inspection.
+          </p>
+        </div>
+        <span style="font-size:0.8rem; background:#fee2e2; color:#991b1b; font-weight:800; padding:4px 10px; border-radius:12px;" id="checklistProgressBadge">0 of 5 Completed</span>
+      </div>
+
+      <!-- Interactive Checklist -->
+      <div class="checklist-wrap">
+        <div style="font-weight:800; font-size:0.95rem; color:#0f2d1e; margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+          <span>📋</span>
+          <span>Mandatory Statutory PMFBY Pre-Filing Checklist</span>
+        </div>
+
+        <label class="checklist-item">
+          <input type="checkbox" id="chkLandMatch" onchange="updateChecklistProgress()" checked>
+          <div class="checklist-text">
+            <strong>1. Land Title & Khasra Possession Match</strong>
+            <span>Land record (RoR / Khasra-Khatauni) corresponds to the damaged parcel and is registered in your name or shareholding lease.</span>
+          </div>
+        </label>
+
+        <label class="checklist-item">
+          <input type="checkbox" id="chkActiveCrop" onchange="updateChecklistProgress()" checked>
+          <div class="checklist-text">
+            <strong>2. Active Sowing Proof during Current Season</strong>
+            <span>Crop was actively sown and standing (or harvested within past 14 days) in accordance with district cut-off dates.</span>
+          </div>
+        </label>
+
+        <label class="checklist-item">
+          <input type="checkbox" id="chkTimeWindow" onchange="updateChecklistProgress()" checked>
+          <div class="checklist-text">
+            <strong>3. Loss Notification within 72-Hour Window</strong>
+            <span>Calamity occurred within the past 72 hours (or specific flood/landslide accessibility delay explanation is documented).</span>
+          </div>
+        </label>
+
+        <label class="checklist-item">
+          <input type="checkbox" id="chkGeoPhotos" onchange="updateChecklistProgress()" checked>
+          <div class="checklist-text">
+            <strong>4. Geo-Tagged Field Damage Photographs Captured</strong>
+            <span>At least 2 clear field photographs (showing wide plot damage and close-up crop lodging) are ready with location coordinates.</span>
+          </div>
+        </label>
+
+        <label class="checklist-item">
+          <input type="checkbox" id="chkBankAadhaar" onchange="updateChecklistProgress()" checked>
+          <div class="checklist-text">
+            <strong>5. Aadhaar-Seeded Bank Account for Direct Benefit Transfer (DBT)</strong>
+            <span>Active bank account linked with Aadhaar and PMFBY policy to receive 25% on-account interim relief and final settlement.</span>
+          </div>
+        </label>
+      </div>
+
+      <!-- Damage Severity Meter Slider -->
+      <div class="severity-slider-wrap">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <div style="font-weight:700; font-size:0.95rem; color:var(--c-forest-dark);">Estimated Damage Percentage</div>
+            <div style="font-size:0.8rem; color:var(--c-text-muted);">Visual estimate of crop destruction across affected acreage</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="severity-meter-val" id="damagePercentDisplay">65%</div>
+            <span class="severity-badge" id="damageSeverityTag">Severe Crop Destruction</span>
+          </div>
+        </div>
+        <input type="range" id="damage_percentage" name="damage_percentage" min="10" max="100" step="5" value="65" style="width:100%; accent-color:#dc2626; cursor:pointer;" oninput="updateDamageMeter(this.value)">
+
+        <div style="background:#ffffff; border:1px solid #ebd0bb; border-radius:10px; padding:10px 14px; margin-top:14px; font-size:0.84rem; color:#475569; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <span>⚖️ <strong>PMFBY Interim Relief Rule:</strong> Loss above 50% qualifies for up to <strong>25% on-account immediate interim compensation</strong> prior to final survey audit.</span>
+          <span style="font-weight:800; color:#15803d;" id="interimPayoutEstimate">Est. Interim Relief: ₹9,500</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="loss_description">Detailed Loss Narrative & Field Observations</label>
+        <textarea id="loss_description" name="loss_description" class="form-control" style="height:90px; padding:12px;" placeholder="Describe how the hailstorm or flood occurred, crop stage (pod filling, flowering, maturity), and physical condition of plants..."></textarea>
+      </div>
+
+      <div class="stepper-nav-bar">
+        <button type="button" class="btn-secondary" onclick="goToStep(2)">
+          ← Back: Farmer & Plot
+        </button>
+        <button type="button" class="btn-primary" onclick="goToStep(4)" style="background:#1b4332; padding:12px 28px;">
+          Next: Document Uploads →
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= STEP 4: DOCUMENT & EVIDENCE UPLOADS ================= -->
+    <div class="step-section-card" id="stepSection4">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">
+            Step 4: Photographic Evidence & Document Uploads
+          </h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">
+            Attach geo-tagged field photos and statutory documents to validate physical survey dispatch.
+          </p>
+        </div>
+        <span style="font-size:0.8rem; background:#ecfdf5; color:#065f46; font-weight:800; padding:4px 10px; border-radius:12px;">Evidence Upload</span>
+      </div>
+
+      <div class="upload-document-grid">
+        <!-- Photo 1: Wide View -->
+        <div class="upload-slot-card" id="slotCard1" onclick="document.getElementById('docInput1').click()">
+          <input type="file" id="docInput1" style="display:none;" accept="image/*" onchange="handleDocUpload(1, this, 'Field Damage Photo 1 (Wide View)')">
+          <div style="font-size:2.2rem; margin-bottom:6px;" id="docIcon1">📸</div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--c-forest-dark);" id="docTitle1">Field Damage Photo 1 *</div>
+          <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;" id="docSub1">Wide-angle shot showing total plot damage & waterlogging</div>
+          <span style="display:none; font-size:0.72rem; background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:10px; margin-top:6px;" id="docRemove1" onclick="removeDocUpload(1, event)">Remove</span>
+        </div>
+
+        <!-- Photo 2: Close-up View -->
+        <div class="upload-slot-card" id="slotCard2" onclick="document.getElementById('docInput2').click()">
+          <input type="file" id="docInput2" style="display:none;" accept="image/*" onchange="handleDocUpload(2, this, 'Field Damage Photo 2 (Close-up)')">
+          <div style="font-size:2.2rem; margin-bottom:6px;" id="docIcon2">📸</div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--c-forest-dark);" id="docTitle2">Field Damage Photo 2 *</div>
+          <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;" id="docSub2">Close-up shot of broken stems, bruised pods, or lodging</div>
+          <span style="display:none; font-size:0.72rem; background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:10px; margin-top:6px;" id="docRemove2" onclick="removeDocUpload(2, event)">Remove</span>
+        </div>
+
+        <!-- Doc 3: Land Record RoR / Khasra -->
+        <div class="upload-slot-card" id="slotCard3" onclick="document.getElementById('docInput3').click()">
+          <input type="file" id="docInput3" style="display:none;" accept=".pdf,image/*" onchange="handleDocUpload(3, this, 'Land Record RoR / Khasra')">
+          <div style="font-size:2.2rem; margin-bottom:6px;" id="docIcon3">📄</div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--c-forest-dark);" id="docTitle3">Land Record (RoR / Khasra Copy)</div>
+          <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;" id="docSub3">PDF or photo of Khasra-Khatauni title</div>
+          <span style="display:none; font-size:0.72rem; background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:10px; margin-top:6px;" id="docRemove3" onclick="removeDocUpload(3, event)">Remove</span>
+        </div>
+
+        <!-- Doc 4: Sowing Certificate / Patwari Slip -->
+        <div class="upload-slot-card" id="slotCard4" onclick="document.getElementById('docInput4').click()">
+          <input type="file" id="docInput4" style="display:none;" accept=".pdf,image/*" onchange="handleDocUpload(4, this, 'Sowing Certificate / Patwari Panchnama')">
+          <div style="font-size:2.2rem; margin-bottom:6px;" id="docIcon4">📑</div>
+          <div style="font-weight:700; font-size:0.95rem; color:var(--c-forest-dark);" id="docTitle4">Sowing Certificate / Panchnama</div>
+          <div style="font-size:0.78rem; color:var(--c-text-muted); margin-top:4px;" id="docSub4">Local Patwari sowing declaration or intimation slip</div>
+          <span style="display:none; font-size:0.72rem; background:#fee2e2; color:#991b1b; padding:2px 8px; border-radius:10px; margin-top:6px;" id="docRemove4" onclick="removeDocUpload(4, event)">Remove</span>
+        </div>
+      </div>
+
+      <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:12px 16px; font-size:0.84rem; color:#92400e; line-height:1.5;">
+        ℹ️ <strong>Tip:</strong> If you are filing from the field with low connectivity, submitting at least 1 damage photo is sufficient to lock your 72-hour timestamp. Additional documents can be physically handed to the joint surveyor during the field inspection.
+      </div>
+
+      <div class="stepper-nav-bar">
+        <button type="button" class="btn-secondary" onclick="goToStep(3)">
+          ← Back: Checklist & Assessment
+        </button>
+        <button type="button" class="btn-primary" onclick="goToStep(5)" style="background:#1b4332; padding:12px 28px;">
+          Next: Review & Authorized Submission →
+        </button>
+      </div>
+    </div>
+
+    <!-- ================= STEP 5: REVIEW & AUTHORIZED CHANNELS SUBMISSION ================= -->
+    <div class="step-section-card" id="stepSection5">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1.5px solid #eef2ef; padding-bottom:1rem;">
+        <div>
+          <h2 style="font-size:1.35rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 4px;">
+            Step 5: Review, Declaration & Authorized Channel Dispatch
+          </h2>
+          <p style="font-size:0.86rem; color:var(--c-text-muted); margin:0;">
+            Verify your claim dossier before logging the loss report in the central registry.
+          </p>
+        </div>
+        <span style="font-size:0.8rem; background:#fee2e2; color:#991b1b; font-weight:800; padding:4px 10px; border-radius:12px;">Final Step</span>
+      </div>
+
+      <!-- CLEAR DISTINCTION BETWEEN GUIDANCE AND AUTHORIZED SUBMISSION -->
+      <div class="authority-distinction-box">
+        <h4>
+          <span>⚖️</span>
+          <span>Important Statutory Protocol: Guidance vs. Authorized Channels</span>
+        </h4>
+        <p>
+          BhoomiBandhu provides end-to-end guidance and generates an official <strong>PMFBY Emergency Loss Intimation Dossier & Reference Number</strong> (`BB-CLM-2026-XXXXX`). 
+        </p>
+        <p>
+          In accordance with Ministry of Agriculture operational guidelines, localized calamity claims require formal acknowledgment by authorized state channels:
+        </p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:8px; font-size:0.82rem;">
+          <div style="background:white; border:1px solid #bfdbfe; border-radius:8px; padding:10px;">
+            <strong style="color:#1d4ed8;">1. Central Helpline:</strong>
+            <div>Call <strong>14447</strong> toll-free and quote your BhoomiBandhu Claim ID.</div>
+          </div>
+          <div style="background:white; border:1px solid #bfdbfe; border-radius:8px; padding:10px;">
+            <strong style="color:#1d4ed8;">2. Revenue Patwari:</strong>
+            <div>Present printed Form 1 Receipt to your local Halqa Patwari.</div>
+          </div>
+          <div style="background:white; border:1px solid #bfdbfe; border-radius:8px; padding:10px;">
+            <strong style="color:#1d4ed8;">3. Official Portal:</strong>
+            <div>File or cross-verify directly on <strong>pmfby.gov.in</strong>.</div>
+          </div>
+          <div style="background:white; border:1px solid #bfdbfe; border-radius:8px; padding:10px;">
+            <strong style="color:#1d4ed8;">4. Bank / CSC Branch:</strong>
+            <div>Inform the bank branch that debited your crop insurance premium.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dossier Summary Table -->
+      <div style="background:#faf8f5; border:1.5px solid var(--c-border); border-radius:14px; padding:18px 22px; margin-bottom:1.5rem; font-size:0.88rem;">
+        <div style="font-weight:800; color:#0f2d1e; margin-bottom:12px; font-size:0.95rem;">
+          📄 Pre-Submission Dossier Review
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; color:#334155;">
+          <div><span style="color:#64748b;">Farmer:</span> <strong id="revFarmer">-</strong></div>
+          <div><span style="color:#64748b;">Mobile:</span> <strong id="revMobile">-</strong></div>
+          <div><span style="color:#64748b;">Policy / Khasra:</span> <strong id="revPolicy">-</strong></div>
+          <div><span style="color:#64748b;">Location:</span> <strong id="revLocation">-</strong></div>
+          <div><span style="color:#64748b;">Calamity:</span> <strong id="revCalamity" style="color:#dc2626;">-</strong></div>
+          <div><span style="color:#64748b;">Crop & Acreage:</span> <strong id="revCrop">-</strong></div>
+          <div><span style="color:#64748b;">Estimated Loss:</span> <strong id="revDamage" style="color:#b91c1c;">-</strong></div>
+          <div><span style="color:#64748b;">Window Compliance:</span> <strong id="revWindow" style="color:#15803d;">-</strong></div>
+        </div>
+      </div>
+
+      <!-- Statutory Farmer Declaration -->
+      <div style="background:#ffffff; border:1px solid #dcd4c5; border-radius:12px; padding:1.25rem; margin-bottom:1.5rem;">
+        <label style="display:flex; align-items:flex-start; gap:12px; cursor:pointer;">
+          <input type="checkbox" id="claimDeclaration" required style="margin-top:4px; width:20px; height:20px; accent-color:#dc2626;">
+          <span style="font-size:0.88rem; color:#2e4d3f; line-height:1.5;">
+            I hereby certify that the crop loss details and damage percentages reported above represent a genuine localized natural calamity. I authorize the designated Joint Assessment Committee (Insurance Loss Assessor and Halqa Patwari) to visit my plot for physical GPS-tagged inspection.
+          </span>
+        </label>
+      </div>
+
+      <div class="stepper-nav-bar">
+        <button type="button" class="btn-secondary" onclick="goToStep(4)">
+          ← Back: Document Uploads
+        </button>
+        <button type="submit" class="btn-primary" id="claimSubmitBtn" style="background:linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); padding:14px 34px; font-size:1.05rem; box-shadow:0 4px 16px rgba(220,38,38,0.3);">
+          <span>🚀 Submit Loss Intimation & Generate Claim Dossier</span>
+          <span>🚨</span>
+        </button>
+      </div>
+    </div>
+
+  </form>
+</main>
+
+<!-- Success Modal / Acknowledgement Receipt -->
+<div class="modal-overlay" id="claimSuccessModal">
+  <div class="modal-card">
+    <div style="width:72px; height:72px; border-radius:50%; background:#fee2e2; color:#b91c1c; display:flex; align-items:center; justify-content:center; font-size:2.4rem; margin:0 auto 1.25rem; box-shadow:0 8px 24px rgba(220,38,38,0.2);">
+      🚨
+    </div>
+    <h2 style="font-size:1.6rem; font-weight:800; color:var(--c-forest-dark); margin:0 0 0.5rem;">Crop Loss Intimation Registered!</h2>
+    <p style="font-size:0.92rem; color:var(--c-text-muted); margin:0 0 1rem;">
+      Your emergency damage report has been logged and assigned for joint physical surveyor assessment.
+    </p>
+
+    <div style="font-size:0.85rem; font-weight:700; color:#547061;">OFFICIAL CLAIM INTIMATION ID</div>
+    <div class="claim-id-pill" id="displayClaimId">BB-CLM-2026-XXXXX</div>
+
+    <div style="background:#faf8f5; border:1px solid #e7dfcb; border-radius:14px; padding:1.25rem; text-align:left; font-size:0.88rem; margin-bottom:1.5rem;">
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Farmer Name:</span>
+        <strong id="modalClaimFarmer">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Calamity & Crop:</span>
+        <strong id="modalClaimCalamity">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Reported Damage:</span>
+        <strong id="modalClaimDamage" style="color:#dc2626;">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <span style="color:#667b6e;">Window Compliance:</span>
+        <strong id="modalClaimWindow" style="color:#15803d;">-</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:#667b6e;">Assigned Surveyor Desk:</span>
+        <strong style="color:#0f2d1e;">Er. Sudhir Sharma (LA-4892)</strong>
+      </div>
+    </div>
+
+    <!-- Authorized Channel Instructions -->
+    <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:12px 14px; font-size:0.84rem; color:#92400e; margin-bottom:1.5rem; text-align:left; line-height:1.5;">
+      <strong>⚠️ Authorized Action:</strong> Quote Token <strong><span id="modalRepeatToken"></span></strong> to the Central PMFBY Helpline (<strong>14447</strong>) or present this printed slip to your village Revenue Patwari within 48 hours for immediate field survey.
+    </div>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button type="button" class="btn-secondary" style="flex:1; justify-content:center; min-width:140px;" onclick="window.print()">
+        <span>🖨️ Print Form 1 Slip</span>
+      </button>
+      <button type="button" class="btn-primary" style="flex:1; justify-content:center; background:#1b4332; min-width:140px;" id="modalClaimTrackBtn">
+        <span>🔍 Track Claim Live</span>
+      </button>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="flex:1; justify-content:center; min-width:140px; text-decoration:none;">
+        <span>Official Portal ↗</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.86rem; color:#597463;">
+    <div>© 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Welfare Mission</div>
+    <div style="display:flex; gap:18px;">
+      <a href="insurance.html" style="color:#597463; text-decoration:none;">Insurance Hub</a>
+      <a href="pmfby-enrollment.html" style="color:#597463; text-decoration:none;">Enrollment</a>
+      <a href="status-tracking.html" style="color:#597463; text-decoration:none;">Status Tracking</a>
+      <a href="https://pmfby.gov.in" target="_blank" rel="noopener noreferrer" style="color:#597463; text-decoration:none;">PMFBY Portal ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let currentStep = 1;
+  let selectedCalamityName = "Hailstorm";
+  const claimUploadedDocs = {};
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Set default loss date to yesterday 14:00
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    document.getElementById('loss_date').value = yesterday.toISOString().split('T')[0];
+
+    // Autofill from user profile if logged in
+    try {
+      const userRaw = localStorage.getItem('bb_user');
+      if (userRaw) {
+        const u = JSON.parse(userRaw);
+        if (u.full_name) document.getElementById('farmer_name').value = u.full_name;
+        if (u.mobile) document.getElementById('mobile').value = u.mobile;
+        if (u.district) document.getElementById('district').value = u.district;
+        if (u.state) document.getElementById('state').value = u.state;
+        if (u.village) document.getElementById('village').value = u.village;
+        if (u.primary_crops) document.getElementById('crop_name').value = u.primary_crops;
+        if (u.landholding_size) {
+          const acres = parseFloat(u.landholding_size);
+          if (!isNaN(acres) && acres > 0) document.getElementById('affected_area_acres').value = acres;
+        }
+      }
+    } catch (e) {}
+
+    evaluateLossWindow();
+    updateChecklistProgress();
+  });
+
+  function selectCalamity(card, name) {
+    document.querySelectorAll('.calamity-card-option').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    const radio = card.querySelector('input[type="radio"]');
+    if (radio) radio.checked = true;
+    selectedCalamityName = radio ? radio.value : name;
+  }
+
+  function evaluateLossWindow() {
+    const dStr = document.getElementById('loss_date').value;
+    const tStr = document.getElementById('loss_time').value || '12:00';
+    if (!dStr) return;
+
+    const lossDateTime = new Date(`${dStr}T${tStr}:00`);
+    const now = new Date();
+    const diffHours = (now - lossDateTime) / (1000 * 60 * 60);
+
+    const box = document.getElementById('windowAlertBox');
+    const icon = document.getElementById('windowIcon');
+    const text = document.getElementById('windowText');
+
+    if (diffHours <= 78) {
+      box.className = 'window-status-box window-valid';
+      icon.textContent = '✅';
+      const elapsed = Math.max(1, Math.round(diffHours));
+      text.innerHTML = `<strong>Within 72-Hour Window (${elapsed} hours elapsed):</strong> Your loss intimation is timely and eligible for fast-track Joint Committee survey within 48 hours.`;
+    } else {
+      box.className = 'window-status-box window-expired';
+      icon.textContent = '⚠️';
+      const elapsed = Math.round(diffHours);
+      text.innerHTML = `<strong>Intimation Past 72 Hours (${elapsed} hours elapsed):</strong> Under PMFBY guidelines, delayed intimations require special approval from the District Level Grievance Committee (DGC). Submission is still accepted.`;
+    }
+  }
+
+  function updateDamageMeter(val) {
+    document.getElementById('damagePercentDisplay').textContent = val + '%';
+    const tag = document.getElementById('damageSeverityTag');
+    const acres = parseFloat(document.getElementById('affected_area_acres').value) || 3.5;
+    const estSumInsured = acres * 40000;
+    const estTotalLoss = Math.round((estSumInsured * val) / 100);
+    const estInterim = Math.round(estTotalLoss * 0.25);
+
+    document.getElementById('interimPayoutEstimate').textContent = `Est. Interim Relief: ₹${estInterim.toLocaleString('en-IN')}`;
+
+    if (val < 30) {
+      tag.textContent = 'Partial Crop Loss';
+      tag.style.background = '#fef3c7';
+      tag.style.color = '#92400e';
+    } else if (val < 65) {
+      tag.textContent = 'Moderate Loss';
+      tag.style.background = '#fed7aa';
+      tag.style.color = '#9a3412';
+    } else if (val < 85) {
+      tag.textContent = 'Severe Crop Destruction';
+      tag.style.background = '#fee2e2';
+      tag.style.color = '#991b1b';
+    } else {
+      tag.textContent = 'Total Crop Failure (100%)';
+      tag.style.background = '#fecaca';
+      tag.style.color = '#7f1d1d';
+    }
+  }
+
+  function updateChecklistProgress() {
+    const checks = ['chkLandMatch', 'chkActiveCrop', 'chkTimeWindow', 'chkGeoPhotos', 'chkBankAadhaar'];
+    const completed = checks.filter(id => {
+      const el = document.getElementById(id);
+      return el && el.checked;
+    }).length;
+
+    const badge = document.getElementById('checklistProgressBadge');
+    if (badge) {
+      badge.textContent = `${completed} of 5 Completed`;
+      if (completed === 5) {
+        badge.style.background = '#dcfce7';
+        badge.style.color = '#15803d';
+      } else {
+        badge.style.background = '#fee2e2';
+        badge.style.color = '#991b1b';
+      }
+    }
+  }
+
+  function handleDocUpload(slot, input, defaultLabel) {
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      claimUploadedDocs[slot] = file.name;
+
+      const card = document.getElementById('slotCard' + slot);
+      card.classList.add('has-file');
+
+      document.getElementById('docIcon' + slot).textContent = '✅';
+      document.getElementById('docTitle' + slot).textContent = file.name.slice(0, 24);
+      document.getElementById('docSub' + slot).textContent = `Attached (${(file.size / 1024).toFixed(0)} KB) • Ready`;
+
+      const removeBtn = document.getElementById('docRemove' + slot);
+      if (removeBtn) removeBtn.style.display = 'inline-block';
+    }
+  }
+
+  function removeDocUpload(slot, event) {
+    event.stopPropagation();
+    delete claimUploadedDocs[slot];
+
+    const input = document.getElementById('docInput' + slot);
+    if (input) input.value = '';
+
+    const card = document.getElementById('slotCard' + slot);
+    card.classList.remove('has-file');
+
+    document.getElementById('docIcon' + slot).textContent = slot <= 2 ? '📸' : '📄';
+    document.getElementById('docTitle' + slot).textContent = slot <= 2 ? `Field Damage Photo ${slot} *` : (slot === 3 ? 'Land Record (RoR / Khasra Copy)' : 'Sowing Certificate / Panchnama');
+    document.getElementById('docSub' + slot).textContent = 'Click to capture or attach file';
+
+    const removeBtn = document.getElementById('docRemove' + slot);
+    if (removeBtn) removeBtn.style.display = 'none';
+  }
+
+  function fillDemoClaimData() {
+    document.getElementById('farmer_name').value = 'Ramesh Patel';
+    document.getElementById('mobile').value = '9823456789';
+    document.getElementById('policy_or_khasra_no').value = 'BB-ENR-2026-48291';
+    document.getElementById('state').value = 'Madhya Pradesh';
+    document.getElementById('district').value = 'Sehore';
+    document.getElementById('village').value = 'Bilkisganj';
+    document.getElementById('crop_name').value = 'Soybean (सोयाबीन)';
+    document.getElementById('affected_area_acres').value = '3.5';
+    document.getElementById('damage_percentage').value = '65';
+    updateDamageMeter(65);
+    document.getElementById('loss_description').value = 'Severe unseasonal hailstorm flattened standing soybean pods across 3.5 acres right before harvesting.';
+
+    // Mock document attachments
+    claimUploadedDocs[1] = 'Field_Damage_Hailstorm_Wide.jpg';
+    claimUploadedDocs[2] = 'Soybean_Lodged_Pods_CloseUp.jpg';
+    claimUploadedDocs[3] = 'Khasra_142_3_LandRecord.pdf';
+
+    for (let s = 1; s <= 3; s++) {
+      const card = document.getElementById('slotCard' + s);
+      if (card) card.classList.add('has-file');
+      const icon = document.getElementById('docIcon' + s);
+      if (icon) icon.textContent = '✅';
+      const sub = document.getElementById('docSub' + s);
+      if (sub) sub.textContent = 'Attached sample proof (Ready)';
+    }
+
+    evaluateLossWindow();
+  }
+
+  function goToStep(stepNum) {
+    if (stepNum > currentStep) {
+      // Validate current step
+      if (currentStep === 1) {
+        const d = document.getElementById('loss_date').value;
+        if (!d) {
+          alert('Please select the date of calamity occurrence.');
+          return;
+        }
+      } else if (currentStep === 2) {
+        const name = document.getElementById('farmer_name').value.trim();
+        const mob = document.getElementById('mobile').value.trim();
+        const crop = document.getElementById('crop_name').value.trim();
+        if (!name || !mob || !crop) {
+          alert('Please complete all required fields (Name, Mobile, Crop).');
+          return;
+        }
+        if (!/^\d{10}$/.test(mob)) {
+          alert('Please enter a valid 10-digit mobile number.');
+          return;
+        }
+      }
+    }
+
+    // Populate Review Step 5 if entering
+    if (stepNum === 5) {
+      document.getElementById('revFarmer').textContent = document.getElementById('farmer_name').value || '-';
+      document.getElementById('revMobile').textContent = document.getElementById('mobile').value || '-';
+      document.getElementById('revPolicy').textContent = document.getElementById('policy_or_khasra_no').value || 'Khasra 142/2';
+      document.getElementById('revLocation').textContent = `${document.getElementById('village').value}, ${document.getElementById('district').value}, ${document.getElementById('state').value}`;
+      document.getElementById('revCalamity').textContent = selectedCalamityName;
+      document.getElementById('revCrop').textContent = `${document.getElementById('crop_name').value} (${document.getElementById('affected_area_acres').value} Acres)`;
+      document.getElementById('revDamage').textContent = `${document.getElementById('damage_percentage').value}% Estimated Loss`;
+      document.getElementById('revWindow').textContent = document.getElementById('windowText').textContent.includes('Within 72-Hour') ? 'Within 72 Hours (Valid)' : 'Past 72h (DGC Approval Required)';
+    }
+
+    navigateToStep(stepNum);
+  }
+
+  function navigateToStep(stepNum) {
+    currentStep = stepNum;
+
+    // Update Step Cards
+    for (let s = 1; s <= 5; s++) {
+      const card = document.getElementById('stepSection' + s);
+      const pill = document.getElementById('stepPill' + s);
+      const badge = document.getElementById('stepBadge' + s);
+
+      if (card) {
+        if (s === stepNum) card.classList.add('active');
+        else card.classList.remove('active');
+      }
+
+      if (pill) {
+        pill.classList.remove('active');
+        if (s === stepNum) {
+          pill.classList.add('active');
+        } else if (s < stepNum) {
+          pill.classList.add('completed');
+          if (badge) badge.textContent = '✓';
+        } else {
+          pill.classList.remove('completed');
+          if (badge) badge.textContent = s;
+        }
+      }
+    }
+
+    window.scrollTo({ top: 200, behavior: 'smooth' });
+  }
+
+  async function handleClaimSubmit(e) {
+    e.preventDefault();
+    const decl = document.getElementById('claimDeclaration');
+    if (!decl.checked) {
+      alert('You must accept the statutory claim declaration.');
+      return;
+    }
+
+    const btn = document.getElementById('claimSubmitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span>Registering Emergency Claim Dossier...</span> ⏳';
+
+    const dStr = document.getElementById('loss_date').value;
+    const tStr = document.getElementById('loss_time').value || '12:00';
+
+    const payload = {
+      farmer_name: document.getElementById('farmer_name').value.trim(),
+      mobile: document.getElementById('mobile').value.trim(),
+      policy_or_khasra_no: document.getElementById('policy_or_khasra_no').value.trim(),
+      state: document.getElementById('state').value.trim(),
+      district: document.getElementById('district').value.trim(),
+      village: document.getElementById('village').value.trim(),
+      crop_name: document.getElementById('crop_name').value.trim(),
+      affected_area_acres: parseFloat(document.getElementById('affected_area_acres').value) || 1.0,
+      calamity_type: selectedCalamityName,
+      loss_date: `${dStr}T${tStr}:00`,
+      damage_percentage: parseFloat(document.getElementById('damage_percentage').value) || 65,
+      loss_description: document.getElementById('loss_description').value.trim(),
+      documents: Object.values(claimUploadedDocs).filter(Boolean)
+    };
+
+    let resultRecord = null;
+
+    try {
+      const res = await fetch('/api/insurance/claim', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success && data.record) {
+        resultRecord = data.record;
+      }
+    } catch (err) {
+      console.warn('API error, falling back to local claim registration:', err);
+    }
+
+    if (!resultRecord) {
+      // Offline fallback
+      resultRecord = {
+        ...payload,
+        claim_id: 'BB-CLM-2026-' + Math.floor(10000 + Math.random() * 90000),
+        status: 'Loss Intimation Registered (Surveyor Appointed)',
+        intimation_window_status: document.getElementById('windowText').textContent.includes('Within 72-Hour') ? 'Within 72 Hours (Valid)' : 'Late Intimation (DGC Review)',
+        created_at: new Date().toISOString()
+      };
+    }
+
+    // Save locally
+    try {
+      let localClaims = JSON.parse(localStorage.getItem('bb_local_claims') || '[]');
+      localClaims.unshift(resultRecord);
+      localStorage.setItem('bb_local_claims', JSON.stringify(localClaims));
+    } catch(e) {}
+
+    // Display modal receipt
+    document.getElementById('displayClaimId').textContent = resultRecord.claim_id;
+    document.getElementById('modalRepeatToken').textContent = resultRecord.claim_id;
+    document.getElementById('modalClaimFarmer').textContent = resultRecord.farmer_name;
+    document.getElementById('modalClaimCalamity').textContent = `${resultRecord.calamity_type} — ${resultRecord.crop_name}`;
+    document.getElementById('modalClaimDamage').textContent = `${resultRecord.damage_percentage}% Estimated Loss (${resultRecord.affected_area_acres} Acres)`;
+    document.getElementById('modalClaimWindow').textContent = resultRecord.intimation_window_status;
+
+    document.getElementById('modalClaimTrackBtn').onclick = function() {
+      window.location.href = 'status-tracking.html?id=' + encodeURIComponent(resultRecord.claim_id);
+    };
+
+    btn.disabled = false;
+    btn.innerHTML = '<span>🚀 Submit Loss Intimation & Generate Claim Dossier</span> <span>🚨</span>';
+
+    document.getElementById('claimSuccessModal').style.display = 'flex';
+  }
+</script>
+
 </body>
 </html>

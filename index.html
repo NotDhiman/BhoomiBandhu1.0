@@ -1,105 +1,1589 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BhoomiBandhu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BhoomiBandhu 2.0 — India's Premier Digital Agriculture & Farmer Empowerment Platform</title>
+  
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="auth-style.css">
+  <link rel="icon" type="image/png" href="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png">
+  <style>
+    /* =========================================================
+       BHOOMIBANDHU 2.0 PRODUCT LANDING PAGE DESIGN SYSTEM
+       ========================================================= */
+    :root {
+      --primary-deep: #0a2318;
+      --primary-green: #1b4332;
+      --accent-leaf: #2d6a4f;
+      --accent-bright: #52b788;
+      --accent-gold: #f6b73c;
+      --accent-warm: #e67e22;
+      --surface-cream: #fbfaf6;
+      --card-white: #ffffff;
+      --border-subtle: #e9e4d6;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', -apple-system, sans-serif;
+      background-color: var(--surface-cream);
+      color: #132a1e;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Fixed Modern Navbar */
+    .landing-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+    .landing-nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .landing-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .landing-logo img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+    }
+    .landing-logo-text {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+      letter-spacing: -0.02em;
+    }
+    .landing-logo-tag {
+      font-size: 0.72rem;
+      background: var(--accent-gold);
+      color: #111;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-link-item {
+      color: #2d4a3e;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-link-item:hover {
+      background: #eef5f1;
+      color: var(--primary-green);
+    }
+    .nav-auth-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Live Scheme Ticker */
+    .top-announcement-bar {
+      background: linear-gradient(90deg, #0d2e21 0%, #1b4332 50%, #0d2e21 100%);
+      color: #e2f4ea;
+      font-size: 0.84rem;
+      padding: 8px 1rem;
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .ticker-content {
+      display: inline-block;
+      animation: tickerLoop 35s linear infinite;
+    }
+    .ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 40px;
+    }
+    .ticker-badge {
+      background: var(--accent-gold);
+      color: #1a1a1a;
+      font-weight: 800;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    @keyframes tickerLoop {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* =========================================================
+       HERO SECTION: High Agricultural Emotional Impact
+       ========================================================= */
+    .hero-container {
+      position: relative;
+      background: var(--primary-deep);
+      color: #ffffff;
+      padding: 4.5rem 1.5rem 5rem 1.5rem;
+      overflow: hidden;
+    }
+    .hero-bg-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.32;
+      filter: saturate(1.25) brightness(0.9);
+      transform: scale(1.02);
+      transition: transform 10s ease;
+    }
+    .hero-container:hover .hero-bg-image {
+      transform: scale(1.06);
+    }
+    .hero-overlay-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        rgba(10, 35, 24, 0.96) 0%,
+        rgba(27, 67, 50, 0.88) 50%,
+        rgba(246, 183, 60, 0.22) 100%
+      );
+      backdrop-filter: blur(1px);
+    }
+    .hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fef08a;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      backdrop-filter: blur(8px);
+    }
+    .hero-title {
+      font-size: 3.4rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.35rem; }
+    }
+    .hero-title .highlight-sun {
+      background: linear-gradient(90deg, #74c69d 0%, #f6b73c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.18rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2.25rem;
+      max-width: 640px;
+    }
+    .hero-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .btn-hero-primary {
+      background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
+      color: #ffffff;
+      padding: 15px 32px;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(27, 67, 50, 0.4);
+      border: 1px solid rgba(82, 183, 136, 0.3);
+      transition: all 0.3s ease;
+    }
+    .btn-hero-primary:hover {
+      background: linear-gradient(135deg, #40916c 0%, #2d6a4f 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(27, 67, 50, 0.5);
+    }
+    .btn-hero-secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+    .btn-hero-secondary:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    /* Hero Right: Interactive Quick Advisory Card */
+    .hero-interactive-card {
+      background: rgba(255, 255, 255, 0.95);
+      color: #132a1e;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      position: relative;
+    }
+    .hero-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eef5f1;
+      color: #15803d;
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 0.75rem;
+    }
+    .hero-card-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+      margin-bottom: 0.4rem;
+    }
+    .hero-card-sub {
+      font-size: 0.88rem;
+      color: #4b6357;
+      margin-bottom: 1.25rem;
+    }
+    .hero-ask-input-box {
+      display: flex;
+      gap: 8px;
+      background: #f4f0e6;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 6px 8px 6px 14px;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .hero-ask-input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      font-size: 0.92rem;
+      outline: none;
+      font-family: inherit;
+    }
+    .hero-ask-btn {
+      background: var(--primary-green);
+      color: #ffffff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      transition: background 0.2s;
+    }
+    .hero-ask-btn:hover {
+      background: #2d6a4f;
+    }
+    .quick-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .quick-chip {
+      background: #ffffff;
+      border: 1px solid #dcd4c5;
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #2e4d3f;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .quick-chip:hover {
+      background: #eef5f1;
+      border-color: #2d6a4f;
+      color: #1b4332;
+    }
+
+    /* =========================================================
+       LOCATION & LOCALIZED AGRI-WEATHER PERSONALIZATION BAR
+       ========================================================= */
+    .personalization-strip {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.5rem;
+      box-shadow: 0 4px 16px rgba(10, 31, 22, 0.04);
+    }
+    .personalization-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .location-selector-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .loc-label {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #4a6357;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .loc-select {
+      background: #f7f4ed;
+      border: 1.5px solid #dcd4c5;
+      border-radius: 10px;
+      padding: 6px 14px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--primary-deep);
+      cursor: pointer;
+      outline: none;
+    }
+    .live-weather-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      background: #fcfbf9;
+      border: 1px solid #e5dfd2;
+      padding: 6px 14px;
+      border-radius: 30px;
+    }
+    .live-mandi-rates {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.86rem;
+      color: #2d4a3e;
+      font-weight: 600;
+    }
+    @media (max-width: 900px) {
+      .live-mandi-rates { display: none; }
+    }
+
+    /* =========================================================
+       REAL IMPACT STATISTICS & NUMBERS
+       ========================================================= */
+    .impact-section {
+      padding: 3.5rem 1.5rem;
+      background: #f4f0e6;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .impact-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 860px) {
+      .impact-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .impact-grid { grid-template-columns: 1fr; }
+    }
+    .impact-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 14px rgba(10, 31, 22, 0.05);
+      transition: transform 0.3s;
+    }
+    .impact-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(10, 31, 22, 0.1);
+    }
+    .impact-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .impact-number {
+      font-size: 2.3rem;
+      font-weight: 800;
+      color: var(--primary-green);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .impact-label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #4b6357;
+    }
+
+    /* =========================================================
+       ORGANIZED SERVICE CATEGORIES PILLARS
+       ========================================================= */
+    .services-pillars-section {
+      padding: 4.5rem 1.5rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section-eyebrow {
+      text-align: center;
+      color: var(--primary-green);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .section-main-heading {
+      text-align: center;
+      font-size: 2.45rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .section-subtext {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem auto;
+      font-size: 1.05rem;
+      color: #4f6b5c;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+    }
+    .pillar-box {
+      background: #ffffff;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 6px 20px rgba(10, 31, 22, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+    .pillar-box:hover {
+      border-color: var(--accent-leaf);
+      box-shadow: 0 14px 34px rgba(27, 67, 50, 0.12);
+      transform: translateY(-3px);
+    }
+    .pillar-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .badge-ai { background: #e0f2fe; color: #0369a1; }
+    .badge-insurance { background: #fee2e2; color: #b91c1c; }
+    .badge-finance { background: #fef9c3; color: #a16207; }
+    .badge-logistics { background: #dcfce7; color: #15803d; }
+
+    .pillar-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+      margin-bottom: 0.6rem;
+    }
+    .pillar-desc {
+      font-size: 0.95rem;
+      color: #4b6357;
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+    .pillar-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 1.75rem;
+    }
+    .pillar-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: #274336;
+      font-weight: 600;
+    }
+    .feature-check {
+      color: #16a34a;
+      font-weight: 800;
+    }
+    .pillar-action-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-pillar-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-cream);
+      border: 1px solid var(--border-subtle);
+      color: var(--primary-green);
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-pillar-link:hover {
+      background: var(--primary-green);
+      color: #ffffff;
+      border-color: var(--primary-green);
+    }
+
+    /* =========================================================
+       INSTITUTIONAL TRUST & VERIFIED INFORMATION SOURCES
+       ========================================================= */
+    .trust-sources-section {
+      background: #ffffff;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+    }
+    .trust-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .trust-heading {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #3b5448;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.75rem;
+    }
+    .sources-badges-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .source-pill-card {
+      background: #fcfbf8;
+      border: 1.5px solid #e8e2d4;
+      border-radius: 14px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1b4332;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .source-pill-card:hover {
+      border-color: var(--accent-leaf);
+    }
+
+    /* =========================================================
+       FARMER TESTIMONIALS (Stories from the Soil)
+       ========================================================= */
+    .testimonials-section {
+      padding: 4.5rem 1.5rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    @media (max-width: 900px) {
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    .testimonial-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 6px 20px rgba(10, 31, 22, 0.04);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .testimonial-stars {
+      color: #f59e0b;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .testimonial-quote {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: #274336;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+    .farmer-profile-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border-subtle);
+    }
+    .farmer-avatar-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1b4332 0%, #52b788 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .farmer-name {
+      font-weight: 800;
+      color: var(--primary-deep);
+      font-size: 1rem;
+    }
+    .farmer-location {
+      font-size: 0.8rem;
+      color: #60796d;
+    }
+
+    /* =========================================================
+       PROMINENT ROLE ACCESS & CTA BANNER
+       ========================================================= */
+    .portal-access-section {
+      padding: 4rem 1.5rem;
+      background: linear-gradient(135deg, #0e2f22 0%, #174230 100%);
+      color: #ffffff;
+    }
+    .portal-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .portal-cards-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+    @media (max-width: 860px) {
+      .portal-cards-row { grid-template-columns: 1fr; }
+    }
+    .portal-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+      padding: 1.75rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .portal-card:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: translateY(-3px);
+    }
+    .portal-icon {
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+    .portal-role-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .portal-role-desc {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.85);
+      line-height: 1.5;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Footer */
+    .landing-footer {
+      background: #091a13;
+      color: #9cb1a5;
+      padding: 3.5rem 1.5rem 2rem 1.5rem;
+      font-size: 0.88rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 768px) {
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+    .footer-col h4 {
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .footer-col a {
+      color: #9cb1a5;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover {
+      color: var(--accent-bright);
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: #6d8478;
+    }
+  </style>
 </head>
 <body>
 
-<!-- HEADER -->
- <header>
-  <div class="container header-flex">
+  <!-- Top Announcement Ticker -->
+  <aside class="top-announcement-bar">
+    <div class="ticker-content" id="tickerText">
+      <span class="ticker-item"><span class="ticker-badge">Live</span> 🌾 PMFBY Crop Insurance: Rabi 2026 Season enrollment window is active</span>
+      <span class="ticker-item"><span class="ticker-badge">Subsidies</span> 🚜 SMAM Scheme: 40% subsidy available for Agricultural Drones & Rotavators</span>
+      <span class="ticker-item"><span class="ticker-badge">Loan Update</span> 💰 Kisan Credit Card (KCC): 4% subsidized interest rate extended</span>
+      <span class="ticker-item"><span class="ticker-badge">Helpline</span> 📞 24/7 National Kisan Call Center Toll-Free: 1800-180-1551</span>
+      <span class="ticker-item"><span class="ticker-badge">Live</span> 🌾 PMFBY Crop Insurance: Rabi 2026 Season enrollment window is active</span>
+      <span class="ticker-item"><span class="ticker-badge">Subsidies</span> 🚜 SMAM Scheme: 40% subsidy available for Agricultural Drones & Rotavators</span>
+    </div>
+  </aside>
 
-    <div class="logo">
-      <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu">
-      <span>BhoomiBandhu</span>
+  <!-- Sticky Modern Navigation Header -->
+  <header class="landing-header">
+    <div class="landing-nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="landing-logo">
+        <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu 2.0">
+        <div>
+          <span class="landing-logo-text">BhoomiBandhu</span>
+          <span class="landing-logo-tag">2.0</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links hide-mobile">
+        <a href="#services" class="nav-link-item" id="nav-services">Services</a>
+        <a href="insurance.html" class="nav-link-item" id="nav-insurance">Crop Insurance</a>
+        <a href="schemes.html" class="nav-link-item" id="nav-schemes">Govt Schemes</a>
+        <a href="ai-crop-predictor.html" class="nav-link-item" id="nav-ai">Crop Suitability</a>
+        <a href="gemini-advisor.html" class="nav-link-item" style="color:var(--primary-green); font-weight:800;" id="nav-chat">💬 AI Bhaiya</a>
+        <a href="storage.html" class="nav-link-item" id="nav-storage">Storage</a>
+        <a href="mental-health.html" class="nav-link-item" id="nav-wellness">Wellness</a>
+      </nav>
+
+      <!-- Auth Action & Language Switcher -->
+      <div class="nav-auth-group">
+        <!-- Dual Language Toggle (English / हिन्दी) -->
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" id="btn-home-en" onclick="setHomeLang('en')">EN</button>
+          <button type="button" class="lang-btn" id="btn-home-hi" onclick="setHomeLang('hi')">हिन्दी</button>
+        </div>
+
+        <!-- Dynamic User Auth Button / Slot -->
+        <div id="headerAuthContainer">
+          <a href="login.html" class="back-link" style="padding:7px 16px; font-size:0.86rem; font-weight:700;">
+            Sign In
+          </a>
+          <a href="register.html" class="btn-pillar-link" style="background:#2d6a4f; color:#ffffff; border:none; padding:7px 16px; border-radius:20px; font-weight:700;">
+            Register
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       HERO SECTION: High Agricultural Emotional Impact
+       ========================================================= -->
+  <section class="hero-container">
+    <img
+      src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1600&q=80"
+      alt="Indian agricultural fields during golden sunrise"
+      class="hero-bg-image"
+    />
+    <div class="hero-overlay-gradient"></div>
+
+    <div class="hero-inner">
+      
+      <!-- Left Hero Pitch -->
+      <div>
+        <div class="hero-badge-pill">
+          <span>🌾</span>
+          <span id="txt-hero-pill">Empowering 50,000+ Indian Farming Families</span>
+        </div>
+
+        <h1 class="hero-title" id="txt-hero-title">
+          A Trusted Digital Companion for <br>
+          <span class="highlight-sun">Every Indian Farmer.</span>
+        </h1>
+
+        <p class="hero-subtitle" id="txt-hero-sub">
+          Boost your farm yield with Google Gemini AI crop intelligence, protect harvests through PMFBY insurance claims, and unlock government subsidies without middlemen.
+        </p>
+
+        <!-- Prominent Primary Actions -->
+        <div class="hero-actions-row">
+          <a href="login.html" class="btn-hero-primary" id="btn-hero-dash">
+            <span id="txt-hero-cta1">🌾 Go to Farmer Dashboard</span>
+            <span>→</span>
+          </a>
+          <a href="register.html" class="btn-hero-secondary" id="btn-hero-reg">
+            <span id="txt-hero-cta2">✨ Register Free Account</span>
+          </a>
+        </div>
+
+        <!-- Micro Trust Signals -->
+        <div style="display:flex; align-items:center; gap:16px; font-size:0.86rem; color:rgba(255,255,255,0.85); flex-wrap:wrap;">
+          <span>✓ Zero Middlemen</span>
+          <span>✓ Govt PMFBY Authorized</span>
+          <span>✓ Instant AI Advisory in Hindi & English</span>
+        </div>
+      </div>
+
+      <!-- Right Hero: Interactive AI Farming Query Box -->
+      <div class="hero-interactive-card">
+        <div class="hero-card-badge">
+          <span>🤖</span>
+          <span>Instant Gemini AI Advisory</span>
+        </div>
+        <h3 class="hero-card-title" id="txt-card-ask-title">Ask Farming Bhaiya Anything</h3>
+        <p class="hero-card-sub" id="txt-card-ask-sub">
+          Type your crop, soil, pest, or scheme question in Hindi, Hinglish, or English.
+        </p>
+
+        <form onsubmit="handleHeroAsk(event)">
+          <div class="hero-ask-input-box">
+            <span style="font-size:1.2rem;">🌱</span>
+            <input
+              type="text"
+              id="heroAskPrompt"
+              class="hero-ask-input"
+              placeholder="e.g. गेहूं में पीला रतुआ का इलाज क्या है?"
+              required
+            >
+            <button type="submit" class="hero-ask-btn">
+              <span>Ask AI</span>
+              <span>→</span>
+            </button>
+          </div>
+        </form>
+
+        <div style="font-size:0.78rem; font-weight:700; color:#5c7568; margin-bottom:6px;">
+          POPULAR FARMER QUESTIONS:
+        </div>
+        <div class="quick-chip-row">
+          <a class="quick-chip" onclick="quickFillPrompt('गेहूं में पहली सिंचाई और यूरिया कब डालें?')">Wheat First Irrigation</a>
+          <a class="quick-chip" onclick="quickFillPrompt('PMFBY में फसल नुकसान का दावा 72 घंटे में कैसे करें?')">PMFBY Claim Filing</a>
+          <a class="quick-chip" onclick="quickFillPrompt('सरसों में माहू (Aphids) कीट नियंत्रण?')">Mustard Pest Control</a>
+          <a class="quick-chip" onclick="quickFillPrompt('Kisan Credit Card (KCC) 4% ब्याज पर कैसे लें?')">KCC 4% Loan Scheme</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       LOCATION & LOCALIZED AGRI-WEATHER PERSONALIZATION BAR
+       ========================================================= -->
+  <section class="personalization-strip">
+    <div class="personalization-inner">
+      
+      <!-- District & State Selector -->
+      <div class="location-selector-wrap">
+        <span class="loc-label">📍 My Agri Region:</span>
+        <select class="loc-select" id="regionSelector" onchange="updateLocalizedWeather(this.value)">
+          <option value="rewari">Rewari, Haryana (North Agri Zone)</option>
+          <option value="sehore">Sehore, Madhya Pradesh (Central Black Soil)</option>
+          <option value="ludhiana">Ludhiana, Punjab (Alluvial Indo-Gangetic)</option>
+          <option value="varanasi">Varanasi, Uttar Pradesh (Eastern Plain)</option>
+          <option value="nashik">Nashik, Maharashtra (Horticulture & Cotton)</option>
+        </select>
+      </div>
+
+      <!-- Live Weather Intelligence -->
+      <div class="live-weather-pill" id="liveWeatherDisplay">
+        <span>🌤️ <strong>26°C Clear Sky</strong></span>
+        <span>💧 Humidity: <strong>44%</strong></span>
+        <span>🌱 Soil Moisture: <strong style="color:#16a34a;">Optimal for Sowing</strong></span>
+      </div>
+
+      <!-- Live Mandi Rates -->
+      <div class="live-mandi-rates" id="liveMandiRates">
+        <span>🌾 Wheat: <strong>₹2,275/qtl (MSP)</strong></span>
+        <span>🌿 Mustard: <strong>₹5,450/qtl</strong></span>
+        <span>🌱 Soybean: <strong>₹4,890/qtl</strong></span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       REAL IMPACT STATISTICS & NUMBERS
+       ========================================================= -->
+  <section class="impact-section">
+    <div class="impact-inner">
+      <div class="impact-grid">
+        
+        <div class="impact-card">
+          <div class="impact-icon">👨‍🌾</div>
+          <div class="impact-number">52,400+</div>
+          <div class="impact-label" id="txt-stat-1">Verified Farmers Empowered</div>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-icon">💰</div>
+          <div class="impact-number">₹ 18.6 Cr+</div>
+          <div class="impact-label" id="txt-stat-2">Insurance & Subsidies Assisted</div>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-icon">🤖</div>
+          <div class="impact-number">145,000+</div>
+          <div class="impact-label" id="txt-stat-3">AI & Crop Advisories Delivered</div>
+        </div>
+
+        <div class="impact-card">
+          <div class="impact-icon">⭐</div>
+          <div class="impact-number">99.2%</div>
+          <div class="impact-label" id="txt-stat-4">Farmer Trust & Satisfaction</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       STRUCTURED SERVICE CATEGORIES PILLARS
+       ========================================================= -->
+  <section class="services-pillars-section" id="services">
+    
+    <div class="section-eyebrow" id="txt-pillar-eyebrow">Comprehensive Farmer Assistance</div>
+    <h2 class="section-main-heading" id="txt-pillar-heading">Engineered for Indian Agriculture</h2>
+    <p class="section-subtext" id="txt-pillar-sub">
+      Four integrated service pillars connecting traditional farming wisdom with artificial intelligence, insurance protection, and financial security.
+    </p>
+
+    <div class="pillars-grid">
+      
+      <!-- PILLAR 1: AI & Precision Intelligence -->
+      <div class="pillar-box">
+        <div>
+          <span class="pillar-top-badge badge-ai">🤖 Precision AI Intelligence</span>
+          <h3 class="pillar-title" id="p1-title">AI Crop & Soil Advisory</h3>
+          <p class="pillar-desc" id="p1-desc">
+            Leverage machine learning trained on Indian agro-climatic zones and Google Gemini AI to forecast harvest yield and eradicate crop diseases.
+          </p>
+          <ul class="pillar-features-list">
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Soil N-P-K nutrient & rainfall crop prediction model</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>k-Nearest Neighbor nearest agro-match advisor</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Multilingual voice & text Gemini chat in Hindi & English</span></li>
+          </ul>
+        </div>
+        <div class="pillar-action-row">
+          <a href="ai-crop-predictor.html" class="btn-pillar-link">Crop Suitability →</a>
+          <a href="ml-crop-advisor.html" class="btn-pillar-link">ML Advisor</a>
+          <a href="gemini-advisor.html" class="btn-pillar-link" style="background:#2d6a4f; color:#fff;">💬 Chat with Bhaiya</a>
+        </div>
+      </div>
+
+      <!-- PILLAR 2: Insurance & Risk Protection -->
+      <div class="pillar-box">
+        <div>
+          <span class="pillar-top-badge badge-insurance">🛡️ Risk & Insurance Shield</span>
+          <h3 class="pillar-title" id="p2-title">PMFBY Crop Protection & Claims</h3>
+          <p class="pillar-desc" id="p2-desc">
+            End-to-end guidance for Pradhan Mantri Fasal Bima Yojana. Intimate crop loss within the mandatory 72-hour window and upload damage evidence.
+          </p>
+          <ul class="pillar-features-list">
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Step-by-step 72-hour loss intimation filing</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Geotagged damage photo & khasra record checklist</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Real-time claim status tracking & bank dispute support</span></li>
+          </ul>
+        </div>
+        <div class="pillar-action-row">
+          <a href="insurance.html" class="btn-pillar-link">Insurance Hub →</a>
+          <a href="claim-filing.html" class="btn-pillar-link">File Claim</a>
+          <a href="status-tracking.html" class="btn-pillar-link">Track Status</a>
+        </div>
+      </div>
+
+      <!-- PILLAR 3: Financial Empowerment & Schemes -->
+      <div class="pillar-box">
+        <div>
+          <span class="pillar-top-badge badge-finance">💰 Financial Empowerment</span>
+          <h3 class="pillar-title" id="p3-title">Loans, Subsidies & Govt Schemes</h3>
+          <p class="pillar-desc" id="p3-desc">
+            Direct access to low-interest farm credit, PM-KISAN direct benefit transfers, organic cluster incentives, and equipment mechanization subsidies.
+          </p>
+          <ul class="pillar-features-list">
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Kisan Credit Card (KCC) 4% subsidized interest eligibility</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>PM-KISAN ₹6,000 annual installment eligibility & Aadhaar check</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>PKVY organic farming clusters & solar pump grants</span></li>
+          </ul>
+        </div>
+        <div class="pillar-action-row">
+          <a href="financial.html" class="btn-pillar-link">Financial Tools →</a>
+          <a href="schemes.html" class="btn-pillar-link">Browse Schemes</a>
+        </div>
+      </div>
+
+      <!-- PILLAR 4: Post-Harvest & Wellness -->
+      <div class="pillar-box">
+        <div>
+          <span class="pillar-top-badge badge-logistics">🏢 Storage, Logistics & Care</span>
+          <h3 class="pillar-title" id="p4-title">Warehousing & Farmer Wellness</h3>
+          <p class="pillar-desc" id="p4-desc">
+            Avoid distress sales by locating certified WDRA cold storages nearby, book drone equipment, and access confidential 24/7 mental wellness helplines.
+          </p>
+          <ul class="pillar-features-list">
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>WDRA accredited cold storages & grain warehouse locator</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Tractor, harvester & drone spraying equipment booking</span></li>
+            <li class="pillar-feature-item"><span class="feature-check">✓</span> <span>Confidential debt counseling & National Kisan Helpline 1800-180-1551</span></li>
+          </ul>
+        </div>
+        <div class="pillar-action-row">
+          <a href="storage.html" class="btn-pillar-link">Find Storage →</a>
+          <a href="mental-health.html" class="btn-pillar-link">Mental Wellness</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       INSTITUTIONAL TRUST & VERIFIED INFORMATION SOURCES
+       ========================================================= -->
+  <section class="trust-sources-section">
+    <div class="trust-inner">
+      <div class="trust-heading" id="txt-trust-head">
+        Verified Knowledge Partners & Government Portals
+      </div>
+
+      <div class="sources-badges-row">
+        <div class="source-pill-card">
+          <span>🏛️</span>
+          <span>Ministry of Agriculture & Farmers Welfare</span>
+        </div>
+        <div class="source-pill-card">
+          <span>🛡️</span>
+          <span>PMFBY (Pradhan Mantri Fasal Bima Yojana)</span>
+        </div>
+        <div class="source-pill-card">
+          <span>🔬</span>
+          <span>ICAR (Indian Council of Agricultural Research)</span>
+        </div>
+        <div class="source-pill-card">
+          <span>🌤️</span>
+          <span>IMD (India Meteorological Department)</span>
+        </div>
+        <div class="source-pill-card">
+          <span>🌾</span>
+          <span>eNAM (National Agriculture Market)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================
+       FARMER TESTIMONIALS (Stories from the Soil)
+       ========================================================= -->
+  <section class="testimonials-section">
+    <div class="section-eyebrow" id="txt-test-eyebrow">Real Impact Stories</div>
+    <h2 class="section-main-heading" id="txt-test-heading">Trusted by Indian Farmers</h2>
+    <p class="section-subtext" id="txt-test-sub">
+      Hear directly from verified farmers who have increased their crop yield and secured their agricultural future with BhoomiBandhu.
+    </p>
+
+    <div class="testimonials-grid">
+      
+      <!-- Testimonial 1 -->
+      <div class="testimonial-card">
+        <div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote" id="test-1-quote">
+            "BhoomiBandhu saved my soybean crop during unseasonal hail. The AI advisor guided me on fungicide dosage and I filed my PMFBY damage claim in 10 minutes with photo evidence. Got my ₹38,000 claim approved without running around banks!"
+          </p>
+        </div>
+        <div class="farmer-profile-meta">
+          <div class="farmer-avatar-badge">R</div>
+          <div>
+            <div class="farmer-name">Ramesh Patel</div>
+            <div class="farmer-location">Bilkisganj, Sehore (MP) • 4.5 Acres</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="testimonial-card">
+        <div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote" id="test-2-quote">
+            "The drone spraying booking and soil NPK predictor reduced my fertilizer expenses by 30%. The Gemini chat answers every question in Punjabi & Hindi like a true elder brother from the village."
+          </p>
+        </div>
+        <div class="farmer-profile-meta">
+          <div class="farmer-avatar-badge" style="background:linear-gradient(135deg, #b45309, #f59e0b);">G</div>
+          <div>
+            <div class="farmer-name">Gurpreet Singh</div>
+            <div class="farmer-location">Sahnewal, Ludhiana (Punjab) • 8 Acres</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="testimonial-card">
+        <div>
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-quote" id="test-3-quote">
+            "Being a woman farmer, finding genuine subsidy schemes was tough. BhoomiBandhu helped me get a solar pump subsidy and Kisan Credit Card (KCC) within 3 weeks. It is truly a boon for small farmers."
+          </p>
+        </div>
+        <div class="farmer-profile-meta">
+          <div class="farmer-avatar-badge" style="background:linear-gradient(135deg, #0369a1, #38bdf8);">S</div>
+          <div>
+            <div class="farmer-name">Sunita Devi</div>
+            <div class="farmer-location">Rohaniya, Varanasi (UP) • 3 Acres</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========================================================
+       PROMINENT ROLE ACCESS & CTA BANNER
+       ========================================================= -->
+  <section class="portal-access-section">
+    <div class="portal-inner">
+      <h2 style="font-size:2.4rem; font-weight:800; letter-spacing:-0.02em; margin-bottom:0.75rem;" id="txt-cta-main">
+        Ready to Modernize Your Agricultural Journey?
+      </h2>
+      <p style="font-size:1.1rem; opacity:0.9; max-width:680px; margin:0 auto;" id="txt-cta-sub">
+        Sign in to your personalized dashboard or create a new account in under 2 minutes.
+      </p>
+
+      <div class="portal-cards-row">
+        
+        <!-- Farmer Portal -->
+        <div class="portal-card">
+          <div class="portal-icon">🌾</div>
+          <h3 class="portal-role-title">For Farmers</h3>
+          <p class="portal-role-desc">
+            Farm profile, AI crop prediction, PMFBY claim intimation, government schemes, and financial guidance.
+          </p>
+          <a href="login.html" class="btn-pillar-link" style="background:#ffffff; color:#1b4332; width:100%; justify-content:center; border:none;">
+            Sign In to Farmer Dashboard →
+          </a>
+        </div>
+
+        <!-- Service Provider Portal -->
+        <div class="portal-card">
+          <div class="portal-icon">🚜</div>
+          <h3 class="portal-role-title">For Service Providers</h3>
+          <p class="portal-role-desc">
+            Machinery rentals, drone spraying fleet, farmer dispatch management, and agricultural equipment bookings.
+          </p>
+          <a href="login.html" class="btn-pillar-link" style="background:#fef3c7; color:#92400e; width:100%; justify-content:center; border:none;">
+            Provider Partner Portal →
+          </a>
+        </div>
+
+        <!-- Administrator Portal -->
+        <div class="portal-card">
+          <div class="portal-icon">🛡️</div>
+          <h3 class="portal-role-title">Platform Governance</h3>
+          <p class="portal-role-desc">
+            User verification, claim audit telemetry, platform security monitoring, and institutional administrative oversight.
+          </p>
+          <a href="login.html" class="btn-pillar-link" style="background:#fee2e2; color:#991b1b; width:100%; justify-content:center; border:none;">
+            Admin Security Login →
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Modern Agricultural Footer -->
+  <footer class="landing-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+          <img src="Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" style="width:36px;" alt="Logo">
+          <span style="color:#ffffff; font-weight:800; font-size:1.25rem;">BhoomiBandhu 2.0</span>
+        </div>
+        <p style="line-height:1.6; margin-bottom:16px;">
+          Empowering Indian farmers through AI precision agriculture, crop insurance support, government schemes, and 24/7 agricultural advisory.
+        </p>
+        <div style="font-size:0.8rem; color:#778f82;">
+          📞 Kisan Helpline: <strong>1800-180-1551 (Toll-Free)</strong>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Core Tools</h4>
+        <ul>
+          <li><a href="ai-crop-predictor.html">Crop Suitability Assessment (Rule-Based)</a></li>
+          <li><a href="ml-crop-advisor.html">ML Nearest Match Advisor</a></li>
+          <li><a href="gemini-advisor.html">Gemini AI Farming Bhaiya</a></li>
+          <li><a href="insurance.html">PMFBY Insurance Hub</a></li>
+          <li><a href="claim-filing.html">Crop Loss Claim Filing</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Farmer Welfare</h4>
+        <ul>
+          <li><a href="financial.html">KCC Loan Guidance</a></li>
+          <li><a href="schemes.html">Central & State Schemes</a></li>
+          <li><a href="storage.html">Cold Storage Locator</a></li>
+          <li><a href="mental-health.html">Mental Wellness & Stress Relief</a></li>
+          <li><a href="status-tracking.html">Track Claim Status</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Authentication & Roles</h4>
+        <ul>
+          <li><a href="login.html">Sign In to Dashboard</a></li>
+          <li><a href="register.html">Create New Account</a></li>
+          <li><a href="forgot-password.html">Password Recovery</a></li>
+          <li><a href="farmer-dashboard.html">Farmer Dashboard</a></li>
+          <li><a href="provider-dashboard.html">Service Provider Portal</a></li>
+        </ul>
+      </div>
     </div>
 
-    <nav>
-      <a href="storage.html">Storage</a>
-      <a href="insurance.html">Insurance</a>
-      <a href="schemes.html">Schemes</a>
-      <a href="financial.html">Financial</a>
-      <a href="ai-crop-predictor.html">AI Crop</a>
-      <a href="ml-crop-advisor.html">🤖 ML Advisor</a>
-      <a href="gemini-advisor.html" style="color:var(--green);font-weight:700;">💬 AI Chat</a>
-      <a href="mental-health.html">Mental Health</a>
-      <a href="#" onclick="toggleTheme()">🌙</a>
-    </nav>
+    <div class="footer-bottom">
+      © 2026 BhoomiBandhu 2.0 • Digital Agriculture & Farmer Empowerment Initiative • In Service of the Indian Kisan
+    </div>
+  </footer>
 
-  </div>
-</header>
-<div class="scheme-ticker">
-  <div class="scheme-track">
-    <span>🌾 PMFBY: Crop insurance enrollment open for Kharif season</span>
-    <span>💰 KCC Loan: Interest subsidy extended till March 2026</span>
-    <span>🚜 Subsidy: 50% subsidy on agricultural equipment announced</span>
-    <span>📢 Scheme: New irrigation support scheme launched for small farmers</span>
-  </div>
-</div>
+  <script src="script.js"></script>
+  <script src="auth-nav.js"></script>
 
+  <script>
+    // =========================================================
+    // DYNAMIC AUTH STATE HYDRATION FOR HERO & HEADER
+    // =========================================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('bb_token');
+      const userRaw = localStorage.getItem('bb_user');
 
-<!-- paste common header here -->
+      if (token && userRaw) {
+        try {
+          const user = JSON.parse(userRaw);
+          const firstName = (user.full_name || 'Farmer').split(' ')[0];
+          let dashUrl = '/dashboard/farmer';
+          let roleLabel = 'Farmer';
+          if (user.role === 'admin') {
+            dashUrl = '/dashboard/admin';
+            roleLabel = 'Admin';
+          } else if (user.role === 'service_provider') {
+            dashUrl = '/dashboard/provider';
+            roleLabel = 'Provider';
+          }
 
-<section class="hero-secondary animate-hero">
-  <h1>A Trusted Friend for Every Farmer</h1>
-  <p class="hero-tagline">
-    Financial, mental & crop protection support
-  </p>
-  <div style="margin-top: 1.5rem; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-    <a href="login.html" style="background: linear-gradient(135deg, #2d6a4f, #1b4332); color: #fff; padding: 12px 26px; border-radius: 30px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(27,67,50,0.3); display: inline-flex; align-items: center; gap: 8px;">
-      <span>🌾 Sign In to BhoomiBandhu 2.0</span>
-      <span>→</span>
-    </a>
-    <a href="register.html" style="background: rgba(255,255,255,0.95); color: #1b4332; border: 1.5px solid #2d6a4f; padding: 12px 24px; border-radius: 30px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-      <span>✨ Register New Account</span>
-    </a>
-  </div>
-</section>
+          // Update Hero Primary CTA
+          const heroDashBtn = document.getElementById('btn-hero-dash');
+          if (heroDashBtn) {
+            heroDashBtn.href = dashUrl;
+            document.getElementById('txt-hero-cta1').innerText = `🌾 Open ${firstName}'s Dashboard`;
+          }
 
+          const heroRegBtn = document.getElementById('btn-hero-reg');
+          if (heroRegBtn) {
+            heroRegBtn.href = dashUrl;
+            document.getElementById('txt-hero-cta2').innerText = `✓ Logged in as ${user.full_name} (${roleLabel})`;
+          }
 
-<section class="section container">
-  <h2>Our Core Services</h2>
+          // Update Header Auth Slot
+          const headerSlot = document.getElementById('headerAuthContainer');
+          if (headerSlot) {
+            headerSlot.innerHTML = `
+              <a href="${dashUrl}" style="background:#2d6a4f; color:#ffffff; padding:7px 16px; border-radius:20px; font-weight:700; font-size:0.86rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(45,106,79,0.3);">
+                <span>🌾</span>
+                <span>${firstName}'s Dashboard</span>
+              </a>
+              <button onclick="bbLogout()" style="background:#fee2e2; border:1px solid #fca5a5; color:#991b1b; padding:7px 12px; border-radius:20px; font-weight:600; font-size:0.82rem; cursor:pointer;">
+                Sign Out
+              </button>
+            `;
+          }
+        } catch (e) {
+          console.error('Session parse error:', e);
+        }
+      }
+    });
 
-  <div class="grid">
+    // =========================================================
+    // QUICK FILL PROMPT & INTERACTIVE ASK
+    // =========================================================
+    function quickFillPrompt(text) {
+      document.getElementById('heroAskPrompt').value = text;
+      document.getElementById('heroAskPrompt').focus();
+    }
 
-    <a href="financial.html" class="card">
-      <h3>Financial Support</h3>
-      <p>Loan guidance, subsidies and debt management for farmers.</p>
-    </a>
+    function handleHeroAsk(e) {
+      e.preventDefault();
+      const prompt = document.getElementById('heroAskPrompt').value.trim();
+      if (!prompt) return;
+      // Redirect straight to Gemini advisor with prompt in URL query
+      window.location.href = `gemini-advisor.html?q=${encodeURIComponent(prompt)}`;
+    }
 
-    <a href="insurance.html" class="card">
-      <h3>Crop Insurance</h3>
-      <p>Protect crops with PMFBY and risk coverage support.</p>
-    </a>
+    // =========================================================
+    // LOCATION-BASED PERSONALIZATION & WEATHER
+    // =========================================================
+    const regionalData = {
+      rewari: {
+        weather: '26°C Clear Sky',
+        humidity: '44%',
+        soil: 'Optimal for Wheat & Mustard',
+        rates: '🌾 Wheat: ₹2,275/qtl • 🌿 Mustard: ₹5,450/qtl • 🥔 Potato: ₹1,400/qtl'
+      },
+      sehore: {
+        weather: '28°C Sunny',
+        humidity: '38%',
+        soil: 'Black Soil Moisture Retaining',
+        rates: '🌱 Soybean: ₹4,890/qtl • 🌾 Wheat: ₹2,320/qtl • 🧄 Garlic: ₹8,200/qtl'
+      },
+      ludhiana: {
+        weather: '24°C Mild Haze',
+        humidity: '52%',
+        soil: 'Prime Alluvial Sowing Condition',
+        rates: '🌾 Basmati: ₹3,850/qtl • 🌾 Wheat: ₹2,275/qtl • 🌽 Maize: ₹2,100/qtl'
+      },
+      varanasi: {
+        weather: '27°C Partly Cloudy',
+        humidity: '48%',
+        soil: 'Fertile Gangetic Loam',
+        rates: '🌾 Rice: ₹2,183/qtl • 🌾 Wheat: ₹2,275/qtl • 🍅 Tomato: ₹1,600/qtl'
+      },
+      nashik: {
+        weather: '29°C Sunny',
+        humidity: '35%',
+        soil: 'Ideal Horticulture Drainage',
+        rates: '🧅 Onion: ₹2,400/qtl • 🍇 Grapes: ₹6,500/qtl • 🌽 Maize: ₹2,050/qtl'
+      }
+    };
 
-    <a href="ai-crop-predictor.html" class="card">
-      <h3>AI Crop Prediction</h3>
-      <p>Smart yield prediction using weather and soil data.</p>
-    </a>
+    function updateLocalizedWeather(cityKey) {
+      const data = regionalData[cityKey] || regionalData.rewari;
+      document.getElementById('liveWeatherDisplay').innerHTML = `
+        <span>🌤️ <strong>${data.weather}</strong></span>
+        <span>💧 Humidity: <strong>${data.humidity}</strong></span>
+        <span>🌱 Soil: <strong style="color:#16a34a;">${data.soil}</strong></span>
+      `;
+      document.getElementById('liveMandiRates').innerHTML = data.rates;
+    }
 
-    <a href="ml-crop-advisor.html" class="card">
-      <h3>🤖 ML Crop Advisor</h3>
-      <p>kNN machine learning model trained on 120 samples — finds your nearest crop match by distance.</p>
-    </a>
+    // =========================================================
+    // BILINGUAL TRANSLATION (English & हिन्दी)
+    // =========================================================
+    const homeTranslations = {
+      en: {
+        heroPill: 'Empowering 50,000+ Indian Farming Families',
+        heroTitle: 'A Trusted Digital Companion for <br><span class="highlight-sun">Every Indian Farmer.</span>',
+        heroSub: 'Boost your farm yield with Google Gemini AI crop intelligence, protect harvests through PMFBY insurance claims, and unlock government subsidies without middlemen.',
+        heroCta1: '🌾 Go to Farmer Dashboard',
+        heroCta2: '✨ Register Free Account',
+        askTitle: 'Ask Farming Bhaiya Anything',
+        askSub: 'Type your crop, soil, pest, or scheme question in Hindi, Hinglish, or English.',
+        stat1: 'Verified Farmers Empowered',
+        stat2: 'Insurance & Subsidies Assisted',
+        stat3: 'AI & Crop Advisories Delivered',
+        stat4: 'Farmer Trust & Satisfaction',
+        pillarEyebrow: 'Comprehensive Farmer Assistance',
+        pillarHeading: 'Engineered for Indian Agriculture',
+        pillarSub: 'Four integrated service pillars connecting traditional farming wisdom with artificial intelligence, insurance protection, and financial security.',
+        p1Title: 'AI Crop & Soil Advisory',
+        p1Desc: 'Leverage machine learning trained on Indian agro-climatic zones and Google Gemini AI to forecast harvest yield and eradicate crop diseases.',
+        p2Title: 'PMFBY Crop Protection & Claims',
+        p2Desc: 'End-to-end guidance for Pradhan Mantri Fasal Bima Yojana. Intimate crop loss within the mandatory 72-hour window and upload damage evidence.',
+        p3Title: 'Loans, Subsidies & Govt Schemes',
+        p3Desc: 'Direct access to low-interest farm credit, PM-KISAN direct benefit transfers, organic cluster incentives, and equipment mechanization subsidies.',
+        p4Title: 'Warehousing & Farmer Wellness',
+        p4Desc: 'Avoid distress sales by locating certified WDRA cold storages nearby, book drone equipment, and access confidential 24/7 mental wellness helplines.',
+        trustHead: 'Verified Knowledge Partners & Government Portals',
+        testEyebrow: 'Real Impact Stories',
+        testHeading: 'Trusted by Indian Farmers',
+        testSub: 'Hear directly from verified farmers who have increased their crop yield and secured their agricultural future with BhoomiBandhu.',
+        ctaMain: 'Ready to Modernize Your Agricultural Journey?',
+        ctaSub: 'Sign in to your personalized dashboard or create a new account in under 2 minutes.'
+      },
+      hi: {
+        heroPill: '50,000+ से अधिक भारतीय किसान परिवारों का भरोसा',
+        heroTitle: 'हर भारतीय किसान का सच्चा <br><span class="highlight-sun">डिजिटल साथी और मार्गदर्शक।</span>',
+        heroSub: 'गूगल जेमिनी एआई फसल सलाह से पैदावार बढ़ाएं, पीएमएफबीवाई फसल बीमा दावों से फसल सुरक्षित करें और बिना बिचौलियों के सरकारी योजनाओं का सीधा लाभ उठाएं।',
+        heroCta1: '🌾 किसान डैशबोर्ड में जाएं',
+        heroCta2: '✨ नया निःशुल्क खाता बनाएं',
+        askTitle: 'खेती भैया से कुछ भी पूछें',
+        askSub: 'फसल, मिट्टी, कीट, खाद या सरकारी योजना का सवाल हिंदी या अंग्रेजी में लिखें।',
+        stat1: 'सशक्त व सत्यापित किसान',
+        stat2: 'बीमा दावे व अनुदान सहायता',
+        stat3: 'एआई फसल व मौसम सलाह दी गई',
+        stat4: 'किसान संतुष्टि व अटूट विश्वास',
+        pillarEyebrow: 'सम्पूर्ण किसान सहायता मंच',
+        pillarHeading: 'भारतीय कृषि के लिए विशेष रूप से निर्मित',
+        pillarSub: 'चार मुख्य कृषि स्तंभ जो पारंपरिक खेती के ज्ञान को आधुनिक कृत्रिम बुद्धिमत्ता, बीमा सुरक्षा और वित्तीय मजबूती से जोड़ते हैं।',
+        p1Title: 'एआई फसल एवं मृदा परामर्श',
+        p1Desc: 'भारतीय कृषि-जलवायु क्षेत्रों पर प्रशिक्षित मशीन लर्निंग और जेमिनी एआई के जरिए फसल पैदावार बढ़ाएं और कीट रोगों का तुरंत इलाज पाएं।',
+        p2Title: 'पीएमएफबीवाई फसल सुरक्षा व दावे',
+        p2Desc: 'प्रधानमंत्री फसल बीमा योजना में फसल नुकसान की सूचना 72 घंटे के भीतर दर्ज करें और फोटो साक्ष्य के साथ तुरंत दावा प्रस्तुत करें।',
+        p3Title: 'केसीसी ऋण, सब्सिडी व सरकारी योजनाएं',
+        p3Desc: '4% ब्याज दर पर किसान क्रेडिट कार्ड, पीएम-किसान सम्मान निधि की किस्तें और कृषि यंत्रों पर 40-50% सब्सिडी की सीधी जानकारी।',
+        p4Title: 'कोल्ड स्टोरेज, यंत्र बुकिंग व स्वास्थ्य',
+        p4Desc: 'फसल को औने-पौने दामों पर बेचने से बचाने के लिए पास के कोल्ड स्टोरेज खोजें, ड्रोन स्प्रे बुक करें और 24/7 किसान हेल्पलाइन पाएं।',
+        trustHead: 'सत्यापित ज्ञान साझेदार व सरकारी पोर्टल',
+        testEyebrow: 'जमीनी हकीकत और सच्ची कहानियां',
+        testHeading: 'भारत के किसानों का अटूट भरोसा',
+        testSub: 'उन सत्यापित किसानों की जुबानी जिन्होंने भूमिबंधु की मदद से अपनी पैदावार बढ़ाई और अपना भविष्य सुरक्षित किया।',
+        ctaMain: 'क्या आप अपनी खेती को स्मार्ट और सुरक्षित बनाने के लिए तैयार हैं?',
+        ctaSub: 'अपने व्यक्तिगत किसान डैशबोर्ड में प्रवेश करें या 2 मिनट में नया खाता बनाएं।'
+      }
+    };
 
-    <a href="gemini-advisor.html" class="card">
-      <h3>💬 AI Farming Chat</h3>
-      <p>Ask anything in Hindi or English — Google Gemini AI answers crop, soil, scheme & pest questions.</p>
-    </a>
+    function setHomeLang(lang) {
+      document.getElementById('btn-home-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-home-hi').classList.toggle('active', lang === 'hi');
 
-    <a href="mental-health.html" class="card">
-      <h3>Mental Health Support</h3>
-      <p>Stress relief, helpline access and community care.</p>
-    </a>
+      const t = homeTranslations[lang];
+      document.getElementById('txt-hero-pill').innerText = t.heroPill;
+      document.getElementById('txt-hero-title').innerHTML = t.heroTitle;
+      document.getElementById('txt-hero-sub').innerText = t.heroSub;
+      
+      const token = localStorage.getItem('bb_token');
+      if (!token) {
+        document.getElementById('txt-hero-cta1').innerText = t.heroCta1;
+        document.getElementById('txt-hero-cta2').innerText = t.heroCta2;
+      }
 
-  </div>
-</section>
+      document.getElementById('txt-card-ask-title').innerText = t.askTitle;
+      document.getElementById('txt-card-ask-sub').innerText = t.askSub;
+      document.getElementById('txt-stat-1').innerText = t.stat1;
+      document.getElementById('txt-stat-2').innerText = t.stat2;
+      document.getElementById('txt-stat-3').innerText = t.stat3;
+      document.getElementById('txt-stat-4').innerText = t.stat4;
+      document.getElementById('txt-pillar-eyebrow').innerText = t.pillarEyebrow;
+      document.getElementById('txt-pillar-heading').innerText = t.pillarHeading;
+      document.getElementById('txt-pillar-sub').innerText = t.pillarSub;
+      document.getElementById('p1-title').innerText = t.p1Title;
+      document.getElementById('p1-desc').innerText = t.p1Desc;
+      document.getElementById('p2-title').innerText = t.p2Title;
+      document.getElementById('p2-desc').innerText = t.p2Desc;
+      document.getElementById('p3-title').innerText = t.p3Title;
+      document.getElementById('p3-desc').innerText = t.p3Desc;
+      document.getElementById('p4-title').innerText = t.p4Title;
+      document.getElementById('p4-desc').innerText = t.p4Desc;
+      document.getElementById('txt-trust-head').innerText = t.trustHead;
+      document.getElementById('txt-test-eyebrow').innerText = t.testEyebrow;
+      document.getElementById('txt-test-heading').innerText = t.testHeading;
+      document.getElementById('txt-test-sub').innerText = t.testSub;
+      document.getElementById('txt-cta-main').innerText = t.ctaMain;
+      document.getElementById('txt-cta-sub').innerText = t.ctaSub;
 
+      localStorage.setItem('bb_lang', lang);
+    }
 
-<footer>© 2026 BhoomiBandhu 2.0</footer>
-<script src="script.js"></script>
-<script src="auth-nav.js"></script>
+    // Auto load stored language
+    const currentLang = localStorage.getItem('bb_lang') || 'en';
+    if (currentLang === 'hi') {
+      setHomeLang('hi');
+    }
+  </script>
 </body>
 </html>
-
