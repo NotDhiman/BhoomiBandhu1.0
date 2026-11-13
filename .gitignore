@@ -11,3 +11,5 @@ npm-debug.log*
 # ── OS junk ──────────────────────────────────────
 .DS_Store
 Thumbs.db
+.env
+.env.*
