@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Navbar from '../../components/Navbar.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
 import {
@@ -1235,7 +1236,9 @@ export default function AdminPortalPage() {
   };
 
   return (
-    <div className="admin-layout">
+    <>
+      <Navbar />
+      <div className="admin-layout">
       {/* Sidebar overlay for mobile */}
       <div
         className={`admin-sidebar-overlay ${sidebarOpen ? 'open' : ''}`}
@@ -1285,5 +1288,6 @@ export default function AdminPortalPage() {
         {section === 'mental_health' && <MentalHealthSection />}
       </main>
     </div>
+    </>
   );
 }

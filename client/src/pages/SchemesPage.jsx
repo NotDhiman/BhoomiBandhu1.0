@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 import '../pageStyles/schemes.css';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
@@ -48,109 +50,164 @@ export default function SchemesPage() {
       const dbSchemes = dbResult.status === 'fulfilled' ? dbResult.value : [];
       const externalSchemes = externalResult.status === 'fulfilled' ? externalResult.value : [];
       const merged = [...dbSchemes];
-      const seen = new Set(dbSchemes.map(s => s.slug.toString().toLowerCase()));
-      externalSchemes.forEach(s => {
-        const key = String(s.slug || s.name).toLowerCase();
-        if (!seen.has(key)) { merged.push(s); seen.add(key); }
+
+      externalSchemes.forEach(ext => {
+        const alreadyExists = merged.some(item =>
+          item.slug.toLowerCase() === ext.slug.toLowerCase() ||
+          item.name.toLowerCase() === ext.name.toLowerCase()
+        );
+        if (!alreadyExists) {
+          merged.push(ext);
+        }
       });
-      setSchemes(merged);
-      if (dbResult.status === 'rejected' && externalResult.status === 'rejected') {
-        setError('Could not load schemes. Check that the Express server and MySQL database are running.');
-      } else if (dbResult.status === 'rejected') {
-        setError('Database schemes are unavailable; showing external API results only.');
+
+      if (!merged.length && (dbResult.status === 'rejected' || externalResult.status === 'rejected')) {
+        const msg = [dbResult.reason?.message, externalResult.reason?.message].filter(Boolean).join('; ');
+        setError(msg || 'Failed to load schemes from both local and external providers.');
       }
+
+      setSchemes(merged);
       setLoading(false);
     }
     loadSchemes();
     return () => { cancelled = true; };
   }, []);
 
-  const filtered = useMemo(() => schemes.filter(s => {
-    const searchText = `${s.name} ${s.summary} ${s.type} ${s.eligibility}`.toLowerCase();
-    const matchesQuery = searchText.includes(query.toLowerCase());
-    const matchesType = type === 'all' || String(s.type).toLowerCase().includes(type);
-    const matchesSource = source === 'all' || s.source === source;
-    return matchesQuery && matchesType && matchesSource;
-  }), [schemes, query, type, source]);
+  const filteredSchemes = useMemo(() => {
+    return schemes.filter(item => {
+      const q = query.trim().toLowerCase();
+      const matchesQuery = !q ||
+        item.name.toLowerCase().includes(q) ||
+        item.summary.toLowerCase().includes(q) ||
+        item.eligibility.toLowerCase().includes(q);
+      const matchesType = type === 'all' || item.type.toLowerCase() === type.toLowerCase();
+      const matchesSource = source === 'all' || item.source.toLowerCase() === source.toLowerCase();
+      return matchesQuery && matchesType && matchesSource;
+    });
+  }, [schemes, query, type, source]);
 
   return (
     <div className="schemes-page">
-      <header className="schemes-header">
-        <div className="schemes-header-inner">
-          <Link className="schemes-brand" to="/">
-            <img src="/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="" />
-            <span>BhoomiBandhu</span>
-          </Link>
-          <nav className="schemes-nav" aria-label="Main navigation">
-            <Link to="/">Home</Link><Link to="/storage">Storage</Link><Link to="/insurance">Insurance</Link>
-            <Link to="/schemes" aria-current="page">Government Schemes</Link><Link to="/financial">Financial</Link>
-          </nav>
+      <Navbar />
+
+      <header className="schemes-hero">
+        <span className="schemes-kicker">Unified Kisan Welfare Directory</span>
+        <h1>Central & State Agricultural Schemes</h1>
+        <p>
+          Search verified government subsidies, input assistance programs, and credit facilities directly linked to official application portals.
+        </p>
+        <div className="schemes-stats">
+          <div>
+            <strong>{schemes.length || '15+'}</strong>
+            <span>Active Schemes</span>
+          </div>
+          <div>
+            <strong>100%</strong>
+            <span>Direct Benefit (DBT)</span>
+          </div>
+          <div>
+            <strong>Zero Fee</strong>
+            <span>Public Agricultural Info</span>
+          </div>
         </div>
       </header>
 
-      <section className="schemes-hero">
-        <span className="schemes-kicker">Government support for farmers</span>
-        <h1>Government Schemes</h1>
-        <p>Discover farmer welfare schemes, understand their benefits, and find official application links.</p>
-        <div className="schemes-stats">
-          <div><strong>{schemes.length}</strong><span>Available schemes</span></div>
-          <div><strong>Live</strong><span>API-ready listing</span></div>
-          <div><strong>Central & State</strong><span>Scheme categories</span></div>
-        </div>
-      </section>
-
       <main className="schemes-main">
-        <section className="schemes-toolbar" aria-label="Filter government schemes">
-          <label className="schemes-search">
-            <span>Search schemes</span>
-            <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search by name, benefit or category…" />
-          </label>
-          <label>
-            <span>Government</span>
-            <select value={type} onChange={e => setType(e.target.value)}>
-              <option value="all">Central and state</option><option value="central">Central</option><option value="state">State</option>
+        <section className="schemes-toolbar" aria-label="Scheme filters">
+          <div className="schemes-search">
+            <label htmlFor="scheme-query">Search Schemes or Keywords</label>
+            <input
+              id="scheme-query"
+              type="search"
+              placeholder="e.g. drip irrigation, tractor subsidy, kisan credit, solar"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="scheme-type">Authority Level</label>
+            <select id="scheme-type" value={type} onChange={e => setType(e.target.value)}>
+              <option value="all">All Authorities</option>
+              <option value="central">Central Government</option>
+              <option value="state">State Specific</option>
             </select>
-          </label>
-          <label>
-            <span>Data source</span>
-            <select value={source} onChange={e => setSource(e.target.value)}>
-              <option value="all">All sources</option><option value="database">Local database</option><option value="external">External API</option>
+          </div>
+          <div>
+            <label htmlFor="scheme-source">Registry Source</label>
+            <select id="scheme-source" value={source} onChange={e => setSource(e.target.value)}>
+              <option value="all">All Sources</option>
+              <option value="database">Database Verified</option>
+              <option value="external">External Live Feeds</option>
             </select>
-          </label>
+          </div>
         </section>
 
-        {error && <p className="schemes-notice" role="status">{error}</p>}
-        {loading ? <div className="schemes-empty" role="status">Loading government schemes…</div> : (
-          filtered.length ? <section className="schemes-grid" aria-live="polite">
-            {filtered.map(scheme => (
-              <article className="scheme-card" key={`${scheme.source}-${scheme.id}`}>
+        {error && (
+          <div className="schemes-notice" role="alert">
+            {error}
+          </div>
+        )}
+
+        {loading ? (
+          <div className="schemes-empty">
+            <h3>Loading verified government schemes...</h3>
+            <p>Fetching real-time subsidy rules and eligibility databases.</p>
+          </div>
+        ) : filteredSchemes.length === 0 ? (
+          <div className="schemes-empty">
+            <h3>No schemes match your criteria</h3>
+            <p>Try broadening your search keyword or clearing the filters above.</p>
+          </div>
+        ) : (
+          <div className="schemes-grid">
+            {filteredSchemes.map(item => (
+              <article key={item.id} className="scheme-card">
                 <div className="scheme-card-top">
-                  <span className={`scheme-type ${String(scheme.type).toLowerCase().includes('state') ? 'state' : ''}`}>
-                    {String(scheme.type).toLowerCase().includes('state') ? 'State scheme' : 'Central scheme'}
+                  <span className={`scheme-type ${item.type.toLowerCase() === 'state' ? 'state' : 'central'}`}>
+                    {item.type}
                   </span>
-                  <span className={`scheme-source ${scheme.source}`}>{scheme.source === 'external' ? 'API data' : 'Database'}</span>
+                  <span className={`scheme-source ${item.source === 'external' ? 'external' : 'verified'}`}>
+                    {item.source === 'external' ? 'Live External' : 'Verified'}
+                  </span>
                 </div>
-                <h2>{scheme.name}</h2>
-                <p>{scheme.summary}</p>
-                {scheme.eligibility && <div className="scheme-eligibility"><strong>Eligibility</strong><p>{scheme.eligibility}</p></div>}
+                <h2>{item.name}</h2>
+                <p>{item.summary}</p>
+                {item.eligibility && (
+                  <div className="scheme-eligibility">
+                    <strong>Eligibility:</strong>
+                    <p>{item.eligibility}</p>
+                  </div>
+                )}
                 <div className="scheme-card-actions">
-                  {scheme.officialUrl ? <a href={scheme.officialUrl} target="_blank" rel="noreferrer">Official details <span aria-hidden="true">↗</span></a> : <span className="scheme-no-link">Official link not supplied by API</span>}
+                  {item.officialUrl ? (
+                    <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">
+                      <span>Official Portal</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  ) : (
+                    <span className="scheme-no-link">Contact Regional Krishi Bhawan</span>
+                  )}
                 </div>
               </article>
             ))}
-          </section> : <div className="schemes-empty">No schemes match your search. Try another keyword or filter.</div>
+          </div>
         )}
 
         <section className="schemes-api-help">
           <div>
-            <span className="schemes-kicker">Developer integration</span>
-            <h2>Connect a government schemes API</h2>
-            <p>The page already requests <code>/api/government-schemes</code> and <code>/api/external-government-schemes</code>. Configure your chosen provider in the backend environment file; API keys stay on the server and are never exposed in React.</p>
+            <span className="schemes-kicker">Developer & Agronomist Integration</span>
+            <h2>Access Schemes Programmatically</h2>
+            <p>
+              Use our REST API endpoints to build state-level custom portals, mobile apps, or local panchayat kiosk displays with live scheme feeds.
+            </p>
           </div>
-          <Link to="/">Back to dashboard</Link>
+          <a href="/api/government-schemes" target="_blank" rel="noreferrer">
+            View JSON Feed
+          </a>
         </section>
       </main>
-      <footer className="schemes-footer">© BhoomiBandhu · Farmer support and scheme discovery</footer>
+
+      <Footer />
     </div>
   );
 }

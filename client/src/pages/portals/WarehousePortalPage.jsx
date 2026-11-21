@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import Navbar from '../../components/Navbar.jsx';
+import Footer from '../../components/Footer.jsx';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
 import {
@@ -144,7 +146,9 @@ export default function WarehousePortalPage() {
   const approvalStatus = accountStatus;
 
   return (
-    <div className="portal-wrapper">
+    <>
+      <Navbar />
+      <div className="portal-wrapper">
       {/* ── Warehouse Hero Banner ── */}
       <div className="portal-hero-banner portal-hero-warehouse">
         <div>
@@ -606,6 +610,8 @@ export default function WarehousePortalPage() {
           </div>
         </div>
       )}
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 }
