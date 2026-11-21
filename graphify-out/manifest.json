@@ -1,0 +1,1592 @@
+{
+  "BhoomiBandhu1.0/backend/alembic/env.py": {
+    "mtime": 1795250250.6664846,
+    "seen": 1795254714.558473,
+    "ast_hash": "ca9a1f7705080a09b79788ab5772c774",
+    "semantic_hash": "ca9a1f7705080a09b79788ab5772c774"
+  },
+  "BhoomiBandhu1.0/backend/alembic/versions/001_create_auth_tables.py": {
+    "mtime": 1795250250.6690218,
+    "seen": 1795254714.5584853,
+    "ast_hash": "528546a405bfe2a698be68a8da470648",
+    "semantic_hash": "528546a405bfe2a698be68a8da470648"
+  },
+  "BhoomiBandhu1.0/backend/alembic/versions/002_otp_single_use.py": {
+    "mtime": 1795250250.6690218,
+    "seen": 1795254714.5584905,
+    "ast_hash": "67594418fc857589195aacf9acaabbdc",
+    "semantic_hash": "67594418fc857589195aacf9acaabbdc"
+  },
+  "BhoomiBandhu1.0/backend/app/core/config.py": {
+    "mtime": 1795250250.6710224,
+    "seen": 1795254714.5584931,
+    "ast_hash": "c35a425e2c0ec04d881bed4c68cf3f20",
+    "semantic_hash": "c35a425e2c0ec04d881bed4c68cf3f20"
+  },
+  "BhoomiBandhu1.0/backend/app/core/database.py": {
+    "mtime": 1795250250.672023,
+    "seen": 1795254714.5584965,
+    "ast_hash": "fb2a10448a51f141f73ba4506d909d96",
+    "semantic_hash": "fb2a10448a51f141f73ba4506d909d96"
+  },
+  "BhoomiBandhu1.0/backend/app/core/dependencies.py": {
+    "mtime": 1795250250.6735013,
+    "seen": 1795254714.5584989,
+    "ast_hash": "bc70d310a7537fd44d423574b0ec4f5c",
+    "semantic_hash": "bc70d310a7537fd44d423574b0ec4f5c"
+  },
+  "BhoomiBandhu1.0/backend/app/models/__init__.py": {
+    "mtime": 1795250250.6744993,
+    "seen": 1795254714.5585015,
+    "ast_hash": "27a07584645514b6ccb12daf49cad7c1",
+    "semantic_hash": "27a07584645514b6ccb12daf49cad7c1"
+  },
+  "BhoomiBandhu1.0/backend/app/models/auth_models.py": {
+    "mtime": 1795250250.6744993,
+    "seen": 1795254714.5585032,
+    "ast_hash": "a8634b9d2a764e0025c3caf10da3865f",
+    "semantic_hash": "a8634b9d2a764e0025c3caf10da3865f"
+  },
+  "BhoomiBandhu1.0/backend/app/models/models.py": {
+    "mtime": 1795250250.6760137,
+    "seen": 1795254714.5585053,
+    "ast_hash": "6ce86df3dc588d27b77122580b3305b3",
+    "semantic_hash": "6ce86df3dc588d27b77122580b3305b3"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/__init__.py": {
+    "mtime": 1795250250.6771529,
+    "seen": 1795254714.5585072,
+    "ast_hash": "4be0a8111f72c8ba3ccdbd02181c4b52",
+    "semantic_hash": "4be0a8111f72c8ba3ccdbd02181c4b52"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/admin.py": {
+    "mtime": 1795250250.6771529,
+    "seen": 1795254714.558509,
+    "ast_hash": "6e4edab5900316ea762302c65cab0245",
+    "semantic_hash": "6e4edab5900316ea762302c65cab0245"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/ai_chat.py": {
+    "mtime": 1795250250.6784923,
+    "seen": 1795254714.5585113,
+    "ast_hash": "4bbe6c2bd9cb2db5e6881de2e0a54d24",
+    "semantic_hash": "4bbe6c2bd9cb2db5e6881de2e0a54d24"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/auth.py": {
+    "mtime": 1795250250.6795597,
+    "seen": 1795254714.5585134,
+    "ast_hash": "1bcf93e3df49f6cd8a48e287af744222",
+    "semantic_hash": "1bcf93e3df49f6cd8a48e287af744222"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/catalogues.py": {
+    "mtime": 1795250250.6806574,
+    "seen": 1795254714.5585153,
+    "ast_hash": "472955745afc7849146489c48c362bbc",
+    "semantic_hash": "472955745afc7849146489c48c362bbc"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/external_schemes.py": {
+    "mtime": 1795250250.6816573,
+    "seen": 1795254714.558517,
+    "ast_hash": "733037d148e51c0358c1c593bc40f41a",
+    "semantic_hash": "733037d148e51c0358c1c593bc40f41a"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/farmers.py": {
+    "mtime": 1795250250.6827602,
+    "seen": 1795254714.5585191,
+    "ast_hash": "2ab811be0ddd97798478b5d0cf341181",
+    "semantic_hash": "2ab811be0ddd97798478b5d0cf341181"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/health.py": {
+    "mtime": 1795250250.6827602,
+    "seen": 1795254714.5585208,
+    "ast_hash": "7b7a9a6f8640755def69badf25bc83f2",
+    "semantic_hash": "7b7a9a6f8640755def69badf25bc83f2"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/insurance.py": {
+    "mtime": 1795250250.6839364,
+    "seen": 1795254714.558523,
+    "ast_hash": "30531bf9ce7ff219789d895cdb3a7af4",
+    "semantic_hash": "30531bf9ce7ff219789d895cdb3a7af4"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/loans.py": {
+    "mtime": 1795250250.6849356,
+    "seen": 1795254714.5585246,
+    "ast_hash": "92d4e2fa125dd4dd28c012a541321546",
+    "semantic_hash": "92d4e2fa125dd4dd28c012a541321546"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/mental_health.py": {
+    "mtime": 1795250250.6849356,
+    "seen": 1795254714.5585265,
+    "ast_hash": "983c1a39e5659624df06976b53eb8bd5",
+    "semantic_hash": "983c1a39e5659624df06976b53eb8bd5"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/predictions.py": {
+    "mtime": 1795250250.6864495,
+    "seen": 1795254714.5585284,
+    "ast_hash": "5a6d26f7c9fb2fb9efe2c82f82779a92",
+    "semantic_hash": "5a6d26f7c9fb2fb9efe2c82f82779a92"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/schemes.py": {
+    "mtime": 1795250250.6864495,
+    "seen": 1795254714.5585306,
+    "ast_hash": "c32365d14f153b497658cd1adcb0f018",
+    "semantic_hash": "c32365d14f153b497658cd1adcb0f018"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/storage.py": {
+    "mtime": 1795250250.687961,
+    "seen": 1795254714.5585334,
+    "ast_hash": "89c9cf2201900dc5a6425b2073a307e5",
+    "semantic_hash": "89c9cf2201900dc5a6425b2073a307e5"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/warehouse.py": {
+    "mtime": 1795250250.6889799,
+    "seen": 1795254714.5585353,
+    "ast_hash": "200de5b5de77186fbd6360e119b2c036",
+    "semantic_hash": "200de5b5de77186fbd6360e119b2c036"
+  },
+  "BhoomiBandhu1.0/backend/app/routers/weather.py": {
+    "mtime": 1795250250.6909747,
+    "seen": 1795254714.5585375,
+    "ast_hash": "13b010433f50f3fb55f5e40990395255",
+    "semantic_hash": "13b010433f50f3fb55f5e40990395255"
+  },
+  "BhoomiBandhu1.0/backend/app/schemas/__init__.py": {
+    "mtime": 1795250250.6919746,
+    "seen": 1795254714.5585396,
+    "ast_hash": "3975715b071a2f6cd0ee0d8f0b54470c",
+    "semantic_hash": "3975715b071a2f6cd0ee0d8f0b54470c"
+  },
+  "BhoomiBandhu1.0/backend/app/schemas/admin_schemas.py": {
+    "mtime": 1795250250.6930096,
+    "seen": 1795254714.5585418,
+    "ast_hash": "cb63fe0a9b4a66589b8fb225d62f7f4a",
+    "semantic_hash": "cb63fe0a9b4a66589b8fb225d62f7f4a"
+  },
+  "BhoomiBandhu1.0/backend/app/schemas/auth_schemas.py": {
+    "mtime": 1795250250.6940424,
+    "seen": 1795254714.5585437,
+    "ast_hash": "2bfd02f057e5027f53cf916d81bc90e1",
+    "semantic_hash": "2bfd02f057e5027f53cf916d81bc90e1"
+  },
+  "BhoomiBandhu1.0/backend/app/schemas/portal_schemas.py": {
+    "mtime": 1795250250.6940424,
+    "seen": 1795254714.5585454,
+    "ast_hash": "676c0b782eb8dd2fc461f8f258a58f52",
+    "semantic_hash": "676c0b782eb8dd2fc461f8f258a58f52"
+  },
+  "BhoomiBandhu1.0/backend/app/schemas/schemas.py": {
+    "mtime": 1795250250.6956153,
+    "seen": 1795254714.558547,
+    "ast_hash": "75c57fea4a01158cb01cf5fd2066ef2b",
+    "semantic_hash": "75c57fea4a01158cb01cf5fd2066ef2b"
+  },
+  "BhoomiBandhu1.0/backend/app/scripts/check_seqs.py": {
+    "mtime": 1795250250.696718,
+    "seen": 1795254714.558549,
+    "ast_hash": "cbe09980c0081e600b4987261b418323",
+    "semantic_hash": "cbe09980c0081e600b4987261b418323"
+  },
+  "BhoomiBandhu1.0/backend/app/scripts/cleanup_test_records.py": {
+    "mtime": 1795250250.6977174,
+    "seen": 1795254714.5585508,
+    "ast_hash": "c27bbd90e597e5a3d1415b107442e6e9",
+    "semantic_hash": "c27bbd90e597e5a3d1415b107442e6e9"
+  },
+  "BhoomiBandhu1.0/backend/app/scripts/init_db.py": {
+    "mtime": 1795250250.6987271,
+    "seen": 1795254714.5585525,
+    "ast_hash": "288c357335e696e25794513f97d49d03",
+    "semantic_hash": "288c357335e696e25794513f97d49d03"
+  },
+  "BhoomiBandhu1.0/backend/app/scripts/seed_db.py": {
+    "mtime": 1795250250.700739,
+    "seen": 1795254714.5585546,
+    "ast_hash": "6bad3f6445424b7a3695072eb0644265",
+    "semantic_hash": "6bad3f6445424b7a3695072eb0644265"
+  },
+  "BhoomiBandhu1.0/backend/app/scripts/test_endpoints.py": {
+    "mtime": 1795250250.7019858,
+    "seen": 1795254714.5585563,
+    "ast_hash": "5d31f8126bbc9c4c74ec64039e7ea175",
+    "semantic_hash": "5d31f8126bbc9c4c74ec64039e7ea175"
+  },
+  "BhoomiBandhu1.0/backend/app/services/auth_service.py": {
+    "mtime": 1795250250.7029815,
+    "seen": 1795254714.5585587,
+    "ast_hash": "75133fe730cedd8d72827c68ac9050d8",
+    "semantic_hash": "75133fe730cedd8d72827c68ac9050d8"
+  },
+  "BhoomiBandhu1.0/backend/app/services/crop_service.py": {
+    "mtime": 1795250250.7040086,
+    "seen": 1795254714.5585606,
+    "ast_hash": "6b3eb47f8db7c050b2fe2f14c8c75170",
+    "semantic_hash": "6b3eb47f8db7c050b2fe2f14c8c75170"
+  },
+  "BhoomiBandhu1.0/backend/app/services/farmer_service.py": {
+    "mtime": 1795250250.705069,
+    "seen": 1795254714.5585625,
+    "ast_hash": "9bfe029efeeea65a0f956070da166ccf",
+    "semantic_hash": "9bfe029efeeea65a0f956070da166ccf"
+  },
+  "BhoomiBandhu1.0/backend/app/services/otp_service.py": {
+    "mtime": 1795250250.7055814,
+    "seen": 1795254714.5585647,
+    "ast_hash": "ca591d6a18886b3753912d6fcba4e582",
+    "semantic_hash": "ca591d6a18886b3753912d6fcba4e582"
+  },
+  "BhoomiBandhu1.0/backend/app/services/user_service.py": {
+    "mtime": 1795250250.7065992,
+    "seen": 1795254714.5585666,
+    "ast_hash": "6656f29be645cfb67e33bf71ac2579ad",
+    "semantic_hash": "6656f29be645cfb67e33bf71ac2579ad"
+  },
+  "BhoomiBandhu1.0/backend/main.py": {
+    "mtime": 1795250250.7065992,
+    "seen": 1795254714.5585685,
+    "ast_hash": "36991565bca3f206cb94839fafec93c1",
+    "semantic_hash": "36991565bca3f206cb94839fafec93c1"
+  },
+  "BhoomiBandhu1.0/backend/test_db.py": {
+    "mtime": 1795250250.7091596,
+    "seen": 1795254714.5585704,
+    "ast_hash": "35fcad1e100a79f00f1efd0ac9aa69ff",
+    "semantic_hash": "35fcad1e100a79f00f1efd0ac9aa69ff"
+  },
+  "BhoomiBandhu1.0/backend/tests/conftest.py": {
+    "mtime": 1795250250.710163,
+    "seen": 1795254714.558572,
+    "ast_hash": "5b29f806add7f6461d270647df3ff2aa",
+    "semantic_hash": "5b29f806add7f6461d270647df3ff2aa"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_admin.py": {
+    "mtime": 1795250250.7111585,
+    "seen": 1795254714.558575,
+    "ast_hash": "5e62a5c99d406c540159dd84b9c6faf5",
+    "semantic_hash": "5e62a5c99d406c540159dd84b9c6faf5"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_api_auth.py": {
+    "mtime": 1795250250.7121603,
+    "seen": 1795254714.5585766,
+    "ast_hash": "eba2a7b45de73a8594dc1c6087a661f5",
+    "semantic_hash": "eba2a7b45de73a8594dc1c6087a661f5"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_auth.py": {
+    "mtime": 1795250250.7121603,
+    "seen": 1795254714.5585787,
+    "ast_hash": "0505620be06a5c485ee1ed9a37348cd1",
+    "semantic_hash": "0505620be06a5c485ee1ed9a37348cd1"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_auth_security_hardening.py": {
+    "mtime": 1795250250.714528,
+    "seen": 1795254714.5585806,
+    "ast_hash": "26a0d563963dc34dd4b70bc6a830240c",
+    "semantic_hash": "26a0d563963dc34dd4b70bc6a830240c"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_farmer_dashboard.py": {
+    "mtime": 1795250250.714528,
+    "seen": 1795254714.5585825,
+    "ast_hash": "92cbaeeac18cdea942faff1938256dc1",
+    "semantic_hash": "92cbaeeac18cdea942faff1938256dc1"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_insurance_loan_admin.py": {
+    "mtime": 1795250250.716038,
+    "seen": 1795254714.5585842,
+    "ast_hash": "9fdd8fb905d2066ff9fc35998078a312",
+    "semantic_hash": "9fdd8fb905d2066ff9fc35998078a312"
+  },
+  "BhoomiBandhu1.0/backend/tests/test_warehouse_portal.py": {
+    "mtime": 1795250250.717052,
+    "seen": 1795254714.5585861,
+    "ast_hash": "b41ef453c7e5041e7054b527f8801c7f",
+    "semantic_hash": "b41ef453c7e5041e7054b527f8801c7f"
+  },
+  "BhoomiBandhu1.0/client/src/App.jsx": {
+    "mtime": 1795250250.7243202,
+    "seen": 1795254714.5585883,
+    "ast_hash": "88458a2137ee62a94f9f2705aa1ff1f2",
+    "semantic_hash": "88458a2137ee62a94f9f2705aa1ff1f2"
+  },
+  "BhoomiBandhu1.0/client/src/components/Navbar.jsx": {
+    "mtime": 1795250250.7243202,
+    "seen": 1795254714.5585902,
+    "ast_hash": "620b3004fcefde1d88e82434648d0760",
+    "semantic_hash": "620b3004fcefde1d88e82434648d0760"
+  },
+  "BhoomiBandhu1.0/client/src/components/ProtectedRoute.jsx": {
+    "mtime": 1795250250.7258291,
+    "seen": 1795254714.5585923,
+    "ast_hash": "694ff034fa8a97cf7d4ab97cd38e3ed9",
+    "semantic_hash": "694ff034fa8a97cf7d4ab97cd38e3ed9"
+  },
+  "BhoomiBandhu1.0/client/src/components/RoleProtectedRoute.jsx": {
+    "mtime": 1795250250.7258291,
+    "seen": 1795254714.558594,
+    "ast_hash": "c3fd5edf50ed9595d3f88c5dbbf8bda9",
+    "semantic_hash": "c3fd5edf50ed9595d3f88c5dbbf8bda9"
+  },
+  "BhoomiBandhu1.0/client/src/context/AuthContext.jsx": {
+    "mtime": 1795250250.7286918,
+    "seen": 1795254714.5585964,
+    "ast_hash": "e6fd90c240315d40a1e448cafa8d3aeb",
+    "semantic_hash": "e6fd90c240315d40a1e448cafa8d3aeb"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/claim-filing.js": {
+    "mtime": 1795250250.7298634,
+    "seen": 1795254714.558598,
+    "ast_hash": "ef50212d9a39eb93b6a912cbfa2e70c8",
+    "semantic_hash": "ef50212d9a39eb93b6a912cbfa2e70c8"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/common.js": {
+    "mtime": 1795250250.7318645,
+    "seen": 1795254714.5586,
+    "ast_hash": "145f7944e6790cf1583f217c77ff6248",
+    "semantic_hash": "145f7944e6790cf1583f217c77ff6248"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/financial.js": {
+    "mtime": 1795250250.7318645,
+    "seen": 1795254714.5586023,
+    "ast_hash": "6c0d428246d392ca9f7d8a844be276b7",
+    "semantic_hash": "6c0d428246d392ca9f7d8a844be276b7"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/gemini-advisor.js": {
+    "mtime": 1795250250.7328649,
+    "seen": 1795254714.558604,
+    "ast_hash": "fde64c40632ce392737110871caa6444",
+    "semantic_hash": "fde64c40632ce392737110871caa6444"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/index.js": {
+    "mtime": 1795250250.7338636,
+    "seen": 1795254714.5586061,
+    "ast_hash": "20eb1cd85353f00c9a79985d3a9b7842",
+    "semantic_hash": "20eb1cd85353f00c9a79985d3a9b7842"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/insurance.js": {
+    "mtime": 1795250250.734859,
+    "seen": 1795254714.5586078,
+    "ast_hash": "36d95f51a8a846ebf3aac0f85ab68998",
+    "semantic_hash": "36d95f51a8a846ebf3aac0f85ab68998"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/mental-health.js": {
+    "mtime": 1795250250.7358613,
+    "seen": 1795254714.55861,
+    "ast_hash": "e99f233957e3909f10bf0c72f9599379",
+    "semantic_hash": "e99f233957e3909f10bf0c72f9599379"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/ml-crop-advisor.js": {
+    "mtime": 1795250250.7363744,
+    "seen": 1795254714.5586116,
+    "ast_hash": "623049d836fc45f44dd1d6ee9058987f",
+    "semantic_hash": "623049d836fc45f44dd1d6ee9058987f"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/pmfby-enrollment.js": {
+    "mtime": 1795250250.7363744,
+    "seen": 1795254714.5586135,
+    "ast_hash": "34c721478ecca15048a3e358352e4d3e",
+    "semantic_hash": "34c721478ecca15048a3e358352e4d3e"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/risk-awareness.js": {
+    "mtime": 1795250250.7378895,
+    "seen": 1795254714.558616,
+    "ast_hash": "386bf3d64b8b9b38282da4f5ae3e6ca2",
+    "semantic_hash": "386bf3d64b8b9b38282da4f5ae3e6ca2"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/schemes.js": {
+    "mtime": 1795250250.738906,
+    "seen": 1795254714.5586176,
+    "ast_hash": "2bad18ec0b5d26d44249ba2a69e748b1",
+    "semantic_hash": "2bad18ec0b5d26d44249ba2a69e748b1"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/status-tracking.js": {
+    "mtime": 1795250250.7399058,
+    "seen": 1795254714.5586195,
+    "ast_hash": "aa92125695b077a94cd490ccf2002488",
+    "semantic_hash": "aa92125695b077a94cd490ccf2002488"
+  },
+  "BhoomiBandhu1.0/client/src/legacy/storage.js": {
+    "mtime": 1795250250.7399058,
+    "seen": 1795254714.5586214,
+    "ast_hash": "febd3ee06bbec32c1e0df77c10104ceb",
+    "semantic_hash": "febd3ee06bbec32c1e0df77c10104ceb"
+  },
+  "BhoomiBandhu1.0/client/src/main.jsx": {
+    "mtime": 1795250250.7409885,
+    "seen": 1795254714.5586233,
+    "ast_hash": "2761b18b8e1e1f3eb1c8fe8baf7a1506",
+    "semantic_hash": "2761b18b8e1e1f3eb1c8fe8baf7a1506"
+  },
+  "BhoomiBandhu1.0/client/src/pages/ClaimFilingPage.jsx": {
+    "mtime": 1795250250.7479284,
+    "seen": 1795254714.5586252,
+    "ast_hash": "c99fd1fe94e841c491d0417868a29e9a",
+    "semantic_hash": "c99fd1fe94e841c491d0417868a29e9a"
+  },
+  "BhoomiBandhu1.0/client/src/pages/FinancialPage.jsx": {
+    "mtime": 1795250250.7492566,
+    "seen": 1795254714.5586271,
+    "ast_hash": "53b2493f0657effce4944eb137413faa",
+    "semantic_hash": "53b2493f0657effce4944eb137413faa"
+  },
+  "BhoomiBandhu1.0/client/src/pages/GeminiAdvisorPage.jsx": {
+    "mtime": 1795250250.750679,
+    "seen": 1795254714.558629,
+    "ast_hash": "e3d3918e8ac4e430658cfe9da4fb6dbc",
+    "semantic_hash": "e3d3918e8ac4e430658cfe9da4fb6dbc"
+  },
+  "BhoomiBandhu1.0/client/src/pages/IndexPage.jsx": {
+    "mtime": 1795250250.750679,
+    "seen": 1795254714.5586312,
+    "ast_hash": "97509eae76a9ee98f7610484af92250e",
+    "semantic_hash": "97509eae76a9ee98f7610484af92250e"
+  },
+  "BhoomiBandhu1.0/client/src/pages/InsurancePage.jsx": {
+    "mtime": 1795250250.7521236,
+    "seen": 1795254714.5586333,
+    "ast_hash": "640aa4ede5b8bd9b2a5049b25019b4bc",
+    "semantic_hash": "640aa4ede5b8bd9b2a5049b25019b4bc"
+  },
+  "BhoomiBandhu1.0/client/src/pages/MentalHealthPage.jsx": {
+    "mtime": 1795250250.753178,
+    "seen": 1795254714.558635,
+    "ast_hash": "8f5bba35970ca988a9a29b299c856786",
+    "semantic_hash": "8f5bba35970ca988a9a29b299c856786"
+  },
+  "BhoomiBandhu1.0/client/src/pages/MlCropAdvisorPage.jsx": {
+    "mtime": 1795250250.753178,
+    "seen": 1795254714.5586371,
+    "ast_hash": "0f0e219ccd651fa847a48f5be55075ee",
+    "semantic_hash": "0f0e219ccd651fa847a48f5be55075ee"
+  },
+  "BhoomiBandhu1.0/client/src/pages/PmfbyEnrollmentPage.jsx": {
+    "mtime": 1795250250.7542355,
+    "seen": 1795254714.5586388,
+    "ast_hash": "105401d11a43a9293973fa5082044522",
+    "semantic_hash": "105401d11a43a9293973fa5082044522"
+  },
+  "BhoomiBandhu1.0/client/src/pages/RiskAwarenessPage.jsx": {
+    "mtime": 1795250250.7552383,
+    "seen": 1795254714.5586407,
+    "ast_hash": "6be7286ea417236c2a2c94a81ee92e06",
+    "semantic_hash": "6be7286ea417236c2a2c94a81ee92e06"
+  },
+  "BhoomiBandhu1.0/client/src/pages/SchemesPage.jsx": {
+    "mtime": 1795250250.7557454,
+    "seen": 1795254714.5586426,
+    "ast_hash": "b1b4bb0874e0a27234b403e15276c319",
+    "semantic_hash": "b1b4bb0874e0a27234b403e15276c319"
+  },
+  "BhoomiBandhu1.0/client/src/pages/StatusTrackingPage.jsx": {
+    "mtime": 1795250250.7568307,
+    "seen": 1795254714.5586448,
+    "ast_hash": "e32543fd70ea162fe776d4093e119767",
+    "semantic_hash": "e32543fd70ea162fe776d4093e119767"
+  },
+  "BhoomiBandhu1.0/client/src/pages/StoragePage.jsx": {
+    "mtime": 1795250250.7578342,
+    "seen": 1795254714.5586472,
+    "ast_hash": "3cedd7c07e21c120be1f424a6fbd724f",
+    "semantic_hash": "3cedd7c07e21c120be1f424a6fbd724f"
+  },
+  "BhoomiBandhu1.0/client/src/pages/auth/ForgotPasswordPage.jsx": {
+    "mtime": 1795250250.758847,
+    "seen": 1795254714.5586488,
+    "ast_hash": "d1fa198d08037791e79a77dd532d9a54",
+    "semantic_hash": "d1fa198d08037791e79a77dd532d9a54"
+  },
+  "BhoomiBandhu1.0/client/src/pages/auth/LoginPage.jsx": {
+    "mtime": 1795250250.7598488,
+    "seen": 1795254714.5586507,
+    "ast_hash": "c33140fdf20c924bbdf1fdb1602f58d0",
+    "semantic_hash": "c33140fdf20c924bbdf1fdb1602f58d0"
+  },
+  "BhoomiBandhu1.0/client/src/pages/auth/RegisterPage.jsx": {
+    "mtime": 1795250250.7608466,
+    "seen": 1795254714.5586524,
+    "ast_hash": "8ff510e9c4551160a084ccc0fbe3fac3",
+    "semantic_hash": "8ff510e9c4551160a084ccc0fbe3fac3"
+  },
+  "BhoomiBandhu1.0/client/src/pages/auth/ResetPasswordPage.jsx": {
+    "mtime": 1795250250.7613559,
+    "seen": 1795254714.5586545,
+    "ast_hash": "b586d3a7efbb38d704c37a5002a3959a",
+    "semantic_hash": "b586d3a7efbb38d704c37a5002a3959a"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/AdminPortalPage.jsx": {
+    "mtime": 1795250250.762366,
+    "seen": 1795254714.5586562,
+    "ast_hash": "de5b3c3edf7b3b48d1f7405a6b9c5dfa",
+    "semantic_hash": "de5b3c3edf7b3b48d1f7405a6b9c5dfa"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/FarmerDashboardPage.jsx": {
+    "mtime": 1795250250.7643683,
+    "seen": 1795254714.5586596,
+    "ast_hash": "97b8543b00369d6b5a8c782bc7366a1b",
+    "semantic_hash": "97b8543b00369d6b5a8c782bc7366a1b"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/PendingApprovalPage.jsx": {
+    "mtime": 1795250250.7643683,
+    "seen": 1795254714.5586615,
+    "ast_hash": "d99d0952622efb51e059f2be798c75e9",
+    "semantic_hash": "d99d0952622efb51e059f2be798c75e9"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/PsychiatristPortalPage.jsx": {
+    "mtime": 1795250250.7643683,
+    "seen": 1795254714.5586634,
+    "ast_hash": "87222907409c4dffc3e4ce311bc7b550",
+    "semantic_hash": "87222907409c4dffc3e4ce311bc7b550"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/UnauthorizedPage.jsx": {
+    "mtime": 1795250250.76588,
+    "seen": 1795254714.5586653,
+    "ast_hash": "a09e2229b707f12fc0f86fc8cf7490ee",
+    "semantic_hash": "a09e2229b707f12fc0f86fc8cf7490ee"
+  },
+  "BhoomiBandhu1.0/client/src/pages/portals/WarehousePortalPage.jsx": {
+    "mtime": 1795250250.7668924,
+    "seen": 1795254714.558667,
+    "ast_hash": "fae9ec4384f0ecb639b5ff809e8ababf",
+    "semantic_hash": "fae9ec4384f0ecb639b5ff809e8ababf"
+  },
+  "BhoomiBandhu1.0/client/src/services/authFetch.js": {
+    "mtime": 1795250250.7682068,
+    "seen": 1795254714.558669,
+    "ast_hash": "40d486aad8ae19d3f7b370dd0b05c6f0",
+    "semantic_hash": "40d486aad8ae19d3f7b370dd0b05c6f0"
+  },
+  "BhoomiBandhu1.0/client/src/services/authService.js": {
+    "mtime": 1795250250.7702057,
+    "seen": 1795254714.5586708,
+    "ast_hash": "ee57987cd60e76de02b11f326d95dfe4",
+    "semantic_hash": "ee57987cd60e76de02b11f326d95dfe4"
+  },
+  "BhoomiBandhu1.0/client/src/services/financialHelpers.js": {
+    "mtime": 1795250250.771203,
+    "seen": 1795254714.558673,
+    "ast_hash": "127cbd03733a8f9ded4d203f6f91c629",
+    "semantic_hash": "127cbd03733a8f9ded4d203f6f91c629"
+  },
+  "BhoomiBandhu1.0/client/src/services/warehouseHelpers.js": {
+    "mtime": 1795250250.771203,
+    "seen": 1795254714.5586746,
+    "ast_hash": "0ef482ca004abca9b303c7902e8883da",
+    "semantic_hash": "0ef482ca004abca9b303c7902e8883da"
+  },
+  "BhoomiBandhu1.0/client/tests/frontend_auth.test.mjs": {
+    "mtime": 1795250250.7748842,
+    "seen": 1795254714.5586767,
+    "ast_hash": "4e3b24afca97e5019a290b8a03e372d7",
+    "semantic_hash": "4e3b24afca97e5019a290b8a03e372d7"
+  },
+  "BhoomiBandhu1.0/client/tests/frontend_insurance_loan_admin.test.mjs": {
+    "mtime": 1795250250.7763925,
+    "seen": 1795254714.5586789,
+    "ast_hash": "3c6b371d15b546f6fc6075db19b5033c",
+    "semantic_hash": "3c6b371d15b546f6fc6075db19b5033c"
+  },
+  "BhoomiBandhu1.0/client/tests/frontend_portal.test.mjs": {
+    "mtime": 1795250250.7779028,
+    "seen": 1795254714.5586808,
+    "ast_hash": "80dc5aa5f932463ab5e5af98a6ee4531",
+    "semantic_hash": "80dc5aa5f932463ab5e5af98a6ee4531"
+  },
+  "BhoomiBandhu1.0/client/vite.config.js": {
+    "mtime": 1795250250.7789204,
+    "seen": 1795254714.5586827,
+    "ast_hash": "66a9ded107bfb3a0fa63c4225619f337",
+    "semantic_hash": "66a9ded107bfb3a0fa63c4225619f337"
+  },
+  "BhoomiBandhu1.0/database/bhoomibandhu_dbase.sql": {
+    "mtime": 1795250250.7799606,
+    "seen": 1795254714.5586843,
+    "ast_hash": "0e1f6cabaa071b4882af386415bd5c5c",
+    "semantic_hash": "0e1f6cabaa071b4882af386415bd5c5c"
+  },
+  "BhoomiBandhu1.0/package.json": {
+    "mtime": 1795250250.8017445,
+    "seen": 1795254714.5586865,
+    "ast_hash": "0d89bd2f8a301dd4056151987bbcfba5",
+    "semantic_hash": "0d89bd2f8a301dd4056151987bbcfba5"
+  },
+  "BhoomiBandhu1.0/script.js": {
+    "mtime": 1795250250.8040657,
+    "seen": 1795254714.5586882,
+    "ast_hash": "48e67da9b140e2402c3b25c15d78dbc0",
+    "semantic_hash": "48e67da9b140e2402c3b25c15d78dbc0"
+  },
+  "BhoomiBandhu1.0/server.js": {
+    "mtime": 1795250250.8050692,
+    "seen": 1795254714.5586903,
+    "ast_hash": "04194091bf5a124fcedac8e07a0ff2fb",
+    "semantic_hash": "04194091bf5a124fcedac8e07a0ff2fb"
+  },
+  "BhoomiBandhu1.0/verify_schema.sql": {
+    "mtime": 1795250250.8101401,
+    "seen": 1795254714.558692,
+    "ast_hash": "48bd55b70d219555fef228eeb58142d4",
+    "semantic_hash": "48bd55b70d219555fef228eeb58142d4"
+  },
+  "backend/alembic/env.py": {
+    "mtime": 1793528283.5275629,
+    "seen": 1795254714.558694,
+    "ast_hash": "f7091ae5042f9a63af39925efb8bddae",
+    "semantic_hash": "f7091ae5042f9a63af39925efb8bddae"
+  },
+  "backend/alembic/versions/001_create_auth_tables.py": {
+    "mtime": 1793528308.405043,
+    "seen": 1795254714.558696,
+    "ast_hash": "aa8a0262fca73fffbfd7ee78380587a7",
+    "semantic_hash": "aa8a0262fca73fffbfd7ee78380587a7"
+  },
+  "backend/alembic/versions/002_otp_single_use.py": {
+    "mtime": 1793529188.8690052,
+    "seen": 1795254714.558698,
+    "ast_hash": "61b10ecc7b471ccfae9eda2fac3b0e22",
+    "semantic_hash": "61b10ecc7b471ccfae9eda2fac3b0e22"
+  },
+  "backend/app/core/config.py": {
+    "mtime": 1795251186.3278687,
+    "seen": 1795254714.5587,
+    "ast_hash": "c50c46cbe1f3c5939c1e12905dccb73e",
+    "semantic_hash": "c50c46cbe1f3c5939c1e12905dccb73e"
+  },
+  "backend/app/core/database.py": {
+    "mtime": 1792335265.0777462,
+    "seen": 1795254714.558702,
+    "ast_hash": "c6d33168a72b0128a9347b2778891c44",
+    "semantic_hash": "c6d33168a72b0128a9347b2778891c44"
+  },
+  "backend/app/core/dependencies.py": {
+    "mtime": 1793722670.1671064,
+    "seen": 1795254714.5587041,
+    "ast_hash": "94a7013c8c773338dd03422ffbd811d3",
+    "semantic_hash": "94a7013c8c773338dd03422ffbd811d3"
+  },
+  "backend/app/models/__init__.py": {
+    "mtime": 1793528101.9472876,
+    "seen": 1795254714.5587058,
+    "ast_hash": "67fa2e5a1f2451f1ed23ce958e29540e",
+    "semantic_hash": "67fa2e5a1f2451f1ed23ce958e29540e"
+  },
+  "backend/app/models/auth_models.py": {
+    "mtime": 1793529178.4235892,
+    "seen": 1795254714.5587077,
+    "ast_hash": "c4a574b0cb575a0e6966795592ee2bf1",
+    "semantic_hash": "c4a574b0cb575a0e6966795592ee2bf1"
+  },
+  "backend/app/models/models.py": {
+    "mtime": 1792335293.7395573,
+    "seen": 1795254714.5587096,
+    "ast_hash": "11eeac9bb49ad10dbc9b538e7e312585",
+    "semantic_hash": "11eeac9bb49ad10dbc9b538e7e312585"
+  },
+  "backend/app/routers/__init__.py": {
+    "mtime": 1793513195.0691466,
+    "seen": 1795254714.5587115,
+    "ast_hash": "52c3ac958dc92f63a6659ff616188b68",
+    "semantic_hash": "52c3ac958dc92f63a6659ff616188b68"
+  },
+  "backend/app/routers/admin.py": {
+    "mtime": 1793725090.35529,
+    "seen": 1795254714.5587134,
+    "ast_hash": "886c98e1ec21845801087709f674d950",
+    "semantic_hash": "886c98e1ec21845801087709f674d950"
+  },
+  "backend/app/routers/ai_chat.py": {
+    "mtime": 1792338224.1514897,
+    "seen": 1795254714.5587149,
+    "ast_hash": "54da6a3979c4e712a5184481b7b42242",
+    "semantic_hash": "54da6a3979c4e712a5184481b7b42242"
+  },
+  "backend/app/routers/auth.py": {
+    "mtime": 1793529620.2681696,
+    "seen": 1795254714.558717,
+    "ast_hash": "e835c40d31abd94f45dc04f6c1800367",
+    "semantic_hash": "e835c40d31abd94f45dc04f6c1800367"
+  },
+  "backend/app/routers/catalogues.py": {
+    "mtime": 1792336245.8610554,
+    "seen": 1795254714.5587187,
+    "ast_hash": "06dc8477626fe55d4794e4243b838615",
+    "semantic_hash": "06dc8477626fe55d4794e4243b838615"
+  },
+  "backend/app/routers/external_schemes.py": {
+    "mtime": 1792338235.653053,
+    "seen": 1795254714.5587206,
+    "ast_hash": "4ad11bd6080197f4bcd8e20aca963890",
+    "semantic_hash": "4ad11bd6080197f4bcd8e20aca963890"
+  },
+  "backend/app/routers/farmers.py": {
+    "mtime": 1793727592.1059928,
+    "seen": 1795254714.5587223,
+    "ast_hash": "94b53ade49ce7be01a9bbdfa3426ecfd",
+    "semantic_hash": "94b53ade49ce7be01a9bbdfa3426ecfd"
+  },
+  "backend/app/routers/health.py": {
+    "mtime": 1792336238.2575965,
+    "seen": 1795254714.5587246,
+    "ast_hash": "3eed8f3566fdcfb79925998f2f46669d",
+    "semantic_hash": "3eed8f3566fdcfb79925998f2f46669d"
+  },
+  "backend/app/routers/insurance.py": {
+    "mtime": 1792336271.3641665,
+    "seen": 1795254714.5587265,
+    "ast_hash": "90efeb3aedfbf80af8f0e67dd10ad748",
+    "semantic_hash": "90efeb3aedfbf80af8f0e67dd10ad748"
+  },
+  "backend/app/routers/loans.py": {
+    "mtime": 1792336279.3304248,
+    "seen": 1795254714.5587285,
+    "ast_hash": "943612d1a627a28bac0c56fbff92c629",
+    "semantic_hash": "943612d1a627a28bac0c56fbff92c629"
+  },
+  "backend/app/routers/mental_health.py": {
+    "mtime": 1792336287.961227,
+    "seen": 1795254714.5587308,
+    "ast_hash": "40891951680e2129b55712dfd62b68bf",
+    "semantic_hash": "40891951680e2129b55712dfd62b68bf"
+  },
+  "backend/app/routers/predictions.py": {
+    "mtime": 1792338199.0227418,
+    "seen": 1795254714.5587325,
+    "ast_hash": "af5686e7595a29fb02cf1d88b5360219",
+    "semantic_hash": "af5686e7595a29fb02cf1d88b5360219"
+  },
+  "backend/app/routers/schemes.py": {
+    "mtime": 1792336297.9374113,
+    "seen": 1795254714.5587344,
+    "ast_hash": "513693b502b2e515db40f3d53e850508",
+    "semantic_hash": "513693b502b2e515db40f3d53e850508"
+  },
+  "backend/app/routers/storage.py": {
+    "mtime": 1792336313.7592883,
+    "seen": 1795254714.5587363,
+    "ast_hash": "75346c64d7bc70b55ec44444f9d3a3f5",
+    "semantic_hash": "75346c64d7bc70b55ec44444f9d3a3f5"
+  },
+  "backend/app/routers/warehouse.py": {
+    "mtime": 1793635932.109186,
+    "seen": 1795254714.5587382,
+    "ast_hash": "92f14a4e775bd0820516ad5675eb4a14",
+    "semantic_hash": "92f14a4e775bd0820516ad5675eb4a14"
+  },
+  "backend/app/routers/weather.py": {
+    "mtime": 1792338211.1681902,
+    "seen": 1795254714.5587397,
+    "ast_hash": "44d8d699b44a48c6976cab332fa281e2",
+    "semantic_hash": "44d8d699b44a48c6976cab332fa281e2"
+  },
+  "backend/app/schemas/__init__.py": {
+    "mtime": 1792336221.7035189,
+    "seen": 1795254714.5587418,
+    "ast_hash": "ce90e771dfceaea1bb94ffe51f1bd7d4",
+    "semantic_hash": "ce90e771dfceaea1bb94ffe51f1bd7d4"
+  },
+  "backend/app/schemas/admin_schemas.py": {
+    "mtime": 1793725090.4309373,
+    "seen": 1795254714.5587432,
+    "ast_hash": "1a4554e91b26177945fbede33c841704",
+    "semantic_hash": "1a4554e91b26177945fbede33c841704"
+  },
+  "backend/app/schemas/auth_schemas.py": {
+    "mtime": 1793528121.935115,
+    "seen": 1795254714.5587454,
+    "ast_hash": "cf656d79558fb2ded339508aa9516fd9",
+    "semantic_hash": "cf656d79558fb2ded339508aa9516fd9"
+  },
+  "backend/app/schemas/portal_schemas.py": {
+    "mtime": 1793727021.0337088,
+    "seen": 1795254714.5587468,
+    "ast_hash": "56c0116ebaa0cb90debd816a8a88d232",
+    "semantic_hash": "56c0116ebaa0cb90debd816a8a88d232"
+  },
+  "backend/app/schemas/schemas.py": {
+    "mtime": 1792338188.2093475,
+    "seen": 1795254714.5587492,
+    "ast_hash": "1e9014f12552fae05e809dbd81b35957",
+    "semantic_hash": "1e9014f12552fae05e809dbd81b35957"
+  },
+  "backend/app/scripts/check_seqs.py": {
+    "mtime": 1792336990.2124069,
+    "seen": 1795254714.5587509,
+    "ast_hash": "b12e00442de7501bb54e088b1254917a",
+    "semantic_hash": "b12e00442de7501bb54e088b1254917a"
+  },
+  "backend/app/scripts/cleanup_test_records.py": {
+    "mtime": 1792338295.7361996,
+    "seen": 1795254714.5587528,
+    "ast_hash": "70f8d83e224af7e8f4823d78e03be2bd",
+    "semantic_hash": "70f8d83e224af7e8f4823d78e03be2bd"
+  },
+  "backend/app/scripts/init_db.py": {
+    "mtime": 1792335307.0667346,
+    "seen": 1795254714.558755,
+    "ast_hash": "ea7a8e8053f917d1bec1456784f1c3b6",
+    "semantic_hash": "ea7a8e8053f917d1bec1456784f1c3b6"
+  },
+  "backend/app/scripts/seed_db.py": {
+    "mtime": 1792335384.3880134,
+    "seen": 1795254714.5587566,
+    "ast_hash": "0b115b09d376ef4a14314b20473fd593",
+    "semantic_hash": "0b115b09d376ef4a14314b20473fd593"
+  },
+  "backend/app/scripts/test_endpoints.py": {
+    "mtime": 1792338347.9675908,
+    "seen": 1795254714.5587585,
+    "ast_hash": "51cea7ce5de7675b2c3f8d666f484eec",
+    "semantic_hash": "51cea7ce5de7675b2c3f8d666f484eec"
+  },
+  "backend/app/services/auth_service.py": {
+    "mtime": 1793529585.3896978,
+    "seen": 1795254714.5587602,
+    "ast_hash": "b169d8855c7b765320d9df79a2eb1b2c",
+    "semantic_hash": "b169d8855c7b765320d9df79a2eb1b2c"
+  },
+  "backend/app/services/crop_service.py": {
+    "mtime": 1792338152.5473056,
+    "seen": 1795254714.5587623,
+    "ast_hash": "8a919a2fe52f064df6ca3071441516d1",
+    "semantic_hash": "8a919a2fe52f064df6ca3071441516d1"
+  },
+  "backend/app/services/farmer_service.py": {
+    "mtime": 1792336231.0453079,
+    "seen": 1795254714.5587642,
+    "ast_hash": "f8fa07c2e62b5ed76c9386fe737a416c",
+    "semantic_hash": "f8fa07c2e62b5ed76c9386fe737a416c"
+  },
+  "backend/app/services/otp_service.py": {
+    "mtime": 1793529785.5917563,
+    "seen": 1795254714.5587661,
+    "ast_hash": "d887a26b62b413dc011551efd8bf4578",
+    "semantic_hash": "d887a26b62b413dc011551efd8bf4578"
+  },
+  "backend/app/services/user_service.py": {
+    "mtime": 1795251217.1726923,
+    "seen": 1795254714.558768,
+    "ast_hash": "7a79b2fe11af8b4e6c69e232b869c360",
+    "semantic_hash": "7a79b2fe11af8b4e6c69e232b869c360"
+  },
+  "backend/main.py": {
+    "mtime": 1793630913.7777753,
+    "seen": 1795254714.5587702,
+    "ast_hash": "0c7bd68abf34782c06f1158553d0a80c",
+    "semantic_hash": "0c7bd68abf34782c06f1158553d0a80c"
+  },
+  "backend/test_db.py": {
+    "mtime": 1792261908.0726755,
+    "seen": 1795254714.5587723,
+    "ast_hash": "35fcad1e100a79f00f1efd0ac9aa69ff",
+    "semantic_hash": "35fcad1e100a79f00f1efd0ac9aa69ff"
+  },
+  "backend/tests/conftest.py": {
+    "mtime": 1795251190.3114188,
+    "seen": 1795254714.558774,
+    "ast_hash": "84b1ae90375b6bded195e87ae3432d19",
+    "semantic_hash": "84b1ae90375b6bded195e87ae3432d19"
+  },
+  "backend/tests/test_admin.py": {
+    "mtime": 1793629991.239622,
+    "seen": 1795254714.5587764,
+    "ast_hash": "b3091ca1b09bd80de2aec9048bb80548",
+    "semantic_hash": "b3091ca1b09bd80de2aec9048bb80548"
+  },
+  "backend/tests/test_api_auth.py": {
+    "mtime": 1793528360.7255347,
+    "seen": 1795254714.558778,
+    "ast_hash": "d56e32c90e12c2230f9b20d5a010526b",
+    "semantic_hash": "d56e32c90e12c2230f9b20d5a010526b"
+  },
+  "backend/tests/test_auth.py": {
+    "mtime": 1793529686.1543798,
+    "seen": 1795254714.55878,
+    "ast_hash": "0e24eac170733c08878b33032adea005",
+    "semantic_hash": "0e24eac170733c08878b33032adea005"
+  },
+  "backend/tests/test_auth_security_hardening.py": {
+    "mtime": 1793529894.1419191,
+    "seen": 1795254714.5587819,
+    "ast_hash": "67533e0922d0c4d6c87257600c90dd12",
+    "semantic_hash": "67533e0922d0c4d6c87257600c90dd12"
+  },
+  "backend/tests/test_farmer_dashboard.py": {
+    "mtime": 1793722253.1700938,
+    "seen": 1795254714.5587838,
+    "ast_hash": "5c23e4783e52cc1b4eeddf52f926b468",
+    "semantic_hash": "5c23e4783e52cc1b4eeddf52f926b468"
+  },
+  "backend/tests/test_insurance_loan_admin.py": {
+    "mtime": 1793727445.7705815,
+    "seen": 1795254714.5587857,
+    "ast_hash": "914c97f0db30df5e31a89768c6a2c341",
+    "semantic_hash": "914c97f0db30df5e31a89768c6a2c341"
+  },
+  "backend/tests/test_warehouse_portal.py": {
+    "mtime": 1793723514.0565827,
+    "seen": 1795254714.558788,
+    "ast_hash": "600c6d9dfa7448362005af19cf6e821a",
+    "semantic_hash": "600c6d9dfa7448362005af19cf6e821a"
+  },
+  "client/src/App.jsx": {
+    "mtime": 1793634208.6406925,
+    "seen": 1795254714.5587902,
+    "ast_hash": "adc83f57b0d1ca6f350d015c9d0aa336",
+    "semantic_hash": "adc83f57b0d1ca6f350d015c9d0aa336"
+  },
+  "client/src/components/Navbar.jsx": {
+    "mtime": 1795251542.08673,
+    "seen": 1795254714.5587916,
+    "ast_hash": "2299ee9f506863e6fe486a75b019f8fc",
+    "semantic_hash": "2299ee9f506863e6fe486a75b019f8fc"
+  },
+  "client/src/components/ProtectedRoute.jsx": {
+    "mtime": 1793530893.321634,
+    "seen": 1795254714.558794,
+    "ast_hash": "a8ffa65af2adc8f8f35ad4c908db4aae",
+    "semantic_hash": "a8ffa65af2adc8f8f35ad4c908db4aae"
+  },
+  "client/src/components/RoleProtectedRoute.jsx": {
+    "mtime": 1793530901.7220023,
+    "seen": 1795254714.5587957,
+    "ast_hash": "f517829afd7d4be748a4be0448887e30",
+    "semantic_hash": "f517829afd7d4be748a4be0448887e30"
+  },
+  "client/src/context/AuthContext.jsx": {
+    "mtime": 1793530883.912665,
+    "seen": 1795254714.5587978,
+    "ast_hash": "c01ce1e878985788720146ca5c259698",
+    "semantic_hash": "c01ce1e878985788720146ca5c259698"
+  },
+  "client/src/legacy/claim-filing.js": {
+    "mtime": 1792258084.0556784,
+    "seen": 1795254714.5588,
+    "ast_hash": "b2dd4db48451e57af70b842504f58b4d",
+    "semantic_hash": "b2dd4db48451e57af70b842504f58b4d"
+  },
+  "client/src/legacy/common.js": {
+    "mtime": 1792258084.0267253,
+    "seen": 1795254714.5588017,
+    "ast_hash": "f7f834df63966e01d6a219fe01364145",
+    "semantic_hash": "f7f834df63966e01d6a219fe01364145"
+  },
+  "client/src/legacy/financial.js": {
+    "mtime": 1792258084.0384495,
+    "seen": 1795254714.5588038,
+    "ast_hash": "c28e733e36ef1dafa05e5c83b773ec16",
+    "semantic_hash": "c28e733e36ef1dafa05e5c83b773ec16"
+  },
+  "client/src/legacy/gemini-advisor.js": {
+    "mtime": 1792258084.0474563,
+    "seen": 1795254714.5588055,
+    "ast_hash": "d6c00c49ee9fbb3070cce70d438d3ad4",
+    "semantic_hash": "d6c00c49ee9fbb3070cce70d438d3ad4"
+  },
+  "client/src/legacy/index.js": {
+    "mtime": 1792258084.0690706,
+    "seen": 1795254714.5588074,
+    "ast_hash": "2e2643811d7f5d4b9568b78cc5bc231c",
+    "semantic_hash": "2e2643811d7f5d4b9568b78cc5bc231c"
+  },
+  "client/src/legacy/insurance.js": {
+    "mtime": 1792258084.0267253,
+    "seen": 1795254714.5588093,
+    "ast_hash": "1794218e6dd74b46ad45edf0737b1413",
+    "semantic_hash": "1794218e6dd74b46ad45edf0737b1413"
+  },
+  "client/src/legacy/mental-health.js": {
+    "mtime": 1792258084.0569978,
+    "seen": 1795254714.5588112,
+    "ast_hash": "fe843d315bc390ab624b31434a995ea5",
+    "semantic_hash": "fe843d315bc390ab624b31434a995ea5"
+  },
+  "client/src/legacy/ml-crop-advisor.js": {
+    "mtime": 1792258084.0384495,
+    "seen": 1795254714.558813,
+    "ast_hash": "27a463f47ba80ec7c64a857241139592",
+    "semantic_hash": "27a463f47ba80ec7c64a857241139592"
+  },
+  "client/src/legacy/pmfby-enrollment.js": {
+    "mtime": 1792258084.0474563,
+    "seen": 1795254714.558815,
+    "ast_hash": "2644370310e36b832beeefa612507e74",
+    "semantic_hash": "2644370310e36b832beeefa612507e74"
+  },
+  "client/src/legacy/risk-awareness.js": {
+    "mtime": 1792258084.0705886,
+    "seen": 1795254714.558817,
+    "ast_hash": "35e5632139c8eac9189c25b04d483212",
+    "semantic_hash": "35e5632139c8eac9189c25b04d483212"
+  },
+  "client/src/legacy/schemes.js": {
+    "mtime": 1792258084.0358553,
+    "seen": 1795254714.5588188,
+    "ast_hash": "dda9ffd4767121fe1662b91c2f2ce5d7",
+    "semantic_hash": "dda9ffd4767121fe1662b91c2f2ce5d7"
+  },
+  "client/src/legacy/status-tracking.js": {
+    "mtime": 1792258084.045443,
+    "seen": 1795254714.5588212,
+    "ast_hash": "053664a3b4b4a19912c979d59f74f2c9",
+    "semantic_hash": "053664a3b4b4a19912c979d59f74f2c9"
+  },
+  "client/src/legacy/storage.js": {
+    "mtime": 1792258084.0666387,
+    "seen": 1795254714.558833,
+    "ast_hash": "26b3ebec7a27d011184be18164e2ddbb",
+    "semantic_hash": "26b3ebec7a27d011184be18164e2ddbb"
+  },
+  "client/src/main.jsx": {
+    "mtime": 1792258083.9383304,
+    "seen": 1795254714.5588348,
+    "ast_hash": "aa8b01adad3c2b553cc36fa7bc9791aa",
+    "semantic_hash": "aa8b01adad3c2b553cc36fa7bc9791aa"
+  },
+  "client/src/pages/ClaimFilingPage.jsx": {
+    "mtime": 1792258084.0078194,
+    "seen": 1795254714.558837,
+    "ast_hash": "133be7875bbdd77950247df300c3cc5d",
+    "semantic_hash": "133be7875bbdd77950247df300c3cc5d"
+  },
+  "client/src/pages/FinancialPage.jsx": {
+    "mtime": 1792341712.745045,
+    "seen": 1795254714.5588393,
+    "ast_hash": "e893ea27f2014b24489974f7ecb0a5fe",
+    "semantic_hash": "e893ea27f2014b24489974f7ecb0a5fe"
+  },
+  "client/src/pages/GeminiAdvisorPage.jsx": {
+    "mtime": 1792341727.993444,
+    "seen": 1795254714.558841,
+    "ast_hash": "a461e3ab2feff332eab5190559961a75",
+    "semantic_hash": "a461e3ab2feff332eab5190559961a75"
+  },
+  "client/src/pages/IndexPage.jsx": {
+    "mtime": 1793531111.5461016,
+    "seen": 1795254714.5588431,
+    "ast_hash": "dafbd79641121959e7bfc6c789625610",
+    "semantic_hash": "dafbd79641121959e7bfc6c789625610"
+  },
+  "client/src/pages/InsurancePage.jsx": {
+    "mtime": 1793532437.2407527,
+    "seen": 1795254714.5588453,
+    "ast_hash": "78dc94af693586098fb308926ae565a3",
+    "semantic_hash": "78dc94af693586098fb308926ae565a3"
+  },
+  "client/src/pages/MentalHealthPage.jsx": {
+    "mtime": 1793532425.7155786,
+    "seen": 1795254714.5588474,
+    "ast_hash": "1258453ca425a8b2e23a35a9b8e075bd",
+    "semantic_hash": "1258453ca425a8b2e23a35a9b8e075bd"
+  },
+  "client/src/pages/MlCropAdvisorPage.jsx": {
+    "mtime": 1792341749.3192127,
+    "seen": 1795254714.5588493,
+    "ast_hash": "44476b1900b7d896012660d901fb7e63",
+    "semantic_hash": "44476b1900b7d896012660d901fb7e63"
+  },
+  "client/src/pages/PmfbyEnrollmentPage.jsx": {
+    "mtime": 1792258083.986775,
+    "seen": 1795254714.5588512,
+    "ast_hash": "3ce3acc4fc6ed0c20855097fcbd45114",
+    "semantic_hash": "3ce3acc4fc6ed0c20855097fcbd45114"
+  },
+  "client/src/pages/RiskAwarenessPage.jsx": {
+    "mtime": 1792258083.975626,
+    "seen": 1795254714.5588531,
+    "ast_hash": "0fa2e61b33ab011443cb03adcf28cc2a",
+    "semantic_hash": "0fa2e61b33ab011443cb03adcf28cc2a"
+  },
+  "client/src/pages/SchemesPage.jsx": {
+    "mtime": 1792258084.008891,
+    "seen": 1795254714.558855,
+    "ast_hash": "bd85d13b2e1d8221381378d64049bf3d",
+    "semantic_hash": "bd85d13b2e1d8221381378d64049bf3d"
+  },
+  "client/src/pages/StatusTrackingPage.jsx": {
+    "mtime": 1792258084.022418,
+    "seen": 1795254714.558857,
+    "ast_hash": "8611b74d85df501f339d43247008c71b",
+    "semantic_hash": "8611b74d85df501f339d43247008c71b"
+  },
+  "client/src/pages/StoragePage.jsx": {
+    "mtime": 1792258083.975626,
+    "seen": 1795254714.558859,
+    "ast_hash": "ed8a263f1ef10bf79402d1806aa444e8",
+    "semantic_hash": "ed8a263f1ef10bf79402d1806aa444e8"
+  },
+  "client/src/pages/auth/ForgotPasswordPage.jsx": {
+    "mtime": 1793530998.6950815,
+    "seen": 1795254714.5588608,
+    "ast_hash": "b4319d642d8ce8f43df35e0bc3f897ba",
+    "semantic_hash": "b4319d642d8ce8f43df35e0bc3f897ba"
+  },
+  "client/src/pages/auth/LoginPage.jsx": {
+    "mtime": 1793634208.7377682,
+    "seen": 1795254714.5588627,
+    "ast_hash": "b2545b84d6bedc91ce9175cb9f3d6e1e",
+    "semantic_hash": "b2545b84d6bedc91ce9175cb9f3d6e1e"
+  },
+  "client/src/pages/auth/RegisterPage.jsx": {
+    "mtime": 1795251379.6072812,
+    "seen": 1795254714.5588644,
+    "ast_hash": "42a37766458a6cde8f82f131643dddb0",
+    "semantic_hash": "42a37766458a6cde8f82f131643dddb0"
+  },
+  "client/src/pages/auth/ResetPasswordPage.jsx": {
+    "mtime": 1793531013.9540534,
+    "seen": 1795254714.5588667,
+    "ast_hash": "bd43cb6cca5bae8e21bcd5a4f7f56136",
+    "semantic_hash": "bd43cb6cca5bae8e21bcd5a4f7f56136"
+  },
+  "client/src/pages/portals/AdminPortalPage.jsx": {
+    "mtime": 1793727592.4124537,
+    "seen": 1795254714.5588686,
+    "ast_hash": "c0cf1fb3eb7a99e6f77b71dbb4a72923",
+    "semantic_hash": "c0cf1fb3eb7a99e6f77b71dbb4a72923"
+  },
+  "client/src/pages/portals/FarmerDashboardPage.jsx": {
+    "mtime": 1793727592.565341,
+    "seen": 1795254714.5588708,
+    "ast_hash": "3c969062e18935aeb818da03a31921ed",
+    "semantic_hash": "3c969062e18935aeb818da03a31921ed"
+  },
+  "client/src/pages/portals/PendingApprovalPage.jsx": {
+    "mtime": 1793632424.9019117,
+    "seen": 1795254714.5588725,
+    "ast_hash": "34def1e5cb566b095004d960a3f27f4f",
+    "semantic_hash": "34def1e5cb566b095004d960a3f27f4f"
+  },
+  "client/src/pages/portals/PsychiatristPortalPage.jsx": {
+    "mtime": 1793531040.4741473,
+    "seen": 1795254714.5588748,
+    "ast_hash": "a565dce9ddb24be6cd5ceca8d3b48fcb",
+    "semantic_hash": "a565dce9ddb24be6cd5ceca8d3b48fcb"
+  },
+  "client/src/pages/portals/UnauthorizedPage.jsx": {
+    "mtime": 1793531080.8178093,
+    "seen": 1795254714.5588768,
+    "ast_hash": "520180f2c251b86eef1f14266121bc7b",
+    "semantic_hash": "520180f2c251b86eef1f14266121bc7b"
+  },
+  "client/src/pages/portals/WarehousePortalPage.jsx": {
+    "mtime": 1793723796.4420068,
+    "seen": 1795254714.5588787,
+    "ast_hash": "8bdd1718f3be269c5f405fd1548746e6",
+    "semantic_hash": "8bdd1718f3be269c5f405fd1548746e6"
+  },
+  "client/src/services/authFetch.js": {
+    "mtime": 1793626803.913171,
+    "seen": 1795254714.558881,
+    "ast_hash": "24f67a8ba2c8044d1eac33b6eb8093ef",
+    "semantic_hash": "24f67a8ba2c8044d1eac33b6eb8093ef"
+  },
+  "client/src/services/authService.js": {
+    "mtime": 1793532404.1144767,
+    "seen": 1795254714.5588827,
+    "ast_hash": "a9c18ea1624c21c2c2684c2b2c895538",
+    "semantic_hash": "a9c18ea1624c21c2c2684c2b2c895538"
+  },
+  "client/src/services/financialHelpers.js": {
+    "mtime": 1793727592.742015,
+    "seen": 1795254714.5588849,
+    "ast_hash": "93db219188b52dfa778dfe2d64b2fcd7",
+    "semantic_hash": "93db219188b52dfa778dfe2d64b2fcd7"
+  },
+  "client/src/services/warehouseHelpers.js": {
+    "mtime": 1793723625.7027283,
+    "seen": 1795254714.558887,
+    "ast_hash": "46c7dca5e2bd1b5a4609fb23b6d96f07",
+    "semantic_hash": "46c7dca5e2bd1b5a4609fb23b6d96f07"
+  },
+  "client/tests/frontend_auth.test.mjs": {
+    "mtime": 1793532505.462371,
+    "seen": 1795254714.5588887,
+    "ast_hash": "00df159486223d3430f268c100c2ab7f",
+    "semantic_hash": "00df159486223d3430f268c100c2ab7f"
+  },
+  "client/tests/frontend_insurance_loan_admin.test.mjs": {
+    "mtime": 1793727592.7737086,
+    "seen": 1795254714.558891,
+    "ast_hash": "6d801ea57db43e0a6cd2b1a60a3d03be",
+    "semantic_hash": "6d801ea57db43e0a6cd2b1a60a3d03be"
+  },
+  "client/tests/frontend_portal.test.mjs": {
+    "mtime": 1793723796.5575445,
+    "seen": 1795254714.558893,
+    "ast_hash": "193a92e3e3015fa150ba32064daea9ee",
+    "semantic_hash": "193a92e3e3015fa150ba32064daea9ee"
+  },
+  "client/vite.config.js": {
+    "mtime": 1793513204.489478,
+    "seen": 1795254714.558895,
+    "ast_hash": "3053af990890941ed35a01f25db817d4",
+    "semantic_hash": "3053af990890941ed35a01f25db817d4"
+  },
+  "database/bhoomibandhu_dbase.sql": {
+    "mtime": 1792258083.8858333,
+    "seen": 1795254714.5588968,
+    "ast_hash": "f451af7ec84ae205d41bc10ac726536a",
+    "semantic_hash": "f451af7ec84ae205d41bc10ac726536a"
+  },
+  "package.json": {
+    "mtime": 1793724974.7461212,
+    "seen": 1795254714.5588987,
+    "ast_hash": "47b154889b00295903badaafedaf01ab",
+    "semantic_hash": "47b154889b00295903badaafedaf01ab"
+  },
+  "server.js": {
+    "mtime": 1792258083.8517022,
+    "seen": 1795254714.5589006,
+    "ast_hash": "2ae7e34967add6b65029ba300eb215da",
+    "semantic_hash": "2ae7e34967add6b65029ba300eb215da"
+  },
+  "verify_schema.sql": {
+    "mtime": 1793514412.2555027,
+    "seen": 1795254714.5589023,
+    "ast_hash": "f5d4b83c29171adc6f936ad948ec735a",
+    "semantic_hash": "f5d4b83c29171adc6f936ad948ec735a"
+  },
+  "BhoomiBandhu1.0/MIGRATION_STATUS.md": {
+    "mtime": 1795250250.6542897,
+    "seen": 1795254714.5589044,
+    "ast_hash": "a7f66a2a1ca1e57668005edc077c8c67",
+    "semantic_hash": "a7f66a2a1ca1e57668005edc077c8c67"
+  },
+  "BhoomiBandhu1.0/PROMPT_7_COMPLETE_IMPLEMENTATION_AND_AUDIT_REPORT.md": {
+    "mtime": 1795250250.656719,
+    "seen": 1795254714.558906,
+    "ast_hash": "be85c5f2a5500e876af97aaf4c84a931",
+    "semantic_hash": "be85c5f2a5500e876af97aaf4c84a931"
+  },
+  "BhoomiBandhu1.0/PROMPT_7_FINAL_REPORT.md": {
+    "mtime": 1795250250.6579323,
+    "seen": 1795254714.5589082,
+    "ast_hash": "537c3816bc3d7de8c6f6a2c4ced9d5c2",
+    "semantic_hash": "537c3816bc3d7de8c6f6a2c4ced9d5c2"
+  },
+  "BhoomiBandhu1.0/PROMPT_8_IMPLEMENTATION_AND_AUDIT_REPORT.md": {
+    "mtime": 1795250250.6579323,
+    "seen": 1795254714.55891,
+    "ast_hash": "daad05212091ddbeae880dc5175560e8",
+    "semantic_hash": "daad05212091ddbeae880dc5175560e8"
+  },
+  "BhoomiBandhu1.0/PROMPT_8_INITIAL_AUDIT.md": {
+    "mtime": 1795250250.6591828,
+    "seen": 1795254714.5589118,
+    "ast_hash": "e96cbfa188a900b3ef3a58c5757dfd5f",
+    "semantic_hash": "e96cbfa188a900b3ef3a58c5757dfd5f"
+  },
+  "BhoomiBandhu1.0/README.md": {
+    "mtime": 1795250250.660694,
+    "seen": 1795254714.5589137,
+    "ast_hash": "ee2084bb24ca53a071655f2dfa999430",
+    "semantic_hash": "ee2084bb24ca53a071655f2dfa999430"
+  },
+  "BhoomiBandhu1.0/ai-crop-predictor.html": {
+    "mtime": 1795250250.6617396,
+    "seen": 1795254714.5589156,
+    "ast_hash": "f89059543769ff74d5b74d795601f8cc",
+    "semantic_hash": "f89059543769ff74d5b74d795601f8cc"
+  },
+  "BhoomiBandhu1.0/backend/requirements.txt": {
+    "mtime": 1795250250.7081423,
+    "seen": 1795254714.5589173,
+    "ast_hash": "147d3fa92d2cb0d81e744ec8a0b21cf7",
+    "semantic_hash": "147d3fa92d2cb0d81e744ec8a0b21cf7"
+  },
+  "BhoomiBandhu1.0/claim-filing.html": {
+    "mtime": 1795250250.7182271,
+    "seen": 1795254714.5589194,
+    "ast_hash": "0cdd3e71a897c4e9d2b1c29a7048c208",
+    "semantic_hash": "0cdd3e71a897c4e9d2b1c29a7048c208"
+  },
+  "BhoomiBandhu1.0/client/index.html": {
+    "mtime": 1795250250.7193165,
+    "seen": 1795254714.5589218,
+    "ast_hash": "39f69a73a686a366fdcfbbba6fd20027",
+    "semantic_hash": "39f69a73a686a366fdcfbbba6fd20027"
+  },
+  "BhoomiBandhu1.0/docs/API_REFERENCE.md": {
+    "mtime": 1795250250.7809966,
+    "seen": 1795254714.5589235,
+    "ast_hash": "55b57ce7778d99eebda415d477332848",
+    "semantic_hash": "55b57ce7778d99eebda415d477332848"
+  },
+  "BhoomiBandhu1.0/docs/ARCHITECTURE.md": {
+    "mtime": 1795250250.782266,
+    "seen": 1795254714.5589256,
+    "ast_hash": "a76fce391663012dec9265cbfe4ff1db",
+    "semantic_hash": "a76fce391663012dec9265cbfe4ff1db"
+  },
+  "BhoomiBandhu1.0/docs/DATABASE.md": {
+    "mtime": 1795250250.7832668,
+    "seen": 1795254714.5589273,
+    "ast_hash": "e62186cd79cd4bfa7a0eb7cec72a9bcc",
+    "semantic_hash": "e62186cd79cd4bfa7a0eb7cec72a9bcc"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_3A_SCHEMA_VERIFICATION.md": {
+    "mtime": 1795250250.7832668,
+    "seen": 1795254714.5589294,
+    "ast_hash": "62d47e6aa3f95740e7025c42fd7a03f0",
+    "semantic_hash": "62d47e6aa3f95740e7025c42fd7a03f0"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_4A_AUTH_SECURITY_AUDIT.md": {
+    "mtime": 1795250250.7842693,
+    "seen": 1795254714.558931,
+    "ast_hash": "879260b41a04d5ed640b4ac6d06cffd7",
+    "semantic_hash": "879260b41a04d5ed640b4ac6d06cffd7"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_4B1_FINAL_VERIFICATION_REPORT.md": {
+    "mtime": 1795250250.7857826,
+    "seen": 1795254714.5589335,
+    "ast_hash": "9c02f0f8c17c3a6994cf36fa49d6975c",
+    "semantic_hash": "9c02f0f8c17c3a6994cf36fa49d6975c"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_4B_SECURITY_HARDENING_REPORT.md": {
+    "mtime": 1795250250.786797,
+    "seen": 1795254714.5589354,
+    "ast_hash": "2f8b64a0b78b5d4a9a94b54adcfeab71",
+    "semantic_hash": "2f8b64a0b78b5d4a9a94b54adcfeab71"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_5B_INDEPENDENT_VERIFICATION_REPORT.md": {
+    "mtime": 1795250250.78781,
+    "seen": 1795254714.558937,
+    "ast_hash": "5299e51ff7cddc522ac230f3d0663e88",
+    "semantic_hash": "5299e51ff7cddc522ac230f3d0663e88"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_5C_CORRECTION_REPORT.md": {
+    "mtime": 1795250250.78781,
+    "seen": 1795254714.558939,
+    "ast_hash": "66b77a9343b59f71d699cf8e9c6946aa",
+    "semantic_hash": "66b77a9343b59f71d699cf8e9c6946aa"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_5D_FINAL_VERIFICATION_REPORT.md": {
+    "mtime": 1795250250.7890794,
+    "seen": 1795254714.558941,
+    "ast_hash": "a96f2c59577042fc0cc0d46fecdb890d",
+    "semantic_hash": "a96f2c59577042fc0cc0d46fecdb890d"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_5_FRONTEND_AUTH_REPORT.md": {
+    "mtime": 1795250250.79008,
+    "seen": 1795254714.5589428,
+    "ast_hash": "eb52bd2379e855908fa341a5594dc592",
+    "semantic_hash": "eb52bd2379e855908fa341a5594dc592"
+  },
+  "BhoomiBandhu1.0/docs/PROMPT_7_FINAL_REPORT.md": {
+    "mtime": 1795250250.7910805,
+    "seen": 1795254714.5589445,
+    "ast_hash": "537c3816bc3d7de8c6f6a2c4ced9d5c2",
+    "semantic_hash": "537c3816bc3d7de8c6f6a2c4ced9d5c2"
+  },
+  "BhoomiBandhu1.0/financial.html": {
+    "mtime": 1795250250.7920823,
+    "seen": 1795254714.5589466,
+    "ast_hash": "8bb7a9117f99df2a936456ebced167e2",
+    "semantic_hash": "8bb7a9117f99df2a936456ebced167e2"
+  },
+  "BhoomiBandhu1.0/gemini-advisor.html": {
+    "mtime": 1795250250.7932177,
+    "seen": 1795254714.5589485,
+    "ast_hash": "f7d555620694df5bda5cb2b42c4f36b0",
+    "semantic_hash": "f7d555620694df5bda5cb2b42c4f36b0"
+  },
+  "BhoomiBandhu1.0/index.html": {
+    "mtime": 1795250250.7932177,
+    "seen": 1795254714.558951,
+    "ast_hash": "bb579622b2809825a8224dcea7721163",
+    "semantic_hash": "bb579622b2809825a8224dcea7721163"
+  },
+  "BhoomiBandhu1.0/insurance.html": {
+    "mtime": 1795250250.7942195,
+    "seen": 1795254714.558953,
+    "ast_hash": "bb4fb21e67cb966263fab198c3724cce",
+    "semantic_hash": "bb4fb21e67cb966263fab198c3724cce"
+  },
+  "BhoomiBandhu1.0/mental-health.html": {
+    "mtime": 1795250250.7957325,
+    "seen": 1795254714.558955,
+    "ast_hash": "6e39c6e4972fa48e0a9b6e57a53f981d",
+    "semantic_hash": "6e39c6e4972fa48e0a9b6e57a53f981d"
+  },
+  "BhoomiBandhu1.0/ml-crop-advisor.html": {
+    "mtime": 1795250250.797745,
+    "seen": 1795254714.5589569,
+    "ast_hash": "af18abc7614c2bf6626b0149dd3a5bc2",
+    "semantic_hash": "af18abc7614c2bf6626b0149dd3a5bc2"
+  },
+  "BhoomiBandhu1.0/pmfby-enrollment.html": {
+    "mtime": 1795250250.8017445,
+    "seen": 1795254714.5589585,
+    "ast_hash": "fcfa51a9dc4867c14ff7d70198de72a3",
+    "semantic_hash": "fcfa51a9dc4867c14ff7d70198de72a3"
+  },
+  "BhoomiBandhu1.0/risk-awareness.html": {
+    "mtime": 1795250250.8017445,
+    "seen": 1795254714.5589607,
+    "ast_hash": "79069fd52f946b1f46ca1a8e6d626934",
+    "semantic_hash": "79069fd52f946b1f46ca1a8e6d626934"
+  },
+  "BhoomiBandhu1.0/schemes.html": {
+    "mtime": 1795250250.802931,
+    "seen": 1795254714.5589623,
+    "ast_hash": "03cc040fea59e3d141e83bdb4b573511",
+    "semantic_hash": "03cc040fea59e3d141e83bdb4b573511"
+  },
+  "BhoomiBandhu1.0/status-tracking.html": {
+    "mtime": 1795250250.806611,
+    "seen": 1795254714.5589643,
+    "ast_hash": "7a7d1edf23e2a1f0561e0e77d3bb8d19",
+    "semantic_hash": "7a7d1edf23e2a1f0561e0e77d3bb8d19"
+  },
+  "BhoomiBandhu1.0/storage.html": {
+    "mtime": 1795250250.8081229,
+    "seen": 1795254714.5589662,
+    "ast_hash": "bb9dfe60f77f9f0399d4a91d6707ba37",
+    "semantic_hash": "bb9dfe60f77f9f0399d4a91d6707ba37"
+  },
+  "MIGRATION_STATUS.md": {
+    "mtime": 1792333677.7789707,
+    "seen": 1795254714.5589683,
+    "ast_hash": "06088eca8e00f05638c8e4fd0909230c",
+    "semantic_hash": "06088eca8e00f05638c8e4fd0909230c"
+  },
+  "PROMPT_7_COMPLETE_IMPLEMENTATION_AND_AUDIT_REPORT.md": {
+    "mtime": 1793637528.1784995,
+    "seen": 1795254714.5589702,
+    "ast_hash": "13975677e1275e92c2989c721cb5518b",
+    "semantic_hash": "13975677e1275e92c2989c721cb5518b"
+  },
+  "PROMPT_7_FINAL_REPORT.md": {
+    "mtime": 1793631463.7033832,
+    "seen": 1795254714.5589721,
+    "ast_hash": "0565935f7abab1dbfe9be317efe6f181",
+    "semantic_hash": "0565935f7abab1dbfe9be317efe6f181"
+  },
+  "PROMPT_8_IMPLEMENTATION_AND_AUDIT_REPORT.md": {
+    "mtime": 1793727592.8083649,
+    "seen": 1795254714.5589743,
+    "ast_hash": "ae9023dc207429a0c675510acaccbd33",
+    "semantic_hash": "ae9023dc207429a0c675510acaccbd33"
+  },
+  "PROMPT_8_INITIAL_AUDIT.md": {
+    "mtime": 1793725082.2912767,
+    "seen": 1795254714.558976,
+    "ast_hash": "f2ede9ac3e53d5abdcd9a2246a799a82",
+    "semantic_hash": "f2ede9ac3e53d5abdcd9a2246a799a82"
+  },
+  "README.md": {
+    "mtime": 1792347560.581605,
+    "seen": 1795254714.5589778,
+    "ast_hash": "9c0836f5a97541bd9f2ed066ff952b67",
+    "semantic_hash": "9c0836f5a97541bd9f2ed066ff952b67"
+  },
+  "backend/requirements.txt": {
+    "mtime": 1793528042.4564445,
+    "seen": 1795254714.5589797,
+    "ast_hash": "d720018e0e5bb277d828588a35318cda",
+    "semantic_hash": "d720018e0e5bb277d828588a35318cda"
+  },
+  "client/index.html": {
+    "mtime": 1792258083.9013817,
+    "seen": 1795254714.558982,
+    "ast_hash": "546894c9978a638ed2bfb886852a48be",
+    "semantic_hash": "546894c9978a638ed2bfb886852a48be"
+  },
+  "docs/API_REFERENCE.md": {
+    "mtime": 1792347426.426198,
+    "seen": 1795254714.5589836,
+    "ast_hash": "1561d0cef6d6d6175833afde646f03a6",
+    "semantic_hash": "1561d0cef6d6d6175833afde646f03a6"
+  },
+  "docs/ARCHITECTURE.md": {
+    "mtime": 1792347401.5561025,
+    "seen": 1795254714.5589857,
+    "ast_hash": "461ebf8ddfca7fd2d71ceaa5cf22b13f",
+    "semantic_hash": "461ebf8ddfca7fd2d71ceaa5cf22b13f"
+  },
+  "docs/DATABASE.md": {
+    "mtime": 1792347444.7328093,
+    "seen": 1795254714.5589879,
+    "ast_hash": "ffb1fc17c493ea324584d5308800b316",
+    "semantic_hash": "ffb1fc17c493ea324584d5308800b316"
+  },
+  "docs/PROMPT_3A_SCHEMA_VERIFICATION.md": {
+    "mtime": 1793527611.755345,
+    "seen": 1795254714.5589895,
+    "ast_hash": "f363e8ce0e6f68b9d0456333956f02ea",
+    "semantic_hash": "f363e8ce0e6f68b9d0456333956f02ea"
+  },
+  "docs/PROMPT_4A_AUTH_SECURITY_AUDIT.md": {
+    "mtime": 1793528804.195693,
+    "seen": 1795254714.5589914,
+    "ast_hash": "746d420a63ca0aa60f1c851f1c323139",
+    "semantic_hash": "746d420a63ca0aa60f1c851f1c323139"
+  },
+  "docs/PROMPT_4B1_FINAL_VERIFICATION_REPORT.md": {
+    "mtime": 1793530405.5621676,
+    "seen": 1795254714.558993,
+    "ast_hash": "889e15676ff57e3e679d35d2750e0483",
+    "semantic_hash": "889e15676ff57e3e679d35d2750e0483"
+  },
+  "docs/PROMPT_4B_SECURITY_HARDENING_REPORT.md": {
+    "mtime": 1793529985.5000029,
+    "seen": 1795254714.5589952,
+    "ast_hash": "c0173784d291f60d024d1221101c5e23",
+    "semantic_hash": "c0173784d291f60d024d1221101c5e23"
+  },
+  "docs/PROMPT_5B_INDEPENDENT_VERIFICATION_REPORT.md": {
+    "mtime": 1793532280.22865,
+    "seen": 1795254714.558997,
+    "ast_hash": "9ed39ca7a14c107cd590e3aab85d3793",
+    "semantic_hash": "9ed39ca7a14c107cd590e3aab85d3793"
+  },
+  "docs/PROMPT_5C_CORRECTION_REPORT.md": {
+    "mtime": 1793532569.8745613,
+    "seen": 1795254714.5589988,
+    "ast_hash": "c8b2e0ae652e57050e69ca012900def6",
+    "semantic_hash": "c8b2e0ae652e57050e69ca012900def6"
+  },
+  "docs/PROMPT_5D_FINAL_VERIFICATION_REPORT.md": {
+    "mtime": 1793631498.9487753,
+    "seen": 1795254714.5590007,
+    "ast_hash": "ff3d68098288a614c2f9d81cb669e75e",
+    "semantic_hash": "ff3d68098288a614c2f9d81cb669e75e"
+  },
+  "docs/PROMPT_5_FRONTEND_AUTH_REPORT.md": {
+    "mtime": 1793531277.8541174,
+    "seen": 1795254714.5590026,
+    "ast_hash": "2117eee7f8967961f5aac3cc5d4aa957",
+    "semantic_hash": "2117eee7f8967961f5aac3cc5d4aa957"
+  },
+  "docs/PROMPT_7_FINAL_REPORT.md": {
+    "mtime": 1793631430.3254125,
+    "seen": 1795254714.5590048,
+    "ast_hash": "0565935f7abab1dbfe9be317efe6f181",
+    "semantic_hash": "0565935f7abab1dbfe9be317efe6f181"
+  },
+  "BhoomiBandhu1.0/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png": {
+    "mtime": 1795250250.652867,
+    "seen": 1795254714.5590065,
+    "ast_hash": "546ea4b7b5fb43ef35da143f52758f0f",
+    "semantic_hash": "546ea4b7b5fb43ef35da143f52758f0f"
+  },
+  "BhoomiBandhu1.0/assets/logo/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png": {
+    "mtime": 1795250250.6639721,
+    "seen": 1795254714.5590084,
+    "ast_hash": "546ea4b7b5fb43ef35da143f52758f0f",
+    "semantic_hash": "546ea4b7b5fb43ef35da143f52758f0f"
+  },
+  "BhoomiBandhu1.0/client/public/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png": {
+    "mtime": 1795250250.7223191,
+    "seen": 1795254714.5590103,
+    "ast_hash": "546ea4b7b5fb43ef35da143f52758f0f",
+    "semantic_hash": "546ea4b7b5fb43ef35da143f52758f0f"
+  },
+  "assets/logo/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png": {
+    "mtime": 1792258083.876445,
+    "seen": 1795254714.5590122,
+    "ast_hash": "546ea4b7b5fb43ef35da143f52758f0f",
+    "semantic_hash": "546ea4b7b5fb43ef35da143f52758f0f"
+  },
+  "client/public/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png": {
+    "mtime": 1792258083.9154766,
+    "seen": 1795254714.559014,
+    "ast_hash": "546ea4b7b5fb43ef35da143f52758f0f",
+    "semantic_hash": "546ea4b7b5fb43ef35da143f52758f0f"
+  }
+}

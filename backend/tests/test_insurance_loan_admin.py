@@ -398,6 +398,47 @@ class TestFarmerFinancialHistoryPrivacyAndIsolation:
         assert r_loan.status_code == 200
         assert r_loan.json()["total"] == 1
 
+    def test_farmer_financial_summary_status_granularity(self, client, db_session):
+        user, farmer = _make_farmer(db_session, suffix="35", name="Granular Status Farmer")
+        fid = farmer.farmer_id
+
+        # Insurance records with distinct statuses
+        i_pending = InsuranceRequest(farmer_id=fid, farmer_name="Test", request_type="New Insurance Enrollment", req_status="pending")
+        i_processing = InsuranceRequest(farmer_id=fid, farmer_name="Test", request_type="Crop Loss Claim", req_status="processing")
+        i_approved = InsuranceRequest(farmer_id=fid, farmer_name="Test", request_type="New Insurance Enrollment", req_status="approved")
+        i_paid = InsuranceRequest(farmer_id=fid, farmer_name="Test", request_type="Crop Loss Claim", req_status="paid")
+        i_rejected = InsuranceRequest(farmer_id=fid, farmer_name="Test", request_type="New Insurance Enrollment", req_status="rejected")
+
+        # Loan records with distinct statuses
+        l_pending = LoanApplication(farmer_id=fid, farmer_name="Test", loan_amount=Decimal("10000"), loan_type="Crop Loan", app_status="pending")
+        l_review = LoanApplication(farmer_id=fid, farmer_name="Test", loan_amount=Decimal("20000"), loan_type="Equipment Loan", app_status="under_review")
+        l_approved = LoanApplication(farmer_id=fid, farmer_name="Test", loan_amount=Decimal("30000"), loan_type="Irrigation Loan", app_status="approved")
+        l_rejected = LoanApplication(farmer_id=fid, farmer_name="Test", loan_amount=Decimal("40000"), loan_type="Dairy / Livestock Loan", app_status="rejected")
+
+        db_session.add_all([i_pending, i_processing, i_approved, i_paid, i_rejected,
+                            l_pending, l_review, l_approved, l_rejected])
+        db_session.commit()
+
+        farmer_headers = _headers_for(user.id, "farmer")
+        r = client.get("/api/farmers/me/financial-history", headers=farmer_headers)
+        assert r.status_code == 200
+        summary = r.json()["summary"]
+
+        # Critical: approved counts ONLY approved, paid counts ONLY paid
+        assert summary["total_insurance_requests"] == 5
+        assert summary["pending_insurance_requests"] == 1
+        assert summary["processing_insurance_requests"] == 1
+        assert summary["approved_insurance_requests"] == 1
+        assert summary["paid_insurance_requests"] == 1
+        assert summary["rejected_insurance_requests"] == 1
+
+        # Critical: pending and under_review remain distinct
+        assert summary["total_loan_applications"] == 4
+        assert summary["pending_loan_applications"] == 1
+        assert summary["under_review_loan_applications"] == 1
+        assert summary["approved_loan_applications"] == 1
+        assert summary["rejected_loan_applications"] == 1
+
     def test_farmer_cross_account_isolation(self, client, db_session):
         user1, farmer1 = _make_farmer(db_session, suffix="32", name="Farmer One")
         user2, farmer2 = _make_farmer(db_session, suffix="33", name="Farmer Two")

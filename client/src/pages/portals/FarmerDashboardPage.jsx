@@ -5,6 +5,7 @@ import { authFetch } from '../../services/authFetch.js';
 import {
   formatFinancialSummary,
   formatFarmerInsuranceDetail,
+  formatFarmerLoanDetail,
   filterInsuranceRequests,
   filterLoanApplications
 } from '../../services/financialHelpers.js';
@@ -967,42 +968,38 @@ export default function FarmerDashboardPage() {
       })()}
 
       {/* ── Loan Detail Inspection Modal ── */}
-      {selectedLoan && (
-        <div className="portal-modal-overlay" onClick={() => setSelectedLoan(null)}>
-          <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
-            <div className="portal-modal-header">
-              <h3>💰 Loan Application #{selectedLoan.id}</h3>
-              <button className="portal-modal-close" onClick={() => setSelectedLoan(null)}>✕</button>
-            </div>
-            <div className="portal-modal-body">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '16px' }}>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Loan Type</label><div style={{ fontWeight: 600 }}>{selectedLoan.loan_type}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Amount</label><div style={{ fontWeight: 600, color: 'var(--portal-primary)' }}>₹{Number(selectedLoan.loan_amount).toLocaleString('en-IN')}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${selectedLoan.app_status}`}>{selectedLoan.app_status.replace('_', ' ')}</span></div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{selectedLoan.submitted_at ? new Date(selectedLoan.submitted_at).toLocaleString() : '—'}</div></div>
-                <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Reviewed Date</label><div>{selectedLoan.reviewed_at ? new Date(selectedLoan.reviewed_at).toLocaleString() : '—'}</div></div>
+      {selectedLoan && (() => {
+        const loan = formatFarmerLoanDetail(selectedLoan);
+        return (
+          <div className="portal-modal-overlay" onClick={() => setSelectedLoan(null)}>
+            <div className="portal-modal-card" onClick={(e) => e.stopPropagation()}>
+              <div className="portal-modal-header">
+                <h3>💰 Loan Application #{loan.id}</h3>
+                <button className="portal-modal-close" onClick={() => setSelectedLoan(null)}>✕</button>
               </div>
-              {selectedLoan.purpose && (
-                <div style={{ marginTop: '14px', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--portal-text-muted)' }}>Loan Purpose</label>
-                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>{selectedLoan.purpose}</p>
+              <div className="portal-modal-body">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: loan.purpose ? '16px' : '0' }}>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Loan Type</label><div style={{ fontWeight: 600 }}>{loan.loan_type}</div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Amount</label><div style={{ fontWeight: 600, color: 'var(--portal-primary)' }}>{loan.loan_amount}</div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Status</label><div><span className={`portal-status-badge status-${loan.app_status}`}>{loan.app_status.replace('_', ' ')}</span></div></div>
+                  <div><label style={{ fontSize: '0.8rem', color: 'var(--portal-text-muted)' }}>Submitted Date</label><div>{loan.submitted_date}</div></div>
                 </div>
-              )}
-              {selectedLoan.remarks && (
-                <div style={{ marginTop: '14px', padding: '12px', background: '#fef3c7', borderRadius: '8px' }}>
-                  <label style={{ fontSize: '0.8rem', fontWeight: 600, color: '#92400e' }}>Officer Remarks</label>
-                  <p style={{ margin: '4px 0 0', fontSize: '0.9rem', color: '#78350f' }}>{selectedLoan.remarks}</p>
-                </div>
-              )}
-            </div>
-            <div className="portal-modal-footer">
-              <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedLoan(null)}>
-                Close
-              </button>
+                {loan.purpose && (
+                  <div style={{ marginTop: '14px', padding: '12px', background: '#f8fafc', borderRadius: '8px' }}>
+                    <label style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--portal-text-muted)' }}>Loan Purpose</label>
+                    <p style={{ margin: '4px 0 0', fontSize: '0.9rem' }}>{loan.purpose}</p>
+                  </div>
+                )}
+              </div>
+              <div className="portal-modal-footer">
+                <button type="button" className="portal-btn btn-cancel" onClick={() => setSelectedLoan(null)}>
+                  Close
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }

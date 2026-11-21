@@ -104,26 +104,26 @@ All changes were implemented using the existing database models, schema CHECK co
    - `test_admin_loan_stats_endpoint`: PASSED
    - `test_admin_loan_status_transitions`: PASSED
    - `test_farmer_can_view_own_consolidated_financial_history`: PASSED
+   - `test_farmer_financial_summary_status_granularity`: PASSED
    - `test_farmer_cross_account_isolation`: PASSED
    - `test_unauthorized_and_cross_role_access_denied`: PASSED
-   - **Result: 11 / 11 passed (100%)**
+   - **Result: 12 / 12 passed (100%)**
 
 2. **Full Backend Test Suite (`backend/tests/`):**
-   - Total backend tests collected: 135
-   - Total backend tests passed: 135
+   - Total backend tests collected: 136
+   - Total backend tests passed: 136
    - Total failed: 0
-   - Execution time: 18.46s
    - Regressions: 0
 
 ### Frontend Test Results:
 1. **Frontend Insurance & Loan Admin Tests (`client/tests/frontend_insurance_loan_admin.test.mjs`):**
-   - 6 / 6 passed (100%)
+   - 11 / 11 passed (100%) (`npm run test:financial`)
 2. **Frontend Portal Suite (`client/tests/frontend_portal.test.mjs`):**
-   - 16 / 16 passed (100%)
+   - 16 / 16 passed (100%) (`npm run test:portal`)
 3. **Frontend Auth Suite (`client/tests/frontend_auth.test.mjs`):**
-   - 25 / 25 passed (100%)
+   - 25 / 25 passed (100%) (`npm run test:frontend`)
 4. **Vite Production Build (`npm run build`):**
-   - Succeeded in 1.32s with zero errors or warnings.
+   - Succeeded with zero errors or warnings (dist output generated).
 
 ---
 
@@ -131,7 +131,7 @@ All changes were implemented using the existing database models, schema CHECK co
 
 No database migrations, DDL statements, or ORM model changes were executed or required for Prompt 8.
 - The existing `InsuranceRequest`, `PmfbyEnrollment`, `LoanApplication`, `Farmer`, and `User` models contain all required relational columns.
-- State transitions strictly honor the database CHECK constraints `insurance_requests_chk_2` and `loan_applications_chk_2`.
+- State transitions strictly honor the database CHECK constraints `insurance_requests_chk_1`, `insurance_requests_chk_2`, `pmfby_enrollments_chk_1`, `loan_applications_chk_1`, and `loan_applications_chk_2`.
 - Administrative review notes are handled via audit logs and existing column bounds without attempting to insert into non-existent columns.
 - Document file uploads: Confirmed that neither model contains document URL columns; no phantom document fields were created.
 
@@ -148,4 +148,41 @@ No database migrations, DDL statements, or ORM model changes were executed or re
    - Invalid status transitions (such as transitioning a loan directly from `pending` to `paid` or transitioning a rejected request) return `400 Bad Request`.
 4. **Credential & Secret Protection:**
    - No `.env` secrets or production database connection strings were accessed, modified, or exposed.
+
+---
+
+## 6. Prompt 8 Final Corrections — Financial Status Accuracy & UI Contract Cleanup
+
+In response to the independent audit, four specific defects were corrected:
+
+### 1. Correct Approved vs Paid Insurance Counting
+- **Defect:** In `backend/app/routers/farmers.py`, `approved_insurance_requests` previously counted both `approved` and `paid` statuses.
+- **Correction:**
+  - `backend/app/routers/farmers.py`: `approved_insurance_requests` strictly counts records where `req_status == "approved"`.
+  - Added `paid_insurance_requests` counting records where `req_status == "paid"`.
+  - Added `paid_insurance_requests: int` to `FarmerFinancialHistorySummary` in `backend/app/schemas/portal_schemas.py`.
+  - Updated frontend helper `formatFinancialSummary` in `client/src/services/financialHelpers.js` to preserve `approvedInsurance` and `paidInsurance` as distinct metrics without treating them as interchangeable.
+
+### 2. Insurance Processing and In-Progress Financial Summary
+- **Defect:** `processing` insurance requests were omitted from granular reporting, and in-progress loan statuses (`under_review`) needed consistent representation.
+- **Correction:**
+  - Added `processing_insurance_requests: int` and `under_review_loan_applications: int` to `FarmerFinancialHistorySummary`.
+  - Updated backend query in `backend/app/routers/farmers.py` to count `processing` insurance requests and `under_review` loan applications separately.
+  - In `client/src/services/financialHelpers.js` and `client/src/pages/portals/FarmerDashboardPage.jsx`, defined:
+    - `inProgressInsurance = (pendingInsurance || 0) + (processingInsurance || 0)`
+    - `inProgressLoans = (pendingLoans || 0) + (underReviewLoans || 0)`
+  - UI displays clear status badges ("In-Progress: X", "Approved: Y", "Settled/Paid: Z") without calculating or inferring monetary payouts or disbursements.
+
+### 3. Remove Unsupported Farmer Loan Reviewed Date & Remarks
+- **Defect:** The farmer loan detail modal in `client/src/pages/portals/FarmerDashboardPage.jsx` attempted to render `selectedLoan.reviewed_at` and `selectedLoan.remarks`, which are not present in the farmer loan schema (`FarmerLoanSummaryItem`).
+- **Correction:**
+  - Removed `reviewed_at` and `remarks` from `formatFarmerLoanDetail` in `client/src/services/financialHelpers.js`.
+  - Removed "Reviewed At" and "Remarks" display rows from the modal in `FarmerDashboardPage.jsx`.
+
+### 4. Remove Unsupported Admin Loan Remarks
+- **Defect:** The admin loan detail inspection panel in `client/src/pages/portals/AdminPortalPage.jsx` attempted to display `viewItem.remarks`, which does not exist in the database or ORM model.
+- **Correction:**
+  - Removed `remarks` from `formatAdminLoanDetail` in `client/src/services/financialHelpers.js`.
+  - Removed the `Remarks / Notes` field from the admin loan detail panel in `AdminPortalPage.jsx`.
+
 
