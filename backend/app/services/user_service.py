@@ -14,7 +14,6 @@ from ..schemas.auth_schemas import (
     PsychiatristRegisterRequest,
     WarehouseOwnerRegisterRequest,
 )
-from ..core import config
 from .auth_service import hash_password, verify_password
 from .otp_service import (
     is_mobile_preverified,
@@ -48,15 +47,14 @@ def register_farmer(data: UserRegisterRequest, db: Session) -> Tuple[User, Farme
         raise ValueError("Email address is already registered.")
 
     # 2. Gate OTP verification
-    otp_used = False
+    verified = False
     if data.otp_code:
         ok, _ = verify_otp_challenge(data.mobile, data.otp_code, "registration", db)
-        if not ok:
-            raise ValueError("Invalid or expired OTP code.")
-        otp_used = True
-    elif is_mobile_preverified(data.mobile, "registration", db):
-        otp_used = True
-    elif getattr(config, "REQUIRE_OTP_VERIFICATION", False):
+        verified = ok
+    else:
+        verified = is_mobile_preverified(data.mobile, "registration", db)
+
+    if not verified:
         raise ValueError("Mobile ownership must be verified via OTP before registration.")
 
     # 3. Check for existing legacy farmer
@@ -64,8 +62,8 @@ def register_farmer(data: UserRegisterRequest, db: Session) -> Tuple[User, Farme
     pwd_hash = hash_password(data.password)
 
     try:
-        # Atomic OTP consumption in the same transaction if OTP was used
-        if otp_used and not consume_verified_otp(data.mobile, "registration", db):
+        # Atomic OTP consumption in the same transaction
+        if not consume_verified_otp(data.mobile, "registration", db):
             raise ValueError("OTP is invalid, expired, or already consumed.")
 
         if legacy_farmer:
@@ -152,21 +150,20 @@ def register_psychiatrist(data: PsychiatristRegisterRequest, db: Session) -> Tup
         raise ValueError("License number is already registered.")
 
     # OTP check
-    otp_used = False
+    verified = False
     if data.otp_code:
         ok, _ = verify_otp_challenge(data.mobile, data.otp_code, "registration", db)
-        if not ok:
-            raise ValueError("Invalid or expired OTP code.")
-        otp_used = True
-    elif is_mobile_preverified(data.mobile, "registration", db):
-        otp_used = True
-    elif getattr(config, "REQUIRE_OTP_VERIFICATION", False):
+        verified = ok
+    else:
+        verified = is_mobile_preverified(data.mobile, "registration", db)
+
+    if not verified:
         raise ValueError("Mobile ownership must be verified via OTP before registration.")
 
     pwd_hash = hash_password(data.password)
     try:
-        # Atomic OTP consumption in the same transaction if OTP was used
-        if otp_used and not consume_verified_otp(data.mobile, "registration", db):
+        # Atomic OTP consumption in the same transaction
+        if not consume_verified_otp(data.mobile, "registration", db):
             raise ValueError("OTP is invalid, expired, or already consumed.")
 
         new_user = User(
@@ -208,21 +205,20 @@ def register_warehouse_owner(data: WarehouseOwnerRegisterRequest, db: Session) -
         raise ValueError("GSTIN is already registered to an account.")
 
     # OTP check
-    otp_used = False
+    verified = False
     if data.otp_code:
         ok, _ = verify_otp_challenge(data.mobile, data.otp_code, "registration", db)
-        if not ok:
-            raise ValueError("Invalid or expired OTP code.")
-        otp_used = True
-    elif is_mobile_preverified(data.mobile, "registration", db):
-        otp_used = True
-    elif getattr(config, "REQUIRE_OTP_VERIFICATION", False):
+        verified = ok
+    else:
+        verified = is_mobile_preverified(data.mobile, "registration", db)
+
+    if not verified:
         raise ValueError("Mobile ownership must be verified via OTP before registration.")
 
     pwd_hash = hash_password(data.password)
     try:
-        # Atomic OTP consumption in the same transaction if OTP was used
-        if otp_used and not consume_verified_otp(data.mobile, "registration", db):
+        # Atomic OTP consumption in the same transaction
+        if not consume_verified_otp(data.mobile, "registration", db):
             raise ValueError("OTP is invalid, expired, or already consumed.")
 
         new_user = User(

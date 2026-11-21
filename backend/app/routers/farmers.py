@@ -320,32 +320,22 @@ def get_my_financial_history(
     ins_query = db.query(InsuranceRequest).filter(InsuranceRequest.farmer_id == farmer_id)
     total_ins = ins_query.count()
     pending_ins = ins_query.filter(InsuranceRequest.req_status == "pending").count()
-    processing_ins = ins_query.filter(InsuranceRequest.req_status == "processing").count()
-    approved_ins = ins_query.filter(InsuranceRequest.req_status == "approved").count()
-    paid_ins = ins_query.filter(InsuranceRequest.req_status == "paid").count()
-    rejected_ins = ins_query.filter(InsuranceRequest.req_status == "rejected").count()
+    approved_ins = ins_query.filter(InsuranceRequest.req_status.in_(["approved", "paid"])).count()
     ins_rows = ins_query.order_by(InsuranceRequest.submitted_at.desc()).all()
 
     loan_query = db.query(LoanApplication).filter(LoanApplication.farmer_id == farmer_id)
     total_loans = loan_query.count()
-    pending_loans = loan_query.filter(LoanApplication.app_status == "pending").count()
-    under_review_loans = loan_query.filter(LoanApplication.app_status == "under_review").count()
+    pending_loans = loan_query.filter(LoanApplication.app_status.in_(["pending", "under_review"])).count()
     approved_loans = loan_query.filter(LoanApplication.app_status == "approved").count()
-    rejected_loans = loan_query.filter(LoanApplication.app_status == "rejected").count()
     loan_rows = loan_query.order_by(LoanApplication.submitted_at.desc()).all()
 
     summary = FarmerFinancialHistorySummary(
         total_insurance_requests=total_ins,
         pending_insurance_requests=pending_ins,
-        processing_insurance_requests=processing_ins,
         approved_insurance_requests=approved_ins,
-        paid_insurance_requests=paid_ins,
-        rejected_insurance_requests=rejected_ins,
         total_loan_applications=total_loans,
         pending_loan_applications=pending_loans,
-        under_review_loan_applications=under_review_loans,
         approved_loan_applications=approved_loans,
-        rejected_loan_applications=rejected_loans,
     )
 
     ins_items = [

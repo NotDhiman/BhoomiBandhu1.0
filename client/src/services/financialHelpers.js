@@ -80,86 +80,34 @@ export function filterLoanApplications(applications, query = '', statusFilter = 
 
 /**
  * Formats consolidated farmer financial summary counts accurately from backend response.
- * - approved_insurance_requests: counts only req_status == 'approved'
- * - paid_insurance_requests: counts only req_status == 'paid'
- * - processing_insurance_requests: counts req_status == 'processing'
- * - under_review_loan_applications: counts app_status == 'under_review'
  * Never calculates or invents payouts, credit disbursals, or monetary amounts.
  */
 export function formatFinancialSummary(summary = {}) {
   const totalInsurance = Number(summary?.total_insurance_requests) || 0;
   const pendingInsurance = Number(summary?.pending_insurance_requests) || 0;
-  const processingInsurance = Number(summary?.processing_insurance_requests) || 0;
   const approvedInsurance = Number(summary?.approved_insurance_requests) || 0;
-  const paidInsurance = Number(summary?.paid_insurance_requests) || 0;
-  const rejectedInsurance = Number(summary?.rejected_insurance_requests) || 0;
 
   const totalLoans = Number(summary?.total_loan_applications) || 0;
   const pendingLoans = Number(summary?.pending_loan_applications) || 0;
-  const underReviewLoans = Number(summary?.under_review_loan_applications) || 0;
   const approvedLoans = Number(summary?.approved_loan_applications) || 0;
-  const rejectedLoans = Number(summary?.rejected_loan_applications) || 0;
-
-  // In-progress: pending + processing for insurance; pending + under_review for loans
-  const inProgressInsurance = pendingInsurance + processingInsurance;
-  const inProgressLoans = pendingLoans + underReviewLoans;
 
   const totalApplications = totalInsurance + totalLoans;
   const totalApproved = approvedInsurance + approvedLoans;
-  const totalInProgress = inProgressInsurance + inProgressLoans;
-  const totalPaid = paidInsurance;
-  const totalRejected = rejectedInsurance + rejectedLoans;
-
-  // Build granular, status-accurate display texts
-  const insParts = [];
-  if (approvedInsurance > 0) insParts.push(`${approvedInsurance} approved`);
-  if (paidInsurance > 0) insParts.push(`${paidInsurance} paid`);
-  if (processingInsurance > 0) insParts.push(`${processingInsurance} processing`);
-  if (pendingInsurance > 0) insParts.push(`${pendingInsurance} pending`);
-  if (rejectedInsurance > 0) insParts.push(`${rejectedInsurance} rejected`);
-  const insuranceStatusText = insParts.length > 0 ? insParts.join(' • ') : '0 applications';
-
-  const loanParts = [];
-  if (approvedLoans > 0) loanParts.push(`${approvedLoans} approved`);
-  if (underReviewLoans > 0) loanParts.push(`${underReviewLoans} under review`);
-  if (pendingLoans > 0) loanParts.push(`${pendingLoans} pending`);
-  if (rejectedLoans > 0) loanParts.push(`${rejectedLoans} rejected`);
-  const loanStatusText = loanParts.length > 0 ? loanParts.join(' • ') : '0 applications';
-
-  const consolidatedParts = [];
-  if (totalApproved > 0) consolidatedParts.push(`${totalApproved} approved`);
-  if (totalPaid > 0) consolidatedParts.push(`${totalPaid} paid`);
-  if (totalInProgress > 0) consolidatedParts.push(`${totalInProgress} in progress`);
-  if (totalRejected > 0) consolidatedParts.push(`${totalRejected} rejected`);
-  const consolidatedStatusText = consolidatedParts.length > 0 
-    ? `${consolidatedParts.join(' • ')} (${totalApplications} total)`
-    : '0 requests';
+  const totalPending = pendingInsurance + pendingLoans;
 
   return {
     totalInsurance,
     pendingInsurance,
-    processingInsurance,
     approvedInsurance,
-    paidInsurance,
-    rejectedInsurance,
-    inProgressInsurance,
-
     totalLoans,
     pendingLoans,
-    underReviewLoans,
     approvedLoans,
-    rejectedLoans,
-    inProgressLoans,
-
     totalApplications,
     totalApproved,
-    totalInProgress,
-    totalPaid,
-    totalRejected,
-
-    insuranceStatusText,
-    loanStatusText,
-    consolidatedStatusText
+    totalPending,
+    insuranceStatusText: `${approvedInsurance} approved • ${pendingInsurance} pending`,
+    loanStatusText: `${approvedLoans} approved • ${pendingLoans} under review`,
+    consolidatedStatusText: `${totalApproved} approved across all services (${totalPending} in progress)`
   };
 }
 
@@ -230,42 +178,3 @@ export function formatFarmerInsuranceDetail(item) {
   };
 }
 
-/**
- * Formats Farmer Loan Request detail strictly using actual backend fields.
- * Only displays fields available in FarmerLoanSummaryItem.
- * Excludes reviewed_at and remarks as they are not part of the farmer schema.
- */
-export function formatFarmerLoanDetail(item) {
-  if (!item || typeof item !== 'object') return null;
-
-  return {
-    id: item.id,
-    loan_type: item.loan_type || '—',
-    loan_amount: item.loan_amount != null ? `₹${Number(item.loan_amount).toLocaleString('en-IN')}` : '—',
-    purpose: item.purpose || null,
-    app_status: item.app_status || 'pending',
-    submitted_date: item.submitted_at ? new Date(item.submitted_at).toLocaleDateString() : '—'
-  };
-}
-
-/**
- * Formats Admin Loan Application detail strictly using actual backend fields.
- * Excludes remarks as they are not persisted or returned by AdminLoanDetailResponse.
- */
-export function formatAdminLoanDetail(item) {
-  if (!item || typeof item !== 'object') return null;
-
-  return {
-    id: item.id,
-    farmer_id: item.farmer_id != null ? `#${item.farmer_id}` : '—',
-    farmer_name: item.farmer_name || '—',
-    farmer_mobile: item.farmer_mobile || '—',
-    location: item.village ? `${item.village}, ${item.state || ''}`.replace(/,\s*$/, '') : (item.state || '—'),
-    loan_type: item.loan_type || '—',
-    loan_amount: item.loan_amount != null ? `₹${Number(item.loan_amount).toLocaleString('en-IN')}` : '—',
-    purpose: item.purpose || null,
-    app_status: item.app_status || 'pending',
-    submitted_date: item.submitted_at ? new Date(item.submitted_at).toLocaleString() : '—',
-    reviewed_date: item.reviewed_at ? new Date(item.reviewed_at).toLocaleString() : '—'
-  };
-}

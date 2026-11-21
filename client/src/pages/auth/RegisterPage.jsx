@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
+import { authService } from '../../services/authService.js';
 import '../../pageStyles/auth.css';
 
 export default function RegisterPage() {
@@ -17,6 +18,14 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  // OTP State
+  const [otpCode, setOtpCode] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [verifiedMobile, setVerifiedMobile] = useState('');
+  const [otpLoading, setOtpLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
 
   // Farmer specific fields
   const [stateName, setStateName] = useState('Haryana');
@@ -38,7 +47,64 @@ export default function RegisterPage() {
   const [successMsg, setSuccessMsg] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
+  // Cooldown countdown timer
+  useEffect(() => {
+    let timer;
+    if (cooldown > 0) {
+      timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
   const cleanMobileNumber = (val) => val.replace(/\D/g, '').slice(0, 10);
+
+  const handleSendOtp = async () => {
+    setError('');
+    setSuccessMsg('');
+    setOtpVerified(false);
+    setVerifiedMobile('');
+    const cleanMobile = cleanMobileNumber(mobile);
+
+    if (cleanMobile.length !== 10) {
+      setError('Please enter a valid 10-digit Indian mobile number.');
+      return;
+    }
+
+    setOtpLoading(true);
+    try {
+      await authService.sendOtp(cleanMobile, 'registration');
+      setOtpSent(true);
+      setCooldown(60);
+      setSuccessMsg('Verification code sent successfully. Please check your SMS.');
+    } catch (err) {
+      setError(err.message || 'Failed to send OTP code.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    setError('');
+    const cleanMobile = cleanMobileNumber(mobile);
+    if (!otpCode || otpCode.trim().length !== 6) {
+      setError('Please enter the 6-digit OTP code.');
+      return;
+    }
+
+    setOtpLoading(true);
+    try {
+      await authService.verifyOtp(cleanMobile, otpCode.trim(), 'registration');
+      setOtpVerified(true);
+      setVerifiedMobile(cleanMobile);
+      setSuccessMsg('Mobile number verified successfully!');
+    } catch (err) {
+      setOtpVerified(false);
+      setVerifiedMobile('');
+      setError(err.message || 'OTP verification failed.');
+    } finally {
+      setOtpLoading(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,6 +132,13 @@ export default function RegisterPage() {
       setError('Passwords do not match.');
       return;
     }
+    // Safeguard: Check if verification matches the submitted mobile
+    const isActuallyVerified = otpVerified && cleanMobile === verifiedMobile;
+
+    if (!isActuallyVerified && (!otpCode || otpCode.trim().length !== 6)) {
+      setError('Mobile verification code (OTP) is required to complete registration.');
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -81,6 +154,7 @@ export default function RegisterPage() {
           district: district.trim() || null,
           village: village.trim() || null,
           primary_crop: primaryCrop.trim() || null,
+          otp_code: isActuallyVerified ? undefined : (otpCode.trim() || undefined),
         };
         await registerFarmer(payload);
         navigate('/', { replace: true });
@@ -97,6 +171,7 @@ export default function RegisterPage() {
           email: email.trim() || null,
           license_number: licenseNumber.trim(),
           specialization: specialization.trim() || null,
+          otp_code: isActuallyVerified ? undefined : (otpCode.trim() || undefined),
         };
         await registerPsychiatrist(payload);
         navigate('/pending-approval', { replace: true });
@@ -113,6 +188,7 @@ export default function RegisterPage() {
           email: email.trim() || null,
           company_name: companyName.trim(),
           gstin: gstin.trim() || null,
+          otp_code: isActuallyVerified ? undefined : (otpCode.trim() || undefined),
         };
         await registerWarehouseOwner(payload);
         navigate('/pending-approval', { replace: true });
@@ -186,21 +262,98 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Mobile Number */}
+          {/* Mobile + OTP Verification */}
           <div className="form-group">
             <label htmlFor="reg-mobile">Mobile Number (10 digits) *</label>
-            <input
-              id="reg-mobile"
-              type="tel"
-              className="auth-input"
-              placeholder="e.g. 9876543210"
-              value={mobile}
-              onChange={(e) => setMobile(cleanMobileNumber(e.target.value))}
-              maxLength={10}
-              disabled={isLoading}
-              required
-            />
+            <div className="otp-dispatch-row">
+              <input
+                id="reg-mobile"
+                type="tel"
+                className="auth-input"
+                placeholder="e.g. 9876543210"
+                value={mobile}
+                onChange={(e) => {
+                  setMobile(cleanMobileNumber(e.target.value));
+                  setOtpVerified(false);
+                  setVerifiedMobile('');
+                }}
+                maxLength={10}
+                disabled={isLoading || otpVerified}
+                required
+              />
+              <button
+                type="button"
+                className="otp-send-btn"
+                onClick={handleSendOtp}
+                disabled={otpLoading || cooldown > 0 || mobile.length !== 10 || otpVerified}
+              >
+                {otpLoading
+                  ? 'Sending...'
+                  : cooldown > 0
+                    ? `Wait ${cooldown}s`
+                    : otpSent
+                      ? 'Resend OTP'
+                      : 'Send OTP'}
+              </button>
+            </div>
+            {otpVerified && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                <span className="verified-badge">✓ Mobile verified</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpVerified(false);
+                    setVerifiedMobile('');
+                    setOtpCode('');
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--green, #16a34a)',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    fontSize: '0.85rem',
+                  }}
+                >
+                  Change
+                </button>
+              </div>
+            )}
           </div>
+
+          {/* OTP Input (if sent or needed) */}
+          {(otpSent || otpVerified) && (
+            <div className="form-group">
+              <label htmlFor="reg-otp">6-Digit Verification Code *</label>
+              <div className="otp-dispatch-row">
+                <input
+                  id="reg-otp"
+                  type="text"
+                  className="auth-input"
+                  placeholder="Enter 6-digit OTP"
+                  value={otpCode}
+                  onChange={(e) => {
+                    setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6));
+                    setOtpVerified(false);
+                    setVerifiedMobile('');
+                  }}
+                  maxLength={6}
+                  disabled={isLoading || otpVerified}
+                  required
+                />
+                {!otpVerified && (
+                  <button
+                    type="button"
+                    className="otp-send-btn"
+                    onClick={handleVerifyOtp}
+                    disabled={otpLoading || otpCode.length !== 6}
+                  >
+                    {otpLoading ? 'Verifying...' : 'Verify'}
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Full Name */}
           <div className="form-group">

@@ -8,8 +8,6 @@ import {
   formatPmfbyDetails,
   formatAdminInsuranceDetail,
   formatFarmerInsuranceDetail,
-  formatFarmerLoanDetail,
-  formatAdminLoanDetail,
   INSURANCE_STATUS_OPTIONS,
   LOAN_STATUS_OPTIONS,
   INSURANCE_STATUS_LABELS,
@@ -85,58 +83,34 @@ test('2. filterLoanApplications: accurately filters by text and status', () => {
   assert.deepEqual(filterLoanApplications(undefined), []);
 });
 
-// ── 3. Financial Summary Calculation: Granular Counts & In-Progress Aggregations ──
-test('3. formatFinancialSummary: strictly distinguishes approved vs paid and pending vs processing', () => {
-  const granularSummary = {
-    total_insurance_requests: 6,
+// ── 3. Financial Summary Calculation: Application Counts Only (No Invented Monetary Data) ──
+test('3. formatFinancialSummary: accurately maps counts and avoids invented payout/disbursals', () => {
+  const rawBackendSummary = {
+    total_insurance_requests: 4,
     pending_insurance_requests: 1,
-    processing_insurance_requests: 2,
-    approved_insurance_requests: 1,
-    paid_insurance_requests: 1,
-    rejected_insurance_requests: 1,
-    total_loan_applications: 4,
+    approved_insurance_requests: 2,
+    total_loan_applications: 3,
     pending_loan_applications: 1,
-    under_review_loan_applications: 1,
-    approved_loan_applications: 1,
-    rejected_loan_applications: 1,
+    approved_loan_applications: 2,
   };
 
-  const formatted = formatFinancialSummary(granularSummary);
+  const formatted = formatFinancialSummary(rawBackendSummary);
 
-  // Exact separate counts
-  assert.equal(formatted.approvedInsurance, 1); // Only approved, NOT paid
-  assert.equal(formatted.paidInsurance, 1);     // Only paid
-  assert.equal(formatted.processingInsurance, 2);
+  // Application counts
+  assert.equal(formatted.totalInsurance, 4);
   assert.equal(formatted.pendingInsurance, 1);
-  assert.equal(formatted.rejectedInsurance, 1);
-  assert.equal(formatted.inProgressInsurance, 3); // pending (1) + processing (2)
-
-  // Loans: under_review is distinct from pending
+  assert.equal(formatted.approvedInsurance, 2);
+  assert.equal(formatted.totalLoans, 3);
   assert.equal(formatted.pendingLoans, 1);
-  assert.equal(formatted.underReviewLoans, 1);
-  assert.equal(formatted.approvedLoans, 1);
-  assert.equal(formatted.rejectedLoans, 1);
-  assert.equal(formatted.inProgressLoans, 2); // pending (1) + under_review (1)
+  assert.equal(formatted.approvedLoans, 2);
+  assert.equal(formatted.totalApplications, 7);
+  assert.equal(formatted.totalApproved, 4);
+  assert.equal(formatted.totalPending, 2);
 
-  // Combined totals
-  assert.equal(formatted.totalApplications, 10);
-  assert.equal(formatted.totalApproved, 2);
-  assert.equal(formatted.totalPaid, 1);
-  assert.equal(formatted.totalInProgress, 5); // 3 insurance + 2 loan
-
-  // Text contains all represented statuses accurately
-  assert.ok(formatted.insuranceStatusText.includes('1 approved'));
-  assert.ok(formatted.insuranceStatusText.includes('1 paid'));
-  assert.ok(formatted.insuranceStatusText.includes('2 processing'));
-  assert.ok(formatted.insuranceStatusText.includes('1 pending'));
-
-  assert.ok(formatted.loanStatusText.includes('1 approved'));
-  assert.ok(formatted.loanStatusText.includes('1 under review'));
-  assert.ok(formatted.loanStatusText.includes('1 pending'));
-
-  assert.ok(formatted.consolidatedStatusText.includes('2 approved'));
-  assert.ok(formatted.consolidatedStatusText.includes('1 paid'));
-  assert.ok(formatted.consolidatedStatusText.includes('5 in progress'));
+  // Accurate status labels
+  assert.equal(formatted.insuranceStatusText, '2 approved • 1 pending');
+  assert.equal(formatted.loanStatusText, '2 approved • 1 under review');
+  assert.equal(formatted.consolidatedStatusText, '4 approved across all services (2 in progress)');
 
   // Critical: Verify NO monetary fields are invented
   assert.equal(formatted.approvedClaimsPayout, undefined);
@@ -185,9 +159,7 @@ test('5. Missing optional data: handles null, undefined and partial responses gr
   assert.equal(emptySummary.totalInsurance, 0);
   assert.equal(emptySummary.totalLoans, 0);
   assert.equal(emptySummary.totalApplications, 0);
-  assert.equal(emptySummary.insuranceStatusText, '0 applications');
-  assert.equal(emptySummary.loanStatusText, '0 applications');
-  assert.equal(emptySummary.consolidatedStatusText, '0 requests');
+  assert.equal(emptySummary.insuranceStatusText, '0 approved • 0 pending');
 
   // Null financial summary
   const nullSummary = formatFinancialSummary(null);
@@ -204,11 +176,9 @@ test('5. Missing optional data: handles null, undefined and partial responses gr
   assert.equal(partialPmfby.premium_calculated, '—');
   assert.equal(partialPmfby.enrollment_date, '—');
 
-  // Empty Detail formatters
+  // Empty Admin & Farmer Detail
   assert.equal(formatAdminInsuranceDetail(null), null);
   assert.equal(formatFarmerInsuranceDetail(null), null);
-  assert.equal(formatFarmerLoanDetail(null), null);
-  assert.equal(formatAdminLoanDetail(null), null);
 });
 
 // ── 6. Admin Insurance Detail Formatting: Excludes Unsupported Fields ──
@@ -279,73 +249,8 @@ test('7. formatFarmerInsuranceDetail: strictly reflects farmer summary response'
   assert.equal(formatted.land_size_ha, undefined);
 });
 
-// ── 8. Farmer Loan Detail Formatting: Excludes reviewed_at and remarks ──
-test('8. formatFarmerLoanDetail: excludes reviewed_at and remarks unsupported by farmer schema', () => {
-  const farmerLoan = {
-    id: 77,
-    loan_type: 'Crop Loan',
-    loan_amount: 150000.0,
-    purpose: 'Fertilizers and seeds',
-    app_status: 'pending',
-    submitted_at: '2026-05-01T10:00:00Z',
-    // Injected extra fields that should NOT be passed
-    reviewed_at: '2026-05-02T10:00:00Z',
-    remarks: 'Internal officer note'
-  };
-
-  const formatted = formatFarmerLoanDetail(farmerLoan);
-
-  assert.equal(formatted.id, 77);
-  assert.equal(formatted.loan_type, 'Crop Loan');
-  assert.ok(formatted.loan_amount.includes('1,50,000'));
-  assert.equal(formatted.purpose, 'Fertilizers and seeds');
-  assert.equal(formatted.app_status, 'pending');
-  assert.ok(formatted.submitted_date !== '—');
-
-  // Critical: reviewed_at and remarks must NOT be present
-  assert.equal(formatted.reviewed_date, undefined);
-  assert.equal(formatted.reviewed_at, undefined);
-  assert.equal(formatted.remarks, undefined);
-});
-
-// ── 9. Admin Loan Detail Formatting: Excludes remarks not returned by AdminLoanDetailResponse ──
-test('9. formatAdminLoanDetail: excludes unpersisted remarks', () => {
-  const adminLoan = {
-    id: 99,
-    farmer_id: 15,
-    farmer_name: 'Suresh Kumar',
-    farmer_mobile: '9100000099',
-    village: 'Nilokheri',
-    state: 'Haryana',
-    loan_type: 'Equipment Loan',
-    loan_amount: 250000.0,
-    purpose: 'Tractor purchase',
-    app_status: 'under_review',
-    submitted_at: '2026-05-01T10:00:00Z',
-    reviewed_at: '2026-05-03T11:00:00Z',
-    remarks: 'Should be stripped'
-  };
-
-  const formatted = formatAdminLoanDetail(adminLoan);
-
-  assert.equal(formatted.id, 99);
-  assert.equal(formatted.farmer_id, '#15');
-  assert.equal(formatted.farmer_name, 'Suresh Kumar');
-  assert.equal(formatted.farmer_mobile, '9100000099');
-  assert.equal(formatted.location, 'Nilokheri, Haryana');
-  assert.equal(formatted.loan_type, 'Equipment Loan');
-  assert.ok(formatted.loan_amount.includes('2,50,000'));
-  assert.equal(formatted.purpose, 'Tractor purchase');
-  assert.equal(formatted.app_status, 'under_review');
-  assert.ok(formatted.submitted_date !== '—');
-  assert.ok(formatted.reviewed_date !== '—');
-
-  // Critical: remarks must NOT be present
-  assert.equal(formatted.remarks, undefined);
-});
-
-// ── 10. Status Display and State Transition Integrity ──
-test('10. Insurance and Loan status transitions adhere strictly to database constraints', () => {
+// ── 8. Status Display and State Transition Integrity ──
+test('8. Insurance and Loan status transitions adhere strictly to database constraints', () => {
   // Insurance CHECK constraint valid transitions
   assert.deepEqual(INSURANCE_STATUS_OPTIONS['pending'], ['processing', 'approved', 'rejected']);
   assert.deepEqual(INSURANCE_STATUS_OPTIONS['processing'], ['approved', 'rejected']);
@@ -364,19 +269,16 @@ test('10. Insurance and Loan status transitions adhere strictly to database cons
   assert.equal(LOAN_STATUS_LABELS['under_review'], 'Under Review');
 });
 
-// ── 11. Farmer Financial History Isolation Contract ──
-test('11. Farmer financial-history isolation: data structure preserves user boundary', () => {
+// ── 9. Farmer Financial History Isolation Contract ──
+test('9. Farmer financial-history isolation: data structure preserves user boundary', () => {
   // Simulating response for Farmer A
   const farmerAResponse = {
     summary: {
       total_insurance_requests: 1,
       pending_insurance_requests: 1,
-      processing_insurance_requests: 0,
       approved_insurance_requests: 0,
-      paid_insurance_requests: 0,
       total_loan_applications: 0,
       pending_loan_applications: 0,
-      under_review_loan_applications: 0,
       approved_loan_applications: 0,
     },
     insurance_requests: [
@@ -394,17 +296,14 @@ test('11. Farmer financial-history isolation: data structure preserves user boun
     summary: {
       total_insurance_requests: 0,
       pending_insurance_requests: 0,
-      processing_insurance_requests: 0,
       approved_insurance_requests: 0,
-      paid_insurance_requests: 0,
       total_loan_applications: 2,
       pending_loan_applications: 1,
-      under_review_loan_applications: 1,
-      approved_loan_applications: 0,
+      approved_loan_applications: 1,
     },
     insurance_requests: [],
     loan_applications: [
-      { id: 401, loan_type: 'Crop Loan', loan_amount: 50000.0, purpose: 'Seeds', app_status: 'under_review' },
+      { id: 401, loan_type: 'Crop Loan', loan_amount: 50000.0, purpose: 'Seeds', app_status: 'approved' },
       { id: 402, loan_type: 'Equipment Loan', loan_amount: 120000.0, purpose: 'Sprayer', app_status: 'pending' },
     ]
   };

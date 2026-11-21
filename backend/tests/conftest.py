@@ -11,9 +11,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from fastapi.testclient import TestClient
 
-from app.core import config
-config.REQUIRE_OTP_VERIFICATION = True
-
 from app.core.database import Base, get_db
 import app.models  # load all models
 from app.services.otp_service import get_otp_provider, MockOtpProvider, set_otp_provider

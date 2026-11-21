@@ -100,15 +100,10 @@ class FarmerLoanListResponse(BaseModel):
 class FarmerFinancialHistorySummary(BaseModel):
     total_insurance_requests: int = 0
     pending_insurance_requests: int = 0
-    processing_insurance_requests: int = 0
     approved_insurance_requests: int = 0
-    paid_insurance_requests: int = 0
-    rejected_insurance_requests: int = 0
     total_loan_applications: int = 0
     pending_loan_applications: int = 0
-    under_review_loan_applications: int = 0
     approved_loan_applications: int = 0
-    rejected_loan_applications: int = 0
 
 
 class FarmerFinancialHistoryResponse(BaseModel):

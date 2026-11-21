@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
-import {
-  INSURANCE_STATUS_OPTIONS,
-  LOAN_STATUS_OPTIONS,
-  formatAdminInsuranceDetail,
-  formatAdminLoanDetail
-} from '../../services/financialHelpers.js';
+import { INSURANCE_STATUS_OPTIONS, LOAN_STATUS_OPTIONS, formatAdminInsuranceDetail } from '../../services/financialHelpers.js';
 import '../../pageStyles/admin.css';
 
 const API = '/api/admin';
@@ -897,36 +892,41 @@ function LoansSection() {
   const statusOptions = LOAN_STATUS_OPTIONS;
 
   if (viewItem) {
-    const formatted = formatAdminLoanDetail(viewItem);
-
     return (
       <>
         <button className="admin-back-btn" onClick={() => setViewItem(null)}>← Back to Loans</button>
         <div className="admin-detail-panel">
-          <h3>💰 Loan Application #{formatted.id}</h3>
+          <h3>💰 Loan Application #{viewItem.id}</h3>
           <div className="admin-detail-grid">
-            <div className="admin-detail-field"><label>Farmer Name</label><span>{formatted.farmer_name}</span></div>
-            <div className="admin-detail-field"><label>Farmer ID</label><span>{formatted.farmer_id}</span></div>
-            <div className="admin-detail-field"><label>Mobile</label><span>{formatted.farmer_mobile}</span></div>
-            <div className="admin-detail-field"><label>Location</label><span>{formatted.location}</span></div>
-            <div className="admin-detail-field"><label>Loan Type</label><span>{formatted.loan_type}</span></div>
-            <div className="admin-detail-field"><label>Loan Amount</label><span>{formatted.loan_amount}</span></div>
+            <div className="admin-detail-field"><label>Farmer Name</label><span>{viewItem.farmer_name}</span></div>
+            <div className="admin-detail-field"><label>Farmer ID</label><span>#{viewItem.farmer_id}</span></div>
+            <div className="admin-detail-field"><label>Mobile</label><span>{viewItem.farmer_mobile || '—'}</span></div>
+            <div className="admin-detail-field"><label>Village / State</label><span>{viewItem.village ? `${viewItem.village}, ` : ''}{viewItem.state || '—'}</span></div>
+            <div className="admin-detail-field"><label>Loan Type</label><span>{viewItem.loan_type}</span></div>
+            <div className="admin-detail-field"><label>Loan Amount</label><span>₹{Number(viewItem.loan_amount).toLocaleString('en-IN')}</span></div>
             <div className="admin-detail-field">
               <label>Status</label>
-              <span className={`admin-status-badge status-${formatted.app_status}`}>{formatted.app_status.replace('_', ' ')}</span>
+              <span className={`admin-status-badge status-${viewItem.app_status}`}>{viewItem.app_status.replace('_', ' ')}</span>
             </div>
-            <div className="admin-detail-field"><label>Submitted Date</label><span>{formatted.submitted_date}</span></div>
-            <div className="admin-detail-field"><label>Reviewed Date</label><span>{formatted.reviewed_date}</span></div>
+            <div className="admin-detail-field"><label>Submitted Date</label><span>{viewItem.submitted_at ? new Date(viewItem.submitted_at).toLocaleString() : '—'}</span></div>
+            <div className="admin-detail-field"><label>Reviewed Date</label><span>{viewItem.reviewed_at ? new Date(viewItem.reviewed_at).toLocaleString() : '—'}</span></div>
           </div>
 
-          {formatted.purpose && (
+          {viewItem.purpose && (
             <div style={{ marginTop: 18 }}>
               <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Loan Purpose</label>
-              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{formatted.purpose}</p>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.purpose}</p>
             </div>
           )}
 
-          {statusOptions[viewItem.app_status]?.length > 0 && (
+          {viewItem.remarks && (
+            <div style={{ marginTop: 18 }}>
+              <label style={{ fontSize: '0.76rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--text-muted)' }}>Remarks</label>
+              <p style={{ marginTop: 4, fontSize: '0.92rem', color: 'var(--text)' }}>{viewItem.remarks}</p>
+            </div>
+          )}
+
+          {statusOptions[viewItem.app_status] && (
             <div style={{ marginTop: 20 }}>
               <button
                 className="admin-btn admin-btn-status"
