@@ -308,18 +308,19 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="bb-auth-btns">
-                <Link to="/login" className="bb-signin-link">
+                <Link to="/login" className="bb-signin-btn">
                   Sign In
                 </Link>
-                <Link to="/register" className="bb-getstarted-btn">
-                  Get Started
+                <Link to="/register" className="bb-register-btn">
+                  <span>Get Started</span>
+                  <span className="bb-btn-arrow" aria-hidden="true">→</span>
                 </Link>
               </div>
             )}
 
             <button
               type="button"
-              className="bb-theme-toggle"
+              className="bb-theme-btn"
               onClick={handleToggleTheme}
               title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
               aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
@@ -333,7 +334,7 @@ export default function Navbar() {
         <div className="bb-mobile-controls">
           <button
             type="button"
-            className="bb-theme-toggle"
+            className="bb-theme-btn"
             onClick={handleToggleTheme}
             aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           >
@@ -407,10 +408,10 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="mobile-auth-actions">
-              <Link to="/login" className="bb-signin-link mobile-btn" onClick={closeMenu}>
+              <Link to="/login" className="bb-signin-btn mobile-btn" onClick={closeMenu}>
                 Sign In
               </Link>
-              <Link to="/register" className="bb-getstarted-btn mobile-btn" onClick={closeMenu}>
+              <Link to="/register" className="bb-register-btn mobile-btn" onClick={closeMenu}>
                 Get Started
               </Link>
             </div>
