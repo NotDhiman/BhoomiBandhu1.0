@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar.jsx';
+import Footer from '../components/Footer.jsx';
 import { initCommon } from '../legacy/common.js';
 import { initStorage } from '../legacy/storage.js';
 import pageCss from '../pageStyles/storage.css?raw';
@@ -46,60 +48,48 @@ export default function StoragePage() {
   return (
     <>
       <style>{pageCss}</style>
-      
-      {/* Sleek Storage Portal Navigation */}
-      <nav role="navigation" aria-label="Storage Portal Navigation">
-        <h1 className="storage-logo">
-          <img src="/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu" />
-          <span>Digital Storage Finder</span>
-        </h1>
-        <div>
-          <a
-            href="#home"
-            className={activeTab === 'home' ? 'ds-active-tab' : ''}
+      <Navbar />
+
+      {/* ── Page Sub-Navigation (Storage Portal Tabs) ── */}
+      <div className="storage-subnav">
+        <div className="storage-subnav-inner">
+          <button
+            className={`storage-tab${activeTab === 'home' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('home', e)}
           >
             <IconHome />
-            <span>Home</span>
-          </a>
-          <a
-            href="#storage"
-            className={activeTab === 'storage' ? 'ds-active-tab' : ''}
+            <span>Overview</span>
+          </button>
+          <button
+            className={`storage-tab${activeTab === 'storage' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('storage', e)}
           >
             <IconWarehouse />
-            <span>Storage</span>
-          </a>
-          <a
-            href="#schemes"
-            className={activeTab === 'schemes' ? 'ds-active-tab' : ''}
+            <span>Find Storage</span>
+          </button>
+          <button
+            className={`storage-tab${activeTab === 'schemes' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('schemes', e)}
           >
             <IconScroll />
             <span>Schemes</span>
-          </a>
-          <a
-            href="#booking"
-            className={activeTab === 'booking' ? 'ds-active-tab' : ''}
+          </button>
+          <button
+            className={`storage-tab${activeTab === 'booking' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('booking', e)}
           >
             <IconCalendarCheck />
-            <span>Booking</span>
-          </a>
-          <a
-            href="#profile"
-            className={activeTab === 'profile' ? 'ds-active-tab' : ''}
+            <span>Book Now</span>
+          </button>
+          <button
+            className={`storage-tab${activeTab === 'profile' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('profile', e)}
           >
             <IconUser />
             <span>Profile</span>
-          </a>
-          <Link to="/" className="hub-return" title="Return to Main Hub">
-            <IconArrowLeft />
-            <span>BhoomiBandhu</span>
-          </Link>
+          </button>
         </div>
-      </nav>
+      </div>
 
       {/* Real-time Storage & Scheme Ticker */}
       <div className="scheme-ticker" role="region" aria-label="Agricultural Notices">
@@ -471,14 +461,9 @@ export default function StoragePage() {
         </div>
       </section>
 
-      {/* Modern Storage Portal Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <span><b>Digital Storage Finder for Indian Farmers</b></span>
-          <span>Kisan Helpline: <strong>1800-180-1551</strong></span>
-          <span>Coverage: Central & State Warehousing Infrastructure</span>
-        </div>
-      </footer>
+      {/* Shared BhoomiBandhu Footer */}
+      <Footer />
     </>
   );
 }
+

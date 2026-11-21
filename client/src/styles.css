@@ -291,13 +291,25 @@ header,
   display: none;
 }
 
+.bb-header {
+  width: 100%;
+}
+
 .header-flex {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-6);
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.bb-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 /* Logo */
@@ -515,6 +527,40 @@ body.dark .bb-signin-btn:hover {
 
 .bb-register-btn:hover .bb-btn-arrow {
   transform: translateX(3px);
+}
+
+.bb-profile-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.bb-profile-circle:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-400);
+  color: var(--primary-600);
+  transform: translateY(-1px);
+}
+
+body.dark .bb-profile-circle {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+body.dark .bb-profile-circle:hover {
+  background: rgba(20, 184, 166, 0.15);
+  border-color: var(--primary-400);
+  color: var(--primary-300);
 }
 
 /* User pill */

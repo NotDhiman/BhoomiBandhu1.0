@@ -287,15 +287,17 @@ export default function Navbar() {
           ))}
 
           {getPortalLink(false)}
+        </nav>
 
-          {/* ── Controls: Auth & Theme ── */}
-          <div className="bb-nav-actions">
-            {isAuthenticated ? (
+        {/* ── Right Side: Auth Controls + Profile ── */}
+        <div className="bb-nav-actions">
+          {isAuthenticated ? (
+            <>
               <div className="bb-user-pill">
-                <span className="bb-user-avatar" aria-hidden="true">{userInitial}</span>
-                <span className="bb-user-name" title={displayName}>
-                  {displayName}
+                <span className="bb-user-avatar" title={displayName} aria-label={`Profile: ${displayName}`}>
+                  {userInitial}
                 </span>
+                <span className="bb-user-name">{displayName}</span>
                 <ChevronDownIcon />
                 <button
                   type="button"
@@ -306,29 +308,35 @@ export default function Navbar() {
                   Logout
                 </button>
               </div>
-            ) : (
-              <div className="bb-auth-btns">
-                <Link to="/login" className="bb-signin-btn">
-                  Sign In
-                </Link>
-                <Link to="/register" className="bb-register-btn">
-                  <span>Get Started</span>
-                  <span className="bb-btn-arrow" aria-hidden="true">→</span>
-                </Link>
-              </div>
-            )}
+            </>
+          ) : (
+            <div className="bb-auth-btns">
+              <Link to="/login" className="bb-signin-btn">
+                Sign In
+              </Link>
+              <Link to="/register" className="bb-register-btn">
+                <span>Get Started</span>
+                <span className="bb-btn-arrow" aria-hidden="true">→</span>
+              </Link>
+              {/* Guest profile circle — always visible */}
+              <Link to="/login" className="bb-profile-circle" title="Sign in to your account" aria-label="Sign in">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+              </Link>
+            </div>
+          )}
 
-            <button
-              type="button"
-              className="bb-theme-btn"
-              onClick={handleToggleTheme}
-              title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {isDark ? <SunIcon /> : <MoonIcon />}
-            </button>
-          </div>
-        </nav>
+          <button
+            type="button"
+            className="bb-theme-btn"
+            onClick={handleToggleTheme}
+            title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            aria-label={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {isDark ? <SunIcon /> : <MoonIcon />}
+          </button>
+        </div>
 
         {/* ── Mobile Header Controls ── */}
         <div className="bb-mobile-controls">
