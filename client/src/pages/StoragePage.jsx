@@ -68,25 +68,11 @@ export default function StoragePage() {
             <span>Find Storage</span>
           </button>
           <button
-            className={`storage-tab${activeTab === 'schemes' ? ' storage-tab--active' : ''}`}
-            onClick={(e) => handleTabClick('schemes', e)}
-          >
-            <IconScroll />
-            <span>Schemes</span>
-          </button>
-          <button
             className={`storage-tab${activeTab === 'booking' ? ' storage-tab--active' : ''}`}
             onClick={(e) => handleTabClick('booking', e)}
           >
             <IconCalendarCheck />
             <span>Book Now</span>
-          </button>
-          <button
-            className={`storage-tab${activeTab === 'profile' ? ' storage-tab--active' : ''}`}
-            onClick={(e) => handleTabClick('profile', e)}
-          >
-            <IconUser />
-            <span>Profile</span>
           </button>
         </div>
       </div>
@@ -282,53 +268,6 @@ export default function StoragePage() {
         </div>
       </section>
 
-      {/* 3. SCHEMES SECTION */}
-      <section id="schemes">
-        <div className="scheme">
-          <h3>PM-Kisan Samman Nidhi</h3>
-          <p><b>Benefit:</b> Direct financial assistance of ₹6,000 annually in 3 equal installments.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Small and marginal landholding farmer families</li>
-            <li>Aadhaar-linked active bank account</li>
-            <li>Land record validation in state revenue portal</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>Gramin Bhandaran Yojana</h3>
-          <p><b>Benefit:</b> 25% to 33.33% capital subsidy on creation/renovation of rural agricultural godowns.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Farmers, SHGs, Cooperatives, and Farmer Producer Organizations (FPOs)</li>
-            <li>Adherence to WDRA technical building specifications</li>
-            <li>Subsidy routed through NABARD / designated banks</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>PM Fasal Bima Yojana (PMFBY)</h3>
-          <p><b>Benefit:</b> Comprehensive risk insurance coverage from pre-sowing to post-harvest storage losses.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>All farmers growing notified crops in notified areas</li>
-            <li>Nominal farmer premium: 2% (Kharif), 1.5% (Rabi), 5% (Commercial/Horticultural)</li>
-            <li>Post-harvest coverage up to 14 days for crops in unseasonal weather</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>e-NAM (National Agriculture Market)</h3>
-          <p><b>Benefit:</b> Pan-India electronic trading portal connecting farmers directly to nationwide buyers.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Registered farmers with valid Mandi lot entries</li>
-            <li>Assay certification of crop quality at e-NAM labs</li>
-            <li>Direct online payment into farmer bank accounts</li>
-          </ul>
-        </div>
-      </section>
-
       {/* 4. BOOKING SECTION */}
       <section id="booking">
         <div className="booking-header">
@@ -397,67 +336,6 @@ export default function StoragePage() {
           <p className="booking-trust">
             🔒 WDRA Verified • 💳 Transparent Pricing • 📞 Toll-Free Assistance: 1800-180-1551
           </p>
-        </div>
-      </section>
-
-      {/* 5. PROFILE & BOOKING HISTORY SECTION */}
-      <section id="profile">
-        <h2 style={{ textAlign: 'center', fontFamily: 'DM Sans', marginBottom: '24px' }}>Farmer Profile & Booking Record</h2>
-        <div className="profile-dashboard">
-          <div className="profile-photo">👨‍🌾</div>
-          
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <button type="button" onClick={() => window.toggleProfileLang?.()}>English / हिंदी Switch</button>
-          </div>
-
-          <p><b>Profile Completion Tracker</b></p>
-          <div className="progress-container">
-            <div className="progress-bar" id="profileProgress"></div>
-          </div>
-
-          <h3>Farmer Details</h3>
-          <div className="profile-form">
-            <input id="pName" placeholder="Farmer Name" onKeyUp={() => window.updateProgress?.()} />
-            <input id="pMobile" placeholder="Mobile Number" onKeyUp={() => window.updateProgress?.()} />
-            <select id="pState" onChange={() => window.updateProgress?.()}>
-              <option value="">Select State</option>
-              <option>Uttar Pradesh</option>
-              <option>Bihar</option>
-              <option>Madhya Pradesh</option>
-              <option>Punjab</option>
-              <option>Haryana</option>
-              <option>Rajasthan</option>
-            </select>
-            <input id="pCrop" placeholder="Primary Crop Grown" onKeyUp={() => window.updateProgress?.()} />
-          </div>
-          <button type="button" onClick={() => window.saveProfile?.()}>Save Profile</button>
-
-          <h3>Active & Past Warehouse Bookings</h3>
-          <table className="profile-table">
-            <thead>
-              <tr>
-                <th>Booking Ref</th>
-                <th>Storage Facility / Crop</th>
-                <th>Quantity (kg)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="bookingHistoryBody">
-              <tr>
-                <td colSpan="4">Enter your mobile number above and save your profile to load real-time bookings.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3>Instant Scheme Eligibility Checker</h3>
-          <select id="schemeCheck" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--ds-border)', marginBottom: '16px' }}>
-            <option value="0">Select a scheme to verify eligibility</option>
-            <option value="0.5">PM Kisan Samman Nidhi</option>
-            <option value="0.7">Gramin Bhandaran Yojana</option>
-            <option value="1">State Storage Subsidy Scheme</option>
-          </select>
-          <button type="button" onClick={() => window.checkEligibility?.()}>Check Eligibility</button>
-          <p id="schemeResult"></p>
         </div>
       </section>
 
