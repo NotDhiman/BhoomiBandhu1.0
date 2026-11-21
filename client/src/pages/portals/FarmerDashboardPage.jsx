@@ -2,8 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { authFetch } from '../../services/authFetch.js';
-import Navbar from '../../components/Navbar.jsx';
-import Footer from '../../components/Footer.jsx';
 import {
   formatFinancialSummary,
   formatFarmerInsuranceDetail,
@@ -199,9 +197,7 @@ export default function FarmerDashboardPage() {
   const profile = dashboardData?.profile;
 
   return (
-    <>
-      <Navbar />
-      <div className="portal-wrapper">
+    <div className="portal-wrapper">
       {/* ── Hero Banner ── */}
       <div className="portal-hero-banner">
         <div>
@@ -1004,8 +1000,6 @@ export default function FarmerDashboardPage() {
           </div>
         );
       })()}
-      </div>
-      <Footer />
-    </>
+    </div>
   );
 }

@@ -1,32 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { initCommon } from '../legacy/common.js';
 import { initStorage } from '../legacy/storage.js';
 import pageCss from '../pageStyles/storage.css?raw';
 
-/* â”€â”€ Modern Inline SVG Icons â”€â”€ */
-const IconHome = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-);
-const IconWarehouse = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 8.35V20a2 2 0 01-2 2H4a2 2 0 01-2-2V8.35A2 2 0 013.26 6.5l8-3.2a2 2 0 011.48 0l8 3.2A2 2 0 0122 8.35z"/><path d="M6 18h12"/><path d="M6 14h12"/><rect x="6" y="10" width="12" height="12" rx="0"/></svg>
-);
-const IconScroll = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 21h12a2 2 0 002-2v-2H10v2a2 2 0 11-4 0V5a2 2 0 112 0v2h12a2 2 0 012 2v2H10"/><path d="M19 17V5a2 2 0 00-2-2H4"/></svg>
-);
-const IconCalendarCheck = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M9 16l2 2 4-4"/></svg>
-);
-const IconUser = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-);
-const IconArrowLeft = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-);
-
 export default function StoragePage() {
-  const [activeTab, setActiveTab] = useState('home');
-
   useEffect(() => {
     const pageClass = 'page-storage';
     document.body.classList.add(pageClass);
@@ -34,451 +12,364 @@ export default function StoragePage() {
     initStorage();
     return () => document.body.classList.remove(pageClass);
   }, []);
-
-  const handleTabClick = (tabId, e) => {
-    e.preventDefault();
-    setActiveTab(tabId);
-    if (typeof window.showSection === 'function') {
-      window.showSection(tabId);
-    }
-  };
-
   return (
     <>
       <style>{pageCss}</style>
-      
-      {/* Sleek Storage Portal Navigation */}
-      <nav role="navigation" aria-label="Storage Portal Navigation">
-        <h1 className="storage-logo">
-          <img src="/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png" alt="BhoomiBandhu" />
-          <span>Digital Storage Finder</span>
-        </h1>
-        <div>
-          <a
-            href="#home"
-            className={activeTab === 'home' ? 'ds-active-tab' : ''}
-            onClick={(e) => handleTabClick('home', e)}
-          >
-            <IconHome />
-            <span>Home</span>
-          </a>
-          <a
-            href="#storage"
-            className={activeTab === 'storage' ? 'ds-active-tab' : ''}
-            onClick={(e) => handleTabClick('storage', e)}
-          >
-            <IconWarehouse />
-            <span>Storage</span>
-          </a>
-          <a
-            href="#schemes"
-            className={activeTab === 'schemes' ? 'ds-active-tab' : ''}
-            onClick={(e) => handleTabClick('schemes', e)}
-          >
-            <IconScroll />
-            <span>Schemes</span>
-          </a>
-          <a
-            href="#booking"
-            className={activeTab === 'booking' ? 'ds-active-tab' : ''}
-            onClick={(e) => handleTabClick('booking', e)}
-          >
-            <IconCalendarCheck />
-            <span>Booking</span>
-          </a>
-          <a
-            href="#profile"
-            className={activeTab === 'profile' ? 'ds-active-tab' : ''}
-            onClick={(e) => handleTabClick('profile', e)}
-          >
-            <IconUser />
-            <span>Profile</span>
-          </a>
-          <Link to="/" className="hub-return" title="Return to Main Hub">
-            <IconArrowLeft />
-            <span>BhoomiBandhu</span>
-          </Link>
+      <nav>
+<h1 className={"storage-logo"}>
+<img src={"/assets/Gemini_Generated_Image_7lty6p7lty6p7lty-removebg-preview.png"} alt={"BhoomiBandhu"} />
+<span>Digital Storage Finder</span>
+</h1>
+<div>
+<a href={"#"} onClick={(event) => window.showSection?.('home')}>Home</a>
+<a href={"#"} onClick={(event) => window.showSection?.('storage')}>Storage</a>
+<a href={"#"} onClick={(event) => window.showSection?.('schemes')}>Schemes</a>
+<a href={"#"} onClick={(event) => window.showSection?.('booking')}>Booking</a>
+<a href={"#"} onClick={(event) => window.showSection?.('profile')}>Profile</a>
+<Link to={"/"}>BhoomiBandhu</Link>
+</div>
+</nav>
+<div className={"scheme-ticker"}>
+<div className={"ticker-track"}>
+<span className={"ticker-item"}>📢 PM Kisan: ₹6000 annual income support for eligible farmers</span>
+<span className={"ticker-item"}>🏬 Gramin Bhandaran Yojana: Subsidy for rural warehouse infrastructure</span>
+<span className={"ticker-item"}>🌾 PM Fasal Bima Yojana: Crop insurance against natural calamities</span>
+<span className={"ticker-item"}>🛒 e-NAM: Online national agricultural market for better price discovery</span>
+</div>
+</div>
+{/*  HOME  */}
+<section id={"home"} className={"active"}>
+<div className={"home-hero"}>
+<h2 className={"animated-title"}>
+<span className={"from-left"}>DIGITAL</span>
+<span className={"from-bottom"}>STORAGE</span>
+<span className={"from-right"}>FINDER</span>
+</h2>
+<p className={"hero-desc slide-from-right"}>
+
+                A <strong>digital storage management platform</strong> designed to help farmers
+                <strong>locate nearby storage facilities</strong>, <strong>estimate costs accurately</strong>,
+                <strong>reduce post-harvest crop wastage</strong>, and <strong>maximize benefits from
+                    government schemes</strong>.
+            </p>
+<p className={"hero-availability"}>
+                Available In: <span>Uttar Pradesh</span> <span>Bihar</span> <span>Madhya Pradesh</span>
+<span>Punjab</span> <span>Haryana</span> <span>Rajasthan</span>
+</p>
+</div>
+{/*  WHY DIGITAL STORAGE FINDER MATTERS  */}
+<div className={"why-storage"}>
+<h2>Why Digital Storage Finder Matters</h2>
+<div className={"underline"}></div>
+<p>
+                Farmers often suffer heavy losses due to lack of timely access to proper storage
+                facilities, price transparency, and reliable information. The Digital Storage Finder
+                bridges this gap by providing a centralized digital platform where farmers can
+                locate nearby storage, compare costs, apply government schemes, and make informed
+                decisions that reduce post-harvest losses and improve income stability.
+            </p>
+</div>
+{/*  FEATURES SECTION  */}
+<div className={"features-section"}>
+<h2>Key Features</h2>
+<div className={"underline"}></div>
+<div className={"features-grid"}>
+<div className={"feature-card"}>
+<h3>📍 Storage Locator</h3>
+<p>Find nearby cold storages, warehouses, and collection centers instantly.</p>
+</div>
+<div className={"feature-card"}>
+<h3>💰 Price Estimation</h3>
+<p>Compare storage costs and estimate expenses before booking.</p>
+</div>
+<div className={"feature-card"}>
+<h3>🏛 Government Schemes</h3>
+<p>Apply subsidies and reduce storage costs using government schemes.</p>
+</div>
+</div>
+</div>
+</section>
+{/*  STORAGE  */}
+<section id={"storage"}>
+<div className={"storage-locator"}>
+{/*  STORAGE 1  */}
+<div className={"storage-card"}>
+<div className={"storage-header"}>
+<h3>Cold Storage – Ramnagar</h3>
+<span className={"badge available"}>Available</span>
+</div>
+<p>📍 Ramnagar, Uttar Pradesh • 📏 6 km away</p>
+<div className={"storage-info"}>
+<span><b>Type:</b> Cold Storage</span>
+<span><b>Suitable Crops:</b> Potato, Onion, Fruits</span>
+<span><b>Temperature:</b> 2°C – 8°C</span>
+<span><b>Capacity:</b> 500 Tons</span>
+<span><b>Available Space:</b> 120 Tons</span>
+<span><b>Price:</b> ₹2 / kg / month</span>
+<span><b>Mode:</b> Online</span>
+<span><b>Rating:</b> ⭐ 4.3 (120 reviews)</span>
+<span><b>Scheme Support:</b> PM Kisan, Gramin Bhandaran</span>
+<span><b>Verified:</b> ✔ Govt Approved</span>
+</div>
+<div className={"facilities"}>
+<b>Facilities:</b>
+<span>✔ CCTV</span>
+<span>✔ Power Backup</span>
+<span>✔ Pest Control</span>
+<span>✔ Insurance</span>
+</div>
+<div className={"storage-actions"}>
+<button className={"btn-view"}>View Details</button>
+<button className={"btn-book"} onClick={(event) => window.showSection?.('booking')}>Book Now</button>
+</div>
+</div>
+{/*  STORAGE 2  */}
+<div className={"storage-card"}>
+<div className={"storage-header"}>
+<h3>Warehouse – Sitapur</h3>
+<span className={"badge limited"}>Limited</span>
+</div>
+<p>📍 Sitapur, Uttar Pradesh • 📏 12 km away</p>
+<div className={"storage-info"}>
+<span><b>Type:</b> Warehouse</span>
+<span><b>Suitable Crops:</b> Wheat, Rice, Pulses</span>
+<span><b>Capacity:</b> 800 Tons</span>
+<span><b>Available Space:</b> 60 Tons</span>
+<span><b>Price:</b> ₹1.2 / kg / month</span>
+<span><b>Mode:</b> Online</span>
+<span><b>Rating:</b> ⭐ 4.0 (85 reviews)</span>
+<span><b>Scheme Support:</b> Gramin Bhandaran</span>
+<span><b>Verified:</b> ✔ Registered Facility</span>
+</div>
+<div className={"facilities"}>
+<b>Facilities:</b>
+<span>✔ Security</span>
+<span>✔ Fire Safety</span>
+<span>✔ Ventilation</span>
+</div>
+<div className={"storage-actions"}>
+<button className={"btn-view"}>View Details</button>
+<button className={"btn-book"} onClick={(event) => window.showSection?.('booking')}>Book Now</button>
+</div>
+</div>
+</div>
+<h2>Price Estimation Table</h2>
+<table>
+<tr>
+<th>Storage Type</th>
+<th>Mode</th>
+<th>Price (₹/kg)</th>
+<th>Best For</th>
+</tr>
+<tr>
+<td>Cold Storage</td>
+<td>Online</td>
+<td>2.00</td>
+<td>Vegetables</td>
+</tr>
+<tr>
+<td>Warehouse</td>
+<td>Online</td>
+<td>1.20</td>
+<td>Grains</td>
+</tr>
+<tr>
+<td>Local Storage</td>
+<td>Offline</td>
+<td>1.00</td>
+<td>Short Term</td>
+</tr>
+</table>
+{/*  SCHEME PRICE ESTIMATOR  */}
+<div className={"price-box"}>
+<h2>Scheme Benefit Price Estimator</h2>
+<label>Scheme</label>
+<select id={"schemeType"}>
+<option value={"0"}>No Scheme</option>
+<option value={"0.5"}>PM Kisan (₹0.5/kg)</option>
+<option value={"0.7"}>Gramin Bhandaran (₹0.7/kg)</option>
+<option value={"1"}>State Subsidy (₹1/kg)</option>
+</select>
+<label>Storage Type</label>
+<select id={"schemeStorage"}>
+<option value={"2"}>Cold Storage</option>
+<option value={"1.2"}>Warehouse</option>
+<option value={"1"}>Offline Storage</option>
+</select>
+<label>Quantity (kg)</label>
+<input type={"number"} id={"schemeQty"} placeholder={"Enter quantity"} />
+<button onClick={(event) => window.estimateSchemePrice?.()}>Estimate Final Cost</button>
+<h3 id={"schemeResult"}></h3>
+</div>
+</section>
+
+{/*  SCHEMES  */}
+<section id={"schemes"}>
+<div className={"scheme"}>
+<h3>PM Kisan</h3>
+<p><b>Benefit:</b> ₹6000 annual income support</p>
+<p><b>Eligibility Criteria:</b></p>
+<ul>
+<li>Small & marginal farmers</li>
+<li>Landholding farmer families</li>
+<li>Valid Aadhaar-linked bank account</li>
+</ul>
+</div>
+<div className={"scheme"}>
+<h3>Gramin Bhandaran Yojana</h3>
+<p><b>Benefit:</b> Warehouse construction subsidy</p>
+<p><b>Eligibility Criteria:</b></p>
+<ul>
+<li>Farmers, cooperatives, and SHGs</li>
+<li>Rural storage infrastructure projects</li>
+<li>Compliance with government storage norms</li>
+</ul>
+</div>
+<div className={"scheme"}>
+<h3>PM Fasal Bima Yojana</h3>
+<p><b>Benefit:</b> Crop insurance against losses</p>
+<p><b>Eligibility Criteria:</b></p>
+<ul>
+<li>Farmers growing notified crops</li>
+<li>Enrollment during crop season</li>
+<li>Coverage for natural calamities & pests</li>
+</ul>
+</div>
+<div className={"scheme"}>
+<h3>e-NAM</h3>
+<p><b>Benefit:</b> Online agricultural market access</p>
+<p><b>Eligibility Criteria:</b></p>
+<ul>
+<li>Registered farmers and traders</li>
+<li>Access to internet or mandi support centers</li>
+<li>Valid farmer identification</li>
+</ul>
+</div>
+</section>
+{/*  BOOKING  */}
+<section id={"booking"}>
+{/*  PAGE HEADER  */}
+<div className={"booking-header"}>
+<h2 className={"booking-title slide-in-right"}>Storage Booking</h2>
+<p>Secure your crop storage in one simple step</p>
+</div>
+<div className={"booking-step"}>
+            Step 1 of 1: Enter Booking Details
         </div>
-      </nav>
-
-      {/* Real-time Storage & Scheme Ticker */}
-      <div className="scheme-ticker" role="region" aria-label="Agricultural Notices">
-        <div className="ticker-track">
-          <span className="ticker-item">🌾 Gramin Bhandaran Yojana: Up to 33.3% subsidy on rural warehouse infrastructure</span>
-          <span className="ticker-item">🏬 PM Kisan: Instant subsidy deduction on cold storage bookings</span>
-          <span className="ticker-item">🛡️ PM Fasal Bima Yojana: Post-harvest storage risk insurance active</span>
-          <span className="ticker-item">📊 e-NAM: Direct market discovery for stored grain batches</span>
-        </div>
-      </div>
-
-      {/* 1. HOME SECTION */}
-      <section id="home" className="active">
-        <div className="home-hero">
-          <h2 className="animated-title">
-            <span className="from-left">DIGITAL</span>
-            <span className="from-bottom">STORAGE</span>
-            <span className="from-right">FINDER</span>
-          </h2>
-          <p className="hero-desc slide-from-right">
-            A state-of-the-art <strong>digital storage management platform</strong> engineered for farmers to
-            <strong> locate certified local facilities</strong>, <strong>estimate costs with scheme benefits</strong>,
-            and <strong>prevent post-harvest crop damage</strong>.
-          </p>
-          <div className="hero-availability">
-            <span>Available In:</span>
-            <span>Uttar Pradesh</span>
-            <span>Bihar</span>
-            <span>Madhya Pradesh</span>
-            <span>Punjab</span>
-            <span>Haryana</span>
-            <span>Rajasthan</span>
-          </div>
-        </div>
-
-        {/* Why Digital Storage Finder Matters */}
-        <div className="why-storage">
-          <h2>Why Digital Storage Finder Matters</h2>
-          <div className="underline"></div>
-          <p>
-            Farmers frequently suffer catastrophic distress sales due to lack of timely access to verified cold storages and warehouses.
-            The Digital Storage Finder creates complete pricing transparency, verified capacity reservations, and seamless application
-            of government subsidies to protect your harvest margins.
-          </p>
-        </div>
-
-        {/* Features Grid */}
-        <div className="features-section">
-          <h2>Key Capabilities</h2>
-          <div className="underline"></div>
-          <div className="features-grid">
-            <div className="feature-card">
-              <h3>📍 Storage Locator</h3>
-              <p>Discover nearby cold storages, grain godowns, and rural collection centers with live availability status.</p>
-            </div>
-            <div className="feature-card">
-              <h3>💰 Price Estimation</h3>
-              <p>Compare storage costs per quintal/month with automated subsidy deductions before you book space.</p>
-            </div>
-            <div className="feature-card">
-              <h3>🏛 Government Subsidies</h3>
-              <p>Direct integration with Gramin Bhandaran Yojana and State Agricultural Warehousing grants.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. STORAGE LOCATOR SECTION */}
-      <section id="storage">
-        <div className="storage-locator">
-          {/* STORAGE 1: Ramnagar */}
-          <div className="storage-card">
-            <div className="storage-header">
-              <h3>Cold Storage – Ramnagar</h3>
-              <span className="badge available">Available</span>
-            </div>
-            <p>📍 Ramnagar, Uttar Pradesh • 📏 6 km away</p>
-            <div className="storage-info">
-              <span><b>Type:</b> Cold Storage</span>
-              <span><b>Crops:</b> Potato, Onion, Fruits</span>
-              <span><b>Temp:</b> 2°C – 8°C</span>
-              <span><b>Capacity:</b> 500 Tons</span>
-              <span><b>Available:</b> 120 Tons</span>
-              <span><b>Price:</b> ₹2 / kg / month</span>
-              <span><b>Mode:</b> Online Booking</span>
-              <span><b>Rating:</b> ★ 4.3 (120 reviews)</span>
-              <span><b>Subsidy:</b> PM Kisan, Gramin Bhandaran</span>
-              <span><b>Status:</b> ✔ Govt Approved</span>
-            </div>
-            <div className="facilities">
-              <b>Facilities:</b>
-              <span>CCTV</span>
-              <span>Power Backup</span>
-              <span>Pest Control</span>
-              <span>Insurance Shield</span>
-            </div>
-            <div className="storage-actions">
-              <button type="button" className="btn-view" onClick={(e) => handleTabClick('booking', e)}>View Details</button>
-              <button type="button" className="btn-book" onClick={(e) => handleTabClick('booking', e)}>Book Now</button>
-            </div>
-          </div>
-
-          {/* STORAGE 2: Sitapur */}
-          <div className="storage-card">
-            <div className="storage-header">
-              <h3>Warehouse – Sitapur</h3>
-              <span className="badge limited">Limited Space</span>
-            </div>
-            <p>📍 Sitapur, Uttar Pradesh • 📏 12 km away</p>
-            <div className="storage-info">
-              <span><b>Type:</b> Dry Warehouse</span>
-              <span><b>Crops:</b> Wheat, Rice, Pulses</span>
-              <span><b>Capacity:</b> 800 Tons</span>
-              <span><b>Available:</b> 60 Tons</span>
-              <span><b>Price:</b> ₹1.2 / kg / month</span>
-              <span><b>Mode:</b> Online Booking</span>
-              <span><b>Rating:</b> ★ 4.0 (85 reviews)</span>
-              <span><b>Subsidy:</b> Gramin Bhandaran</span>
-              <span><b>Status:</b> ✔ Registered Facility</span>
-            </div>
-            <div className="facilities">
-              <b>Facilities:</b>
-              <span>24/7 Security</span>
-              <span>Fire Safety</span>
-              <span>Aeration Systems</span>
-            </div>
-            <div className="storage-actions">
-              <button type="button" className="btn-view" onClick={(e) => handleTabClick('booking', e)}>View Details</button>
-              <button type="button" className="btn-book" onClick={(e) => handleTabClick('booking', e)}>Book Now</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Storage Comparison Matrix */}
-        <h2>Standard Storage Rates Comparison</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Storage Type</th>
-              <th>Mode</th>
-              <th>Base Rate (₹/kg/mo)</th>
-              <th>Optimal For</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Cold Storage</strong></td>
-              <td>Online Certified</td>
-              <td>₹2.00</td>
-              <td>Potatoes, Fruits, Perishables</td>
-            </tr>
-            <tr>
-              <td><strong>Dry Warehouse</strong></td>
-              <td>Online Certified</td>
-              <td>₹1.20</td>
-              <td>Wheat, Paddy, Pulses, Mustard</td>
-            </tr>
-            <tr>
-              <td><strong>Local Mandi Godown</strong></td>
-              <td>Offline / Counter</td>
-              <td>₹1.00</td>
-              <td>Short-Term Mandi Transit</td>
-            </tr>
-          </tbody>
-        </table>
-
-        {/* Scheme Benefit Price Estimator */}
-        <div className="price-box">
-          <h2>Scheme Benefit Price Estimator</h2>
-          <label htmlFor="schemeType">Eligible Subsidy Scheme</label>
-          <select id="schemeType">
-            <option value="0">No Scheme (Full Tariff)</option>
-            <option value="0.5">PM Kisan Support (₹0.50 / kg discount)</option>
-            <option value="0.7">Gramin Bhandaran Yojana (₹0.70 / kg discount)</option>
-            <option value="1">State Agricultural Subsidy (₹1.00 / kg discount)</option>
-          </select>
-
-          <label htmlFor="schemeStorage">Facility Tier</label>
-          <select id="schemeStorage">
-            <option value="2">Cold Storage (₹2.00 / kg base)</option>
-            <option value="1.2">Dry Warehouse (₹1.20 / kg base)</option>
-            <option value="1">Offline Storage (₹1.00 / kg base)</option>
-          </select>
-
-          <label htmlFor="schemeQty">Crop Volume (in kg)</label>
-          <input type="number" id="schemeQty" min="1" placeholder="e.g. 5000" />
-
-          <button type="button" onClick={() => window.estimateSchemePrice?.()}>Calculate Final Net Cost</button>
-          <h3 id="schemeResult"></h3>
-        </div>
-      </section>
-
-      {/* 3. SCHEMES SECTION */}
-      <section id="schemes">
-        <div className="scheme">
-          <h3>PM-Kisan Samman Nidhi</h3>
-          <p><b>Benefit:</b> Direct financial assistance of ₹6,000 annually in 3 equal installments.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Small and marginal landholding farmer families</li>
-            <li>Aadhaar-linked active bank account</li>
-            <li>Land record validation in state revenue portal</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>Gramin Bhandaran Yojana</h3>
-          <p><b>Benefit:</b> 25% to 33.33% capital subsidy on creation/renovation of rural agricultural godowns.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Farmers, SHGs, Cooperatives, and Farmer Producer Organizations (FPOs)</li>
-            <li>Adherence to WDRA technical building specifications</li>
-            <li>Subsidy routed through NABARD / designated banks</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>PM Fasal Bima Yojana (PMFBY)</h3>
-          <p><b>Benefit:</b> Comprehensive risk insurance coverage from pre-sowing to post-harvest storage losses.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>All farmers growing notified crops in notified areas</li>
-            <li>Nominal farmer premium: 2% (Kharif), 1.5% (Rabi), 5% (Commercial/Horticultural)</li>
-            <li>Post-harvest coverage up to 14 days for crops in unseasonal weather</li>
-          </ul>
-        </div>
-
-        <div className="scheme">
-          <h3>e-NAM (National Agriculture Market)</h3>
-          <p><b>Benefit:</b> Pan-India electronic trading portal connecting farmers directly to nationwide buyers.</p>
-          <p><b>Eligibility Criteria:</b></p>
-          <ul>
-            <li>Registered farmers with valid Mandi lot entries</li>
-            <li>Assay certification of crop quality at e-NAM labs</li>
-            <li>Direct online payment into farmer bank accounts</li>
-          </ul>
-        </div>
-      </section>
-
-      {/* 4. BOOKING SECTION */}
-      <section id="booking">
-        <div className="booking-header">
-          <h2 className="booking-title slide-in-right">Verified Storage Booking</h2>
-          <p>Direct reservation with certified storage partners</p>
-        </div>
-        <div className="booking-step">
-          Step 1: Enter Verified Reservation Details
-        </div>
-
-        <div className="booking-box">
-          <h2>Reserve Space</h2>
-          <div className="booking-badge">🛡️ Government Certified Facility Guarantee</div>
-
-          <div className="booking-grid">
-            <div className="form-section">
-              <h3>Farmer Details</h3>
-              <div className="booking-grid">
-                <input id="bName" placeholder="Full Name of Farmer" />
-                <input id="bMobile" type="tel" placeholder="10-Digit Mobile Number" />
-                <select id="bLocation">
-                  <option value="">Select State</option>
-                  <option>Uttar Pradesh</option>
-                  <option>Bihar</option>
-                  <option>Madhya Pradesh</option>
-                  <option>Punjab</option>
-                  <option>Haryana</option>
-                  <option>Rajasthan</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-section">
-              <h3>Storage Preferences</h3>
-              <div className="booking-grid">
-                <select id="bStorage">
-                  <option value="2">Cold Storage (₹2/kg/month)</option>
-                  <option value="1.2">Dry Warehouse (₹1.2/kg/month)</option>
-                  <option value="1">Offline Godown (₹1/kg/month)</option>
-                </select>
-                <select id="bMode">
-                  <option>Online</option>
-                  <option>Offline</option>
-                </select>
-                <input id="bCrop" placeholder="Crop Type (e.g. Potato, Wheat)" />
-              </div>
-            </div>
-
-            <div className="form-section">
-              <h3>Volume & Scheme Application</h3>
-              <div className="booking-grid">
-                <select id="bScheme">
-                  <option value="0">Standard Tariff (No Subsidy)</option>
-                  <option value="0.5">PM Kisan (₹0.50/kg discount)</option>
-                  <option value="0.7">Gramin Bhandaran (₹0.70/kg discount)</option>
-                  <option value="1">State Subsidy (₹1.00/kg discount)</option>
-                </select>
-                <input id="bQty" type="number" min="1" placeholder="Quantity in kg" />
-                <input id="bMonths" type="number" min="1" placeholder="Storage Duration (months)" />
-              </div>
-            </div>
-          </div>
-
-          <button type="button" onClick={() => window.confirmBooking?.()}>Confirm & Generate Booking Voucher</button>
-          <div className="booking-result" id="bookingResult"></div>
-          <p className="booking-trust">
-            🔒 WDRA Verified • 💳 Transparent Pricing • 📞 Toll-Free Assistance: 1800-180-1551
-          </p>
-        </div>
-      </section>
-
-      {/* 5. PROFILE & BOOKING HISTORY SECTION */}
-      <section id="profile">
-        <h2 style={{ textAlign: 'center', fontFamily: 'DM Sans', marginBottom: '24px' }}>Farmer Profile & Booking Record</h2>
-        <div className="profile-dashboard">
-          <div className="profile-photo">👨‍🌾</div>
-          
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <button type="button" onClick={() => window.toggleProfileLang?.()}>English / हिंदी Switch</button>
-          </div>
-
-          <p><b>Profile Completion Tracker</b></p>
-          <div className="progress-container">
-            <div className="progress-bar" id="profileProgress"></div>
-          </div>
-
-          <h3>Farmer Details</h3>
-          <div className="profile-form">
-            <input id="pName" placeholder="Farmer Name" onKeyUp={() => window.updateProgress?.()} />
-            <input id="pMobile" placeholder="Mobile Number" onKeyUp={() => window.updateProgress?.()} />
-            <select id="pState" onChange={() => window.updateProgress?.()}>
-              <option value="">Select State</option>
-              <option>Uttar Pradesh</option>
-              <option>Bihar</option>
-              <option>Madhya Pradesh</option>
-              <option>Punjab</option>
-              <option>Haryana</option>
-              <option>Rajasthan</option>
-            </select>
-            <input id="pCrop" placeholder="Primary Crop Grown" onKeyUp={() => window.updateProgress?.()} />
-          </div>
-          <button type="button" onClick={() => window.saveProfile?.()}>Save Profile</button>
-
-          <h3>Active & Past Warehouse Bookings</h3>
-          <table className="profile-table">
-            <thead>
-              <tr>
-                <th>Booking Ref</th>
-                <th>Storage Facility / Crop</th>
-                <th>Quantity (kg)</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="bookingHistoryBody">
-              <tr>
-                <td colSpan="4">Enter your mobile number above and save your profile to load real-time bookings.</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <h3>Instant Scheme Eligibility Checker</h3>
-          <select id="schemeCheck" style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid var(--ds-border)', marginBottom: '16px' }}>
-            <option value="0">Select a scheme to verify eligibility</option>
-            <option value="0.5">PM Kisan Samman Nidhi</option>
-            <option value="0.7">Gramin Bhandaran Yojana</option>
-            <option value="1">State Storage Subsidy Scheme</option>
-          </select>
-          <button type="button" onClick={() => window.checkEligibility?.()}>Check Eligibility</button>
-          <p id="schemeResult"></p>
-        </div>
-      </section>
-
-      {/* Modern Storage Portal Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <span><b>Digital Storage Finder for Indian Farmers</b></span>
-          <span>Kisan Helpline: <strong>1800-180-1551</strong></span>
-          <span>Coverage: Central & State Warehousing Infrastructure</span>
-        </div>
-      </footer>
+<div className={"booking-box"}>
+<h2>Book Storage Facility</h2>
+<div className={"booking-badge"}>📦 Secure Storage Booking</div>
+<div className={"booking-grid"}>
+<div className={"form-section"}>
+<h3>Farmer Details</h3>
+<div className={"booking-grid"}>
+<input id={"bName"} placeholder={"Farmer Name"} />
+<input id={"bMobile"} type={"tel"} placeholder={"Mobile Number"} />
+<select id={"bLocation"}>
+<option value={""}>Select State</option>
+<option>Uttar Pradesh</option>
+<option>Bihar</option>
+<option>Madhya Pradesh</option>
+<option>Punjab</option>
+<option>Haryana</option>
+<option>Rajasthan</option>
+</select>
+</div>
+</div>
+<div className={"form-section"}>
+<h3>Storage Details</h3>
+<div className={"booking-grid"}>
+<select id={"bStorage"}>
+<option value={"2"}>Cold Storage (₹2/kg)</option>
+<option value={"1.2"}>Warehouse (₹1.2/kg)</option>
+<option value={"1"}>Offline Storage (₹1/kg)</option>
+</select>
+<select id={"bMode"}>
+<option>Online</option>
+<option>Offline</option>
+</select>
+<input id={"bCrop"} placeholder={"Crop Type"} />
+</div>
+</div>
+<div className={"form-section"}>
+<h3>Quantity & Scheme</h3>
+<div className={"booking-grid"}>
+<select id={"bScheme"}>
+<option value={"0"}>Without Scheme</option>
+<option value={"0.5"}>PM Kisan</option>
+<option value={"0.7"}>Gramin Bhandaran</option>
+<option value={"1"}>State Subsidy</option>
+</select>
+<input id={"bQty"} type={"number"} min={"1"} placeholder={"Quantity (kg)"} />
+<input id={"bMonths"} type={"number"} min={"1"} placeholder={"Duration (months)"} />
+</div>
+</div>
+</div>
+<button onClick={(event) => window.confirmBooking?.()}>Confirm Booking</button>
+<div className={"booking-result"} id={"bookingResult"}></div>
+<p className={"booking-trust"}>
+                🔒 Govt verified storages • 💳 Transparent pricing • 📞 24×7 Support
+            </p>
+</div>
+</section>
+{/*  PROFILE  */}
+<section id={"profile"}>
+<h2 style={{"textAlign": "center"}}>Farmer Profile</h2>
+<div className={"profile-dashboard"}>
+{/*  PROFILE PHOTO  */}
+<div className={"profile-photo"}>👨‍🌾</div>
+{/*  LANGUAGE TOGGLE  */}
+<button onClick={(event) => window.toggleProfileLang?.()}>English / हिंदी</button>
+{/*  PROFILE COMPLETION  */}
+<p><b>Profile Completion</b></p>
+<div className={"progress-container"}>
+<div className={"progress-bar"} id={"profileProgress"}></div>
+</div>
+{/*  EDITABLE PROFILE FORM  */}
+<h3>Personal Details</h3>
+<div className={"profile-form"}>
+<input id={"pName"} placeholder={"Farmer Name"} />
+<input id={"pMobile"} placeholder={"Mobile Number"} />
+<select id={"pState"}>
+<option>Uttar Pradesh</option>
+<option>Bihar</option>
+<option>Madhya Pradesh</option>
+<option>Punjab</option>
+<option>Haryana</option>
+<option>Rajasthan</option>
+</select>
+<input id={"pCrop"} placeholder={"Primary Crop"} />
+</div>
+<button onClick={(event) => window.saveProfile?.()}>Save Profile</button>
+{/*  BOOKING HISTORY  */}
+<h3>Booking History</h3>
+<table className={"profile-table"}>
+<thead><tr>
+<th>Booking ID</th><th>Storage / Crop</th><th>Qty (kg)</th><th>Status</th>
+</tr></thead>
+<tbody id={"bookingHistoryBody"}><tr><td colSpan={"4"}>Enter your mobile number and save your profile to load saved bookings.</td></tr></tbody>
+</table>
+{/*  SCHEME ELIGIBILITY  */}
+<h3>Scheme Eligibility Checker</h3>
+<select id={"schemeCheck"}>
+<option value={"0"}>No Scheme</option>
+<option value={"0.5"}>PM Kisan</option>
+<option value={"0.7"}>Gramin Bhandaran</option>
+<option value={"1"}>State Subsidy</option>
+</select>
+<button onClick={(event) => window.checkEligibility?.()}>Check Eligibility</button>
+<p id={"schemeResult"}></p>
+</div>
+</section>
+<footer>
+<footer className={"footer"}>
+<div className={"footer-content"}>
+<span><b>Digital Storage Finder for Farmers</b></span>
+<span>Helpline: 1800-180-1551</span>
+<span>Service Coverage: Multiple Indian States</span>
+</div>
+</footer>
+</footer>
     </>
   );
 }
